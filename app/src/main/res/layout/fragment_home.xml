@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".fragment.HomeFragment">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.55" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/home_kanji"
+            android:textColor="@color/brown"
+            android:textSize="@dimen/_80ssp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/button_dictionary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <include
+            android:id="@+id/button_dictionary"
+            layout="@layout/button_home_fragment"
+            android:layout_width="@dimen/_90sdp"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/_25sdp"
+            app:icon="@{@drawable/ic_dictionary}"
+            app:layout_constraintBottom_toBottomOf="@id/guideline_horizontal"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="@id/guideline_vertical"
+            app:text="@{@string/dictionary}" />
+
+        <include
+            android:id="@+id/button_test"
+            layout="@layout/button_home_fragment"
+            android:layout_width="@dimen/_90sdp"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/_25sdp"
+            app:icon='@{@drawable/ic_quiz}'
+            app:layout_constraintBottom_toBottomOf="@id/guideline_horizontal"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+            app:text='@{@string/test}' />
+
+        <include
+            android:id="@+id/button_learn"
+            layout="@layout/button_home_fragment"
+            android:layout_width="@dimen/_90sdp"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/_25sdp"
+            app:icon='@{@drawable/ic_learn}'
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="@id/guideline_vertical"
+            app:layout_constraintTop_toTopOf="@id/guideline_horizontal"
+            app:text='@{@string/learn}' />
+
+        <include
+            android:id="@+id/button_settings"
+            layout="@layout/button_home_fragment"
+            android:layout_width="@dimen/_90sdp"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/_25sdp"
+            app:icon='@{@drawable/ic_settings}'
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+            app:layout_constraintTop_toTopOf="@id/guideline_horizontal"
+            app:text='@{@string/settings}' />
+
+        <ImageView
+            android:layout_width="@dimen/_120sdp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:importantForAccessibility="no"
+            android:src="@drawable/homepage_top_drop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:layout_width="@dimen/_180sdp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:importantForAccessibility="no"
+            android:src="@drawable/homepage_bottom_drop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

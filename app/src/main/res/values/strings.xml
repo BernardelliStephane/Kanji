@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Kanji</string>
+
+    <!-- Button -->
+    <string name="dictionary">Dictionary</string>
+    <string name="test">Test</string>
+    <string name="learn">Learn</string>
+    <string name="settings">Settings</string>
+
+    <!-- Title -->
+    <string name="home_kanji">家</string>
 </resources>
