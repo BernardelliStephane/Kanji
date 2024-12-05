@@ -10,6 +10,17 @@
         android:name="fr.steph.kanji.fragment.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home">
+
+        <action
+            android:id="@+id/action_homeFragment_to_dictionaryFragment"
+            app:destination="@id/dictionaryFragment" />
+
     </fragment>
+
+    <fragment
+        android:id="@+id/dictionaryFragment"
+        android:name="fr.steph.kanji.fragment.DictionaryFragment"
+        android:label="dictionary_fragment"
+        tools:layout="@layout/fragment_dictionary" />
 
 </navigation>
