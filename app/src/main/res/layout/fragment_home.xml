@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:text="@string/home_kanji"
             android:textColor="@color/brown"
-            android:textSize="@dimen/_80ssp"
+            android:textSize="@dimen/home_title_size"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/button_dictionary"
             app:layout_constraintEnd_toEndOf="parent"
@@ -38,9 +38,9 @@
         <include
             android:id="@+id/button_dictionary"
             layout="@layout/button_home_fragment"
-            android:layout_width="@dimen/_90sdp"
+            android:layout_width="@dimen/home_button_size"
             android:layout_height="0dp"
-            android:layout_margin="@dimen/_25sdp"
+            android:layout_margin="@dimen/home_button_margin"
             app:icon="@{@drawable/ic_dictionary}"
             app:layout_constraintBottom_toBottomOf="@id/guideline_horizontal"
             app:layout_constraintDimensionRatio="1:1"
@@ -50,9 +50,9 @@
         <include
             android:id="@+id/button_test"
             layout="@layout/button_home_fragment"
-            android:layout_width="@dimen/_90sdp"
+            android:layout_width="@dimen/home_button_size"
             android:layout_height="0dp"
-            android:layout_margin="@dimen/_25sdp"
+            android:layout_margin="@dimen/home_button_margin"
             app:icon='@{@drawable/ic_quiz}'
             app:layout_constraintBottom_toBottomOf="@id/guideline_horizontal"
             app:layout_constraintDimensionRatio="1:1"
@@ -62,9 +62,9 @@
         <include
             android:id="@+id/button_learn"
             layout="@layout/button_home_fragment"
-            android:layout_width="@dimen/_90sdp"
+            android:layout_width="@dimen/home_button_size"
             android:layout_height="0dp"
-            android:layout_margin="@dimen/_25sdp"
+            android:layout_margin="@dimen/home_button_margin"
             app:icon='@{@drawable/ic_learn}'
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="@id/guideline_vertical"
@@ -74,9 +74,9 @@
         <include
             android:id="@+id/button_settings"
             layout="@layout/button_home_fragment"
-            android:layout_width="@dimen/_90sdp"
+            android:layout_width="@dimen/home_button_size"
             android:layout_height="0dp"
-            android:layout_margin="@dimen/_25sdp"
+            android:layout_margin="@dimen/home_button_margin"
             app:icon='@{@drawable/ic_settings}'
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintStart_toStartOf="@id/guideline_vertical"
@@ -84,20 +84,20 @@
             app:text='@{@string/settings}' />
 
         <ImageView
-            android:layout_width="@dimen/_120sdp"
+            android:layout_width="@dimen/home_top_bg_height"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:importantForAccessibility="no"
-            android:src="@drawable/homepage_top_drop"
+            android:src="@drawable/homepage_bg_top"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:layout_width="@dimen/_180sdp"
+            android:layout_width="@dimen/home_bottom_bg_height"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:importantForAccessibility="no"
-            android:src="@drawable/homepage_bottom_drop"
+            android:src="@drawable/homepage_bg_bottom"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
