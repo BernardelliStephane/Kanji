@@ -21,6 +21,19 @@
         android:id="@+id/dictionaryFragment"
         android:name="fr.steph.kanji.fragment.DictionaryFragment"
         android:label="dictionary_fragment"
-        tools:layout="@layout/fragment_dictionary" />
+        tools:layout="@layout/fragment_dictionary">
+
+        <action
+            android:id="@+id/action_dictionaryFragment_to_addKanjiFragment"
+            app:destination="@id/addKanjiFragment" />
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/addKanjiFragment"
+        android:name="fr.steph.kanji.fragment.AddKanjiFragment"
+        android:label="AddKanjiFragment"
+        tools:layout="@layout/fragment_add_kanji" />
 
 </navigation>
