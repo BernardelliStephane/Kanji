@@ -9,4 +9,8 @@
 
     <!-- Title -->
     <string name="home_kanji">家</string>
+
+    <!-- Content description -->
+    <string name="add_kanji">Add kanji</string>
+    <string name="option_menu">Option menu</string>
 </resources>

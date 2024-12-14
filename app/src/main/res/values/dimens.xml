@@ -8,4 +8,7 @@
     <dimen name="home_top_bg_height">@dimen/_120sdp</dimen>
     <dimen name="home_bottom_bg_height">@dimen/_180sdp</dimen>
 
+    <!-- Dictionary fragment -->
+    <dimen name="app_bar_height">@dimen/_200sdp</dimen>
+
 </resources>

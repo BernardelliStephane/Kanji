@@ -17,4 +17,9 @@
         <item name="android:navigationBarColor">@color/white</item>
 
     </style>
+
+    <style name="Toolbar.TitleTextExpanded" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textColor">@android:color/transparent</item>
+    </style>
+
 </resources>
