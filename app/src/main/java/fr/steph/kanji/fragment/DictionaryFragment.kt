@@ -5,6 +5,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import fr.steph.kanji.R
 import fr.steph.kanji.databinding.FragmentDictionaryBinding
+import fr.steph.kanji.utils.extension.safeNavigate
 
 class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
 
@@ -29,6 +30,10 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
                     else 1 - ((1 - displayRatio) * 2)
             }
 
+            addKanji.setOnClickListener {
+                val action = DictionaryFragmentDirections.actionDictionaryFragmentToAddKanjiFragment()
+                safeNavigate(action)
+            }
         }
     }
 
