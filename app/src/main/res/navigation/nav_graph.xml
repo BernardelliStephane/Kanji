@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="fr.steph.kanji.fragment.HomeFragment"
+        android:name="fr.steph.kanji.ui.fragment.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home">
 
@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/dictionaryFragment"
-        android:name="fr.steph.kanji.fragment.DictionaryFragment"
+        android:name="fr.steph.kanji.ui.fragment.DictionaryFragment"
         android:label="dictionary_fragment"
         tools:layout="@layout/fragment_dictionary">
 
@@ -32,7 +32,7 @@
 
     <fragment
         android:id="@+id/addKanjiFragment"
-        android:name="fr.steph.kanji.fragment.AddKanjiFragment"
+        android:name="fr.steph.kanji.ui.fragment.AddKanjiFragment"
         android:label="AddKanjiFragment"
         tools:layout="@layout/fragment_add_kanji" />
 

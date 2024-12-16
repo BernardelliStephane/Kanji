@@ -1,4 +1,4 @@
-package fr.steph.kanji.fragment
+package fr.steph.kanji.ui.fragment
 
 import android.os.Bundle
 import android.view.View
