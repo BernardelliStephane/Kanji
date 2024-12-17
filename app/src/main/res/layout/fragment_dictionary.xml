@@ -21,7 +21,6 @@
             app:collapsedTitleGravity="start"
             app:expandedTitleTextAppearance="@style/Toolbar.TitleTextExpanded"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:scrimAnimationDuration="0"
             app:statusBarScrim="@android:color/transparent"
             app:titleCollapseMode="scale"
             app:toolbarId="@id/dictionary_toolbar">
