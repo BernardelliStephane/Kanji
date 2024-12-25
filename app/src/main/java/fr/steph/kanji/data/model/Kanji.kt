@@ -7,9 +7,9 @@ import androidx.room.PrimaryKey
 data class Kanji (
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    val character: Char,
+    val character: String,
     val kana: String,
     val romaji: String,
     val translation: String,
-    val childrenKanjis: ArrayList<Kanji>
+    val childrenKanjis: List<Kanji>
 )
