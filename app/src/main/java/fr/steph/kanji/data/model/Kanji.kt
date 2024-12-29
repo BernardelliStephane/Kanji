@@ -12,4 +12,5 @@ data class Kanji (
     val romaji: String,
     val translation: String,
     val childrenKanjis: List<Kanji>
+    //TODO Ordre des traits
 )

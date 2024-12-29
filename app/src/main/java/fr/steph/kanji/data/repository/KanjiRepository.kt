@@ -3,7 +3,7 @@ package fr.steph.kanji.data.repository
 import androidx.annotation.WorkerThread
 import fr.steph.kanji.data.dao.KanjiDao
 import fr.steph.kanji.data.model.Kanji
-import fr.steph.kanji.data.utils.enum.SortType
+import fr.steph.kanji.data.utils.enum.SortOrder
 
 class KanjiRepository(private val kanjiDao: KanjiDao) {
 
@@ -15,16 +15,16 @@ class KanjiRepository(private val kanjiDao: KanjiDao) {
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
-    suspend fun getKanjisOrderedByRomaji(sortType: SortType) =
-        kanjiDao.getKanjisOrderedByRomaji(sortType.index)
+    suspend fun getKanjisOrderedByRomaji(sortOrder: SortOrder) =
+        kanjiDao.getKanjisOrderedByRomaji(sortOrder.index)
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
-    suspend fun getKanjisOrderedById(sortType: SortType) =
-        kanjiDao.getKanjisOrderedById(sortType.index)
+    suspend fun getKanjisOrderedById(sortOrder: SortOrder) =
+        kanjiDao.getKanjisOrderedById(sortOrder.index)
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
-    suspend fun getKanjisOrderedByTranslation(sortType: SortType) =
-        kanjiDao.getKanjisOrderedByTranslation(sortType.index)
+    suspend fun getKanjisOrderedByTranslation(sortOrder: SortOrder) =
+        kanjiDao.getKanjisOrderedByTranslation(sortOrder.index)
 }
