@@ -11,19 +11,19 @@ import fr.steph.kanji.data.model.Kanji
     entities = [Kanji::class],
     version = 1
 )
-abstract class AppDatabase: RoomDatabase() {
+abstract class KanjiDatabase: RoomDatabase() {
     abstract val dao: KanjiDao
 
     companion object {
         @Volatile
-        private var INSTANCE: AppDatabase? = null
+        private var INSTANCE: KanjiDatabase? = null
 
-        fun getDatabase(context: Context): AppDatabase {
+        fun getDatabase(context: Context): KanjiDatabase {
             return INSTANCE ?: synchronized(this) {
 
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
-                    AppDatabase::class.java,
+                    KanjiDatabase::class.java,
                     "kanji_db"
                 ).build()
 
