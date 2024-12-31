@@ -1,4 +1,4 @@
-package fr.steph.kanji.ui.fragment.viewmodel
+package fr.steph.kanji.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
