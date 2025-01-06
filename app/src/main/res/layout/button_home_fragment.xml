@@ -4,15 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
-        <variable
-            name="text"
-            type="String" />
-
-        <variable
-            name="icon"
-            type="android.graphics.drawable.Drawable" />
-
+        <variable name="text" type="String" />
+        <variable name="icon" type="android.graphics.drawable.Drawable" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -58,4 +51,5 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
+
 </layout>

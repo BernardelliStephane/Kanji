@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/home_kanji"
-            android:textColor="@color/brown"
+            android:textColor="?attr/colorSecondary"
             android:textSize="@dimen/home_title_size"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/button_dictionary"

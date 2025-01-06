@@ -11,7 +11,7 @@
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/white"
+        android:backgroundTint="?attr/android:colorBackground"
         android:fitsSystemWindows="true"
         android:theme="@style/ThemeOverlay.Material3.Light">
 
