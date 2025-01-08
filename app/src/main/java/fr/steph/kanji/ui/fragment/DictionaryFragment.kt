@@ -1,4 +1,4 @@
-package fr.steph.kanji.fragment
+package fr.steph.kanji.ui.fragment
 
 import android.os.Bundle
 import android.view.View
@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import fr.steph.kanji.R
 import fr.steph.kanji.databinding.FragmentDictionaryBinding
+import fr.steph.kanji.utils.extension.safeNavigate
 
 class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
 
@@ -32,6 +33,11 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
 
             dictionaryToolbar.setNavigationOnClickListener {
                 Navigation.findNavController(view).navigateUp()
+            }
+
+            addKanji.setOnClickListener {
+                val action = DictionaryFragmentDirections.actionDictionaryFragmentToAddKanjiFragment()
+                safeNavigate(action)
             }
         }
     }
