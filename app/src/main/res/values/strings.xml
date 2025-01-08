@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Kanji</string>
 
+    <!-- Title -->
+    <string name="home_kanji">家</string>
+
     <!-- Button -->
     <string name="dictionary">Dictionary</string>
     <string name="test">Test</string>
@@ -9,8 +12,8 @@
     <string name="cancel">Cancel</string>
     <string name="confirm">Confirm</string>
 
-    <!-- Title -->
-    <string name="home_kanji">家</string>
+    <!-- User messages -->
+    <string name="room_insertion_failure">An issue occurred with the database.\\nPlease try again.</string>
 
     <!-- Content description -->
     <string name="add_kanji">Add kanji</string>

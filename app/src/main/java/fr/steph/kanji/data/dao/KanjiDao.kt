@@ -10,10 +10,10 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface KanjiDao {
     @Upsert
-    suspend fun upsertKanji(kanji: Kanji)
+    suspend fun upsertKanji(kanji: Kanji): Long
 
     @Delete
-    suspend fun deleteKanji(kanji: Kanji)
+    suspend fun deleteKanji(kanji: Kanji): Int
 
     // TODO rajouter les filtres (par type de kanji etc)
     @Query("SELECT * FROM kanji ORDER BY " +
