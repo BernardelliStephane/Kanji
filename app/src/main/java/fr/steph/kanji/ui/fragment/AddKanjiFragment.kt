@@ -2,13 +2,15 @@ package fr.steph.kanji.ui.fragment
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
 import fr.steph.kanji.KanjiApplication
 import fr.steph.kanji.R
 import fr.steph.kanji.databinding.FragmentAddKanjiBinding
-import fr.steph.kanji.ui.viewmodel.AddKanjiViewModel
 import fr.steph.kanji.ui.utils.viewModelFactory
+import fr.steph.kanji.ui.viewmodel.AddKanjiViewModel
 
 class AddKanjiFragment : Fragment(R.layout.fragment_add_kanji) {
 
@@ -25,11 +27,11 @@ class AddKanjiFragment : Fragment(R.layout.fragment_add_kanji) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentAddKanjiBinding.bind(view)
 
-        initViews()
-    }
+        binding.viewModel = viewModel
 
-    private fun initViews() {
-
+        binding.buttonCancel.setOnClickListener {
+            Navigation.findNavController(view).navigateUp()
+        }
     }
 
     override fun onDestroyView() {
