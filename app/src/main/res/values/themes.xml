@@ -30,4 +30,10 @@
         <item name="textAllCaps">false</item>
     </style>
 
+    <style name="TextInputLayout.FormField" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="boxStrokeColor">?attr/colorPrimaryVariant</item>
+        <item name="cursorColor">?attr/colorPrimaryVariant</item>
+        <item name="hintTextColor">?attr/colorPrimaryVariant</item>
+    </style>
+
 </resources>
