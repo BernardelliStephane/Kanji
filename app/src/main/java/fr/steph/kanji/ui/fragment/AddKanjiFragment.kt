@@ -12,8 +12,8 @@ import fr.steph.kanji.R
 import fr.steph.kanji.databinding.FragmentAddKanjiBinding
 import fr.steph.kanji.ui.utils.viewModelFactory
 import fr.steph.kanji.ui.viewmodel.AddKanjiViewModel
-import fr.steph.kanji.ui.viewmodel.AddKanjiViewModel.ValidationEvent.Failure
-import fr.steph.kanji.ui.viewmodel.AddKanjiViewModel.ValidationEvent.Success
+import fr.steph.kanji.ui.viewmodel.KanjiViewModel.ValidationEvent.Failure
+import fr.steph.kanji.ui.viewmodel.KanjiViewModel.ValidationEvent.Success
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
