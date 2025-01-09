@@ -12,6 +12,9 @@
     <string name="cancel">Cancel</string>
     <string name="confirm">Confirm</string>
 
+    <!-- Text -->
+    <string name="kanji_count_text">%1$d kanjis added</string>
+
     <!-- User messages -->
     <string name="room_insertion_failure">An issue occurred with the database.\\nPlease try again.</string>
 
