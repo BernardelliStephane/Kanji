@@ -54,7 +54,7 @@
                     android:id="@+id/kanji_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    tools:text="10 kanjis ajoutés" />
+                    tools:text="@string/kanji_count_text" />
 
             </LinearLayout>
 
@@ -63,6 +63,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
                 android:layout_marginEnd="@dimen/_20sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
                 android:divider="@drawable/option_layout_divider"
                 android:showDividers="middle"
                 app:layout_collapseMode="pin">
