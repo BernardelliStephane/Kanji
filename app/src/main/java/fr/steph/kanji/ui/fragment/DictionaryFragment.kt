@@ -1,5 +1,7 @@
 package fr.steph.kanji.ui.fragment
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -36,9 +38,19 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
             appBar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
                 val range = appBarLayout.totalScrollRange
                 val displayRatio = (range + verticalOffset).toFloat() / range
-                expandedTitle.alpha =
-                    if (displayRatio < 0.5) 0F
-                    else 1 - ((1 - displayRatio) * 2)
+
+                // Ranges from 0 to 255 as the displayRatio goes from 0 to 0.5 | 0 above 0.5
+                val opacity = if(displayRatio > 0.5) 0
+                    else 255 - (((displayRatio * 255).toInt() * 2) - 255)
+
+                val color = Color.argb(opacity, 0, 0, 0)
+                val colorStateList = ColorStateList.valueOf(color)
+
+                collapsingToolbarLayout.setExpandedTitleTextColor(colorStateList)
+                collapsingToolbarLayout.setCollapsedTitleTextColor(color)
+
+                // Ranges from 1 to 0 as the displayRatio goes from 1 to 0.5 | 0 below 0.5
+                expandedTitle.alpha = 1 - ((1 - displayRatio) * 2)
             }
 
             dictionaryToolbar.setNavigationOnClickListener {

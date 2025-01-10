@@ -15,22 +15,24 @@
         android:fitsSystemWindows="true">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/app_bar_height"
             app:collapsedTitleGravity="start"
-            app:expandedTitleTextAppearance="@style/Toolbar.TitleTextExpanded"
+            app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:statusBarScrim="@android:color/transparent"
+            app:title="Dictionary"
             app:titleCollapseMode="scale"
-            app:toolbarId="@id/dictionary_toolbar">
+            app:toolbarId="@id/dictionary_toolbar"
+            tools:title="">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/dictionary_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
                 app:layout_collapseMode="pin"
-                app:navigationIcon="@drawable/ic_back"
-                app:title="Dictionary" />
+                app:navigationIcon="@drawable/ic_back" />
 
             <LinearLayout
                 android:id="@+id/expanded_title"
