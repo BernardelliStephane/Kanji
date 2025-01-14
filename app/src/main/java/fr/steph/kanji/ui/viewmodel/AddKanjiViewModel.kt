@@ -1,9 +1,9 @@
 package fr.steph.kanji.ui.viewmodel
 
 import fr.steph.kanji.data.model.Kanji
-import fr.steph.kanji.data.repository.LexemeRepository
+import fr.steph.kanji.data.repository.KanjiRepository
 
-class AddKanjiViewModel(repo: LexemeRepository) : KanjiViewModel(repo) {
+class AddKanjiViewModel(repo: KanjiRepository) : KanjiViewModel(repo) {
 
     var id = 0
     var character: String = ""

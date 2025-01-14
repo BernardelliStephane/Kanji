@@ -1,7 +1,7 @@
 package fr.steph.kanji.ui.viewmodel
 
-import fr.steph.kanji.data.repository.LexemeRepository
+import fr.steph.kanji.data.repository.KanjiRepository
 
-class DictionaryViewModel(repo: LexemeRepository) : KanjiViewModel(repo) {
+class DictionaryViewModel(repo: KanjiRepository) : KanjiViewModel(repo) {
 
 }

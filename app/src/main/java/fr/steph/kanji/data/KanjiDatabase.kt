@@ -5,28 +5,26 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import fr.steph.kanji.data.dao.LexemeDao
-import fr.steph.kanji.data.model.Compound
-import fr.steph.kanji.data.model.Kana
+import fr.steph.kanji.data.dao.KanjiDao
 import fr.steph.kanji.data.model.Kanji
 import fr.steph.kanji.data.utils.RoomTypeConverter
 
-@Database(entities = [Kana::class, Kanji::class, Compound::class], version = 1)
+@Database(entities = [Kanji::class], version = 1)
 @TypeConverters(value = [RoomTypeConverter::class])
-abstract class LexemeDatabase: RoomDatabase() {
-    abstract fun dao(): LexemeDao
+abstract class KanjiDatabase: RoomDatabase() {
+    abstract fun dao(): KanjiDao
 
     companion object {
         @Volatile
-        private var INSTANCE: LexemeDatabase? = null
+        private var INSTANCE: KanjiDatabase? = null
 
-        fun getDatabase(context: Context): LexemeDatabase {
+        fun getDatabase(context: Context): KanjiDatabase {
             return INSTANCE ?: synchronized(this) {
 
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
-                    LexemeDatabase::class.java,
-                    "lexeme_db"
+                    KanjiDatabase::class.java,
+                    "kanji_db"
                 ).build()
 
                 INSTANCE = instance
