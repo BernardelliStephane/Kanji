@@ -1,9 +1,15 @@
 package fr.steph.kanji.data.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity
 data class Compound(
-    override val id: Int,
+    @PrimaryKey(autoGenerate = true)
+    override val id: Int = 0,
     override val characters: String,
     override val meaning: String,
-    val romaji: String,
-    val childrenKanji: List<Kanji>? = null,
-) : Lexeme(id, characters, meaning)
+    override val romaji: String,
+    override val timestamp: Long,
+    // TODO val childrenKanji: List<Kanji>? = null,
+) : Lexeme(id, characters, romaji, meaning)

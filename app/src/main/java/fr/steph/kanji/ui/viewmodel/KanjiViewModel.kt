@@ -5,7 +5,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import fr.steph.kanji.R
 import fr.steph.kanji.data.model.Kanji
-import fr.steph.kanji.data.repository.KanjiRepository
+import fr.steph.kanji.data.repository.LexemeRepository
 import fr.steph.kanji.data.utils.enumeration.SortField
 import fr.steph.kanji.data.utils.enumeration.SortOrder
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -21,14 +21,14 @@ import kotlinx.coroutines.launch
 const val FAILURE = -1L
 
 @OptIn(ExperimentalCoroutinesApi::class)
-abstract class KanjiViewModel(private val repo: KanjiRepository): ViewModel() {
+abstract class KanjiViewModel(private val repo: LexemeRepository): ViewModel() {
 
     private val _sortType = MutableStateFlow(Pair(SortField.ID, SortOrder.ASCENDING))
     private val _kanjis = _sortType.flatMapLatest {
         when(it.first) {
-            SortField.ID -> repo.getKanjisOrderedById(it.second)
-            SortField.ROMAJI -> repo.getKanjisOrderedByRomaji(it.second)
-            SortField.TRANSLATION -> repo.getKanjisOrderedByTranslation(it.second)
+            SortField.ID -> repo.getLexemesOrderedByTimestamp(it.second)
+            SortField.ROMAJI -> repo.getLexemesOrderedByRomaji(it.second)
+            SortField.TRANSLATION -> repo.getLexemesOrderedByTranslation(it.second)
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
