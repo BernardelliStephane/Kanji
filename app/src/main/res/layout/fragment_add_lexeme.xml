@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="fr.steph.kanji.ui.viewmodel.AddKanjiViewModel" />
+            type="fr.steph.kanji.ui.viewmodel.AddLexemeViewModel" />
 
     </data>
 
@@ -27,30 +27,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20sdp"
-                android:hint="Character">
+                android:hint="Characters">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/add_kanji_character_input"
+                    android:id="@+id/add_lexeme_character_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textShortMessage"
-                    android:text="@={viewModel.character}" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/TextInputLayout.FormField"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:hint="Hiragana/Katakana">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/add_kanji_kana_input"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:text="@={viewModel.kana}" />
+                    android:text="@={viewModel.characters}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -62,7 +46,7 @@
                 android:hint="Romaji">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/add_kanji_romaji_input"
+                    android:id="@+id/add_lexeme_romaji_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
@@ -78,11 +62,11 @@
                 android:hint="Translation">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/add_kanji_translation_input"
+                    android:id="@+id/add_lexeme_translation_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
-                    android:text="@={viewModel.translation}" />
+                    android:text="@={viewModel.meaning}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 

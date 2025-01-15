@@ -24,16 +24,16 @@
         tools:layout="@layout/fragment_dictionary">
 
         <action
-            android:id="@+id/action_dictionaryFragment_to_addKanjiFragment"
-            app:destination="@id/addKanjiFragment" />
+            android:id="@+id/action_dictionaryFragment_to_addLexemeFragment"
+            app:destination="@id/addLexemeFragment" />
 
     </fragment>
 
 
     <fragment
-        android:id="@+id/addKanjiFragment"
-        android:name="fr.steph.kanji.ui.fragment.AddKanjiFragment"
-        android:label="AddKanjiFragment"
-        tools:layout="@layout/fragment_add_kanji" />
+        android:id="@+id/addLexemeFragment"
+        android:name="fr.steph.kanji.ui.fragment.AddLexemeFragment"
+        android:label="AddLexemeFragment"
+        tools:layout="@layout/fragment_add_lexeme" />
 
 </navigation>

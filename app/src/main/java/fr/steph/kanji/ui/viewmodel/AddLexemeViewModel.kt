@@ -4,7 +4,7 @@ import fr.steph.kanji.data.model.Lexeme
 import fr.steph.kanji.data.repository.LexemeRepository
 import fr.steph.kanji.data.utils.enumeration.LexemeType
 
-class AddKanjiViewModel(repo: LexemeRepository) : LexemeViewModel(repo) {
+class AddLexemeViewModel(repo: LexemeRepository) : LexemeViewModel(repo) {
 
     var id = 0
     var characters: String = ""

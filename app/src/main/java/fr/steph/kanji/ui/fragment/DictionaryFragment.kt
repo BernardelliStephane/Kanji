@@ -11,7 +11,7 @@ import androidx.navigation.Navigation
 import fr.steph.kanji.KanjiApplication
 import fr.steph.kanji.R
 import fr.steph.kanji.databinding.FragmentDictionaryBinding
-import fr.steph.kanji.ui.adapter.KanjiAdapter
+import fr.steph.kanji.ui.adapter.LexemeAdapter
 import fr.steph.kanji.ui.utils.viewModelFactory
 import fr.steph.kanji.ui.viewmodel.DictionaryViewModel
 import fr.steph.kanji.utils.extension.safeNavigate
@@ -27,7 +27,7 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
         }
     }
 
-    private lateinit var kanjiAdapter: KanjiAdapter
+    private lateinit var lexemeAdapter: LexemeAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -38,8 +38,8 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
     }
 
     private fun initViews(view: View) {
-        kanjiAdapter = KanjiAdapter().apply {
-            itemClickedCallback = { kanji ->
+        lexemeAdapter = LexemeAdapter().apply {
+            itemClickedCallback = { lexeme ->
                 //TODO Display details fragments
                 Toast.makeText(requireContext(), "Details fragment should open", Toast.LENGTH_SHORT).show()
             }
@@ -47,7 +47,7 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
 
         binding.run {
             recyclerView.apply {
-                adapter = kanjiAdapter
+                adapter = lexemeAdapter
                 postponeEnterTransition()
                 viewTreeObserver.addOnPreDrawListener {
                     startPostponedEnterTransition()
@@ -78,17 +78,17 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
                 Navigation.findNavController(view).navigateUp()
             }
 
-            addKanji.setOnClickListener {
-                val action = DictionaryFragmentDirections.actionDictionaryFragmentToAddKanjiFragment()
+            addLexeme.setOnClickListener {
+                val action = DictionaryFragmentDirections.actionDictionaryFragmentToAddLexemeFragment()
                 safeNavigate(action)
             }
         }
     }
 
     private fun initObservers() {
-        viewModel.kanjis.observe(viewLifecycleOwner) { kanjis ->
-            binding.kanjiCount.text = getString(R.string.kanji_count_text, kanjis.size)
-            kanjiAdapter.submitList(kanjis)
+        viewModel.lexemes.observe(viewLifecycleOwner) { lexemes ->
+            binding.translationCount.text = getString(R.string.translation_count_text, lexemes.size)
+            lexemeAdapter.submitList(lexemes)
         }
     }
 

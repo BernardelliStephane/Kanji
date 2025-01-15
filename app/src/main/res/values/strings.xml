@@ -13,13 +13,13 @@
     <string name="confirm">Confirm</string>
 
     <!-- Text -->
-    <string name="kanji_count_text">%1$d kanjis added</string>
+    <string name="translation_count_text">%1$d translations</string>
 
     <!-- User messages -->
     <string name="room_insertion_failure">An issue occurred with the database.\\nPlease try again.</string>
 
     <!-- Content description -->
-    <string name="add_kanji">Add kanji</string>
+    <string name="add_lexeme">Add lexeme</string>
     <string name="option_menu">Option menu</string>
 
 </resources>

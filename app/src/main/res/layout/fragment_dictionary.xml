@@ -51,10 +51,10 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/kanji_count"
+                    android:id="@+id/translation_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    tools:text="@string/kanji_count_text" />
+                    tools:text="@string/translation_count_text" />
 
             </LinearLayout>
 
@@ -77,12 +77,12 @@
                     android:src="@drawable/ic_dictionary" />
 
                 <ImageButton
-                    android:id="@+id/add_kanji"
+                    android:id="@+id/add_lexeme"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/_24sdp"
                     android:adjustViewBounds="true"
                     android:background="@android:color/transparent"
-                    android:contentDescription="@string/add_kanji"
+                    android:contentDescription="@string/add_lexeme"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_add" />
 
@@ -111,6 +111,7 @@
         android:orientation="vertical"
         android:overScrollMode="never"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:listitem="@layout/item_lexeme" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

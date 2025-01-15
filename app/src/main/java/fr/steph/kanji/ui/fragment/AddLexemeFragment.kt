@@ -9,28 +9,28 @@ import androidx.navigation.Navigation
 import com.google.android.material.snackbar.Snackbar
 import fr.steph.kanji.KanjiApplication
 import fr.steph.kanji.R
-import fr.steph.kanji.databinding.FragmentAddKanjiBinding
+import fr.steph.kanji.databinding.FragmentAddLexemeBinding
 import fr.steph.kanji.ui.utils.viewModelFactory
-import fr.steph.kanji.ui.viewmodel.AddKanjiViewModel
-import fr.steph.kanji.ui.viewmodel.KanjiViewModel.ValidationEvent.Failure
-import fr.steph.kanji.ui.viewmodel.KanjiViewModel.ValidationEvent.Success
+import fr.steph.kanji.ui.viewmodel.AddLexemeViewModel
+import fr.steph.kanji.ui.viewmodel.LexemeViewModel.ValidationEvent.Failure
+import fr.steph.kanji.ui.viewmodel.LexemeViewModel.ValidationEvent.Success
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class AddKanjiFragment : Fragment(R.layout.fragment_add_kanji) {
+class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
 
-    private var _binding: FragmentAddKanjiBinding? = null
+    private var _binding: FragmentAddLexemeBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: AddKanjiViewModel by viewModels {
+    private val viewModel: AddLexemeViewModel by viewModels {
         viewModelFactory {
-            AddKanjiViewModel((activity?.application as KanjiApplication).repository)
+            AddLexemeViewModel((activity?.application as KanjiApplication).repository)
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentAddKanjiBinding.bind(view)
+        _binding = FragmentAddLexemeBinding.bind(view)
 
         binding.viewModel = viewModel
 
