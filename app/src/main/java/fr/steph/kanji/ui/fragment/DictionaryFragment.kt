@@ -40,7 +40,7 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
     private fun initViews(view: View) {
         lexemeAdapter = LexemeAdapter().apply {
             itemClickedCallback = { lexeme ->
-                //TODO Display details fragments
+                //TODO Display details fragment
                 Toast.makeText(requireContext(), "Details fragment should open", Toast.LENGTH_SHORT).show()
             }
         }

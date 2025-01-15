@@ -20,11 +20,11 @@ import kotlinx.coroutines.launch
 const val FAILURE = -1L
 
 @OptIn(ExperimentalCoroutinesApi::class)
-abstract class LexemeViewModel(private val repo: LexemeRepository): ViewModel() {
+abstract class LexemeViewModel(private val repo: LexemeRepository) : ViewModel() {
 
     private val _sortType = MutableStateFlow(Pair(SortField.ID, SortOrder.ASCENDING))
     private val _lexemes = _sortType.flatMapLatest {
-        when(it.first) {
+        when (it.first) {
             SortField.ID -> repo.lexemesOrderedById(it.second)
             SortField.ROMAJI -> repo.lexemesOrderedByRomaji(it.second)
             SortField.MEANING -> repo.lexemesOrderedByTranslation(it.second)
@@ -38,14 +38,14 @@ abstract class LexemeViewModel(private val repo: LexemeRepository): ViewModel() 
 
     fun upsertLexeme(lexeme: Lexeme) = viewModelScope.launch {
         repo.upsertLexeme(lexeme).let {
-            if(it == FAILURE)
+            if (it == FAILURE)
                 validationEventChannel.send(ValidationEvent.Failure(R.string.room_insertion_failure))
             else validationEventChannel.send(ValidationEvent.Success)
         }
     }
 
     sealed class ValidationEvent {
-        data class Failure (val failureMessage: Int): ValidationEvent()
-        data object Success: ValidationEvent()
+        data class Failure(val failureMessage: Int) : ValidationEvent()
+        data object Success : ValidationEvent()
     }
 }

@@ -82,7 +82,7 @@
                     android:layout_height="@dimen/_24sdp"
                     android:adjustViewBounds="true"
                     android:background="@android:color/transparent"
-                    android:contentDescription="@string/add_lexeme"
+                    android:contentDescription="@string/add_translation"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_add" />
 

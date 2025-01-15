@@ -29,7 +29,6 @@
 
     </fragment>
 
-
     <fragment
         android:id="@+id/addLexemeFragment"
         android:name="fr.steph.kanji.ui.fragment.AddLexemeFragment"

@@ -9,7 +9,6 @@ import fr.steph.kanji.utils.extension.safeNavigate
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
-    // Binding
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 

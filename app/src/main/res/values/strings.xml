@@ -19,7 +19,7 @@
     <string name="room_insertion_failure">An issue occurred with the database.\\nPlease try again.</string>
 
     <!-- Content description -->
-    <string name="add_lexeme">Add lexeme</string>
+    <string name="add_translation">Add translation</string>
     <string name="option_menu">Option menu</string>
 
 </resources>

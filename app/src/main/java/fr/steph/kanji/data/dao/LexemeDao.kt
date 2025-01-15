@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface LexemeDao {
+    
     @Upsert
     suspend fun upsertLexeme(lexeme: Lexeme): Long
 
