@@ -1,19 +1,19 @@
 package fr.steph.kanji.ui.viewmodel
 
-import fr.steph.kanji.data.model.Kanji
-import fr.steph.kanji.data.repository.KanjiRepository
+import fr.steph.kanji.data.model.Lexeme
+import fr.steph.kanji.data.repository.LexemeRepository
+import fr.steph.kanji.data.utils.enumeration.LexemeType
 
-class AddKanjiViewModel(repo: KanjiRepository) : KanjiViewModel(repo) {
+class AddKanjiViewModel(repo: LexemeRepository) : LexemeViewModel(repo) {
 
     var id = 0
-    var character: String = ""
-    var kana: String = ""
+    var characters: String = ""
     var romaji: String = ""
-    var translation: String = ""
+    var meaning: String = ""
 
     fun performValidation() {
-        // TODO Verify entries before upserting kanji
-        val kanji = Kanji(id, character, kana, romaji, translation)
-        upsertKanji(kanji)
+        // TODO Verify entries before upserting lexeme
+        val lexeme = Lexeme(id, LexemeType.KANA, characters, romaji, meaning)
+        upsertLexeme(lexeme)
     }
 }
