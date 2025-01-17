@@ -22,8 +22,9 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
     private val binding get() = _binding!!
 
     private val viewModel: DictionaryViewModel by viewModels {
+        val app = (activity?.application as KanjiApplication)
         viewModelFactory {
-            DictionaryViewModel((activity?.application as KanjiApplication).repository)
+            DictionaryViewModel(app.repository)
         }
     }
 
