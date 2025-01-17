@@ -1,10 +1,14 @@
 package fr.steph.kanji.ui.viewmodel
 
 import fr.steph.kanji.data.model.Lexeme
+import fr.steph.kanji.data.repository.ApiKanjiRepository
 import fr.steph.kanji.data.repository.LexemeRepository
 import fr.steph.kanji.data.utils.enumeration.LexemeType
 
-class AddLexemeViewModel(repo: LexemeRepository) : LexemeViewModel(repo) {
+class AddLexemeViewModel(
+    repo: LexemeRepository,
+    apiRepo: ApiKanjiRepository,
+) : ApiLexemeViewModel(repo, apiRepo) {
 
     var id = 0
     var characters: String = ""
