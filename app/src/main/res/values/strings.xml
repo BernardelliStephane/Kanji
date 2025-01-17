@@ -17,6 +17,10 @@
 
     <!-- User messages -->
     <string name="room_insertion_failure">An issue occurred with the database.\\nPlease try again.</string>
+    <string name="network_unavailable">Network is currently unavailable.</string>
+    <string name="connexion_timeout">Connexion timeout</string>
+    <string name="network_failure">A network failure occurred.</string>
+    <string name="conversion_error">Conversion error</string>
 
     <!-- Content description -->
     <string name="add_translation">Add translation</string>
