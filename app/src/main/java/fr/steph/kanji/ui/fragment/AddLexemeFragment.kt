@@ -2,6 +2,7 @@ package fr.steph.kanji.ui.fragment
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -10,6 +11,7 @@ import com.google.android.material.snackbar.Snackbar
 import fr.steph.kanji.KanjiApplication
 import fr.steph.kanji.R
 import fr.steph.kanji.databinding.FragmentAddLexemeBinding
+import fr.steph.kanji.ui.form_presentation.AddLexemeFormEvent
 import fr.steph.kanji.ui.utils.viewModelFactory
 import fr.steph.kanji.ui.viewmodel.AddLexemeViewModel
 import fr.steph.kanji.ui.viewmodel.LexemeViewModel.ValidationEvent.Failure
@@ -34,25 +36,38 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
         _binding = FragmentAddLexemeBinding.bind(view)
 
         binding.viewModel = viewModel
+        binding.lifecycleOwner = this
 
         binding.buttonCancel.setOnClickListener {
             Navigation.findNavController(view).navigateUp()
         }
 
-
+        initViews()
         initObservers(view)
+    }
+
+    private fun initViews() {
+        binding.charactersInput.doAfterTextChanged {
+            viewModel.onEvent(AddLexemeFormEvent.CharactersChanged(it.toString()))
+        }
+
+        binding.romajiInput.doAfterTextChanged {
+            viewModel.onEvent(AddLexemeFormEvent.RomajiChanged(it.toString()))
+        }
+
+        binding.meaningInput.doAfterTextChanged {
+            viewModel.onEvent(AddLexemeFormEvent.MeaningChanged(it.toString()))
+        }
     }
 
     private fun initObservers(view: View) {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.validationEvents.collectLatest { event ->
                 when (event) {
-                    is Failure -> {
+                    is Failure ->
                         Snackbar.make(view, event.failureMessage, Snackbar.LENGTH_SHORT).show()
-                    }
-                    is Success -> {
+                    is Success ->
                         Navigation.findNavController(view).navigateUp()
-                    }
                 }
             }
         }
