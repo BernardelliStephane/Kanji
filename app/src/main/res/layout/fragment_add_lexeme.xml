@@ -14,63 +14,73 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.fragment.DictionaryFragment">
+        tools:context=".ui.fragment.AddLexemeFragment">
 
-        <LinearLayout
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/characters_input_layout"
+            style="@style/TextInputLayout.FormField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:hint="@string/characters_hint"
             app:layout_constraintTop_toTopOf="parent">
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/TextInputLayout.FormField"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/characters_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:hint="Characters">
+                android:inputType="textShortMessage"
+                android:text="@={viewModel.uiState.characters}" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/add_lexeme_character_input"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textShortMessage"
-                    android:text="@={viewModel.characters}" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-            </com.google.android.material.textfield.TextInputLayout>
+        <Button
+            android:id="@+id/search_kanji"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:onClick="@{() -> viewModel.getKanjiInfo(charactersInput.text.toString())}"
+            android:text="@string/search_kanji"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/characters_input_layout"
+            app:visibility="@{viewModel.uiState.charactersLoneKanji}" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/TextInputLayout.FormField"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/romaji_input_layout"
+            style="@style/TextInputLayout.FormField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:hint="@string/romaji_hint"
+            app:layout_constraintTop_toBottomOf="@id/search_kanji">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/romaji_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:hint="Romaji">
+                android:inputType="text"
+                android:text="@={viewModel.uiState.romaji}" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/add_lexeme_romaji_input"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:text="@={viewModel.romaji}" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-            </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/meaning_input_layout"
+            style="@style/TextInputLayout.FormField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:hint="@string/meaning_hint"
+            app:layout_constraintTop_toBottomOf="@id/romaji_input_layout">
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/TextInputLayout.FormField"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/meaning_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:hint="Translation">
+                android:inputType="text"
+                android:text="@={viewModel.uiState.meaning}" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/add_lexeme_translation_input"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:text="@={viewModel.meaning}" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-        </LinearLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/button_cancel"
@@ -89,7 +99,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/_20sdp"
-            android:onClick="@{() -> viewModel.performValidation()}"
+            android:onClick="@{() -> viewModel.submitData()}"
             android:text="@string/confirm"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
