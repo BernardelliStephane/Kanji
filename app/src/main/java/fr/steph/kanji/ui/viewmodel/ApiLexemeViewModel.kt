@@ -8,6 +8,7 @@ import fr.steph.kanji.data.model.ApiKanji
 import fr.steph.kanji.data.repository.ApiKanjiRepository
 import fr.steph.kanji.data.repository.LexemeRepository
 import fr.steph.kanji.data.utils.ConnectivityChecker.isNetworkAvailable
+import fr.steph.kanji.utils.extension.log
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.io.IOException
@@ -15,7 +16,7 @@ import java.net.SocketTimeoutException
 
 abstract class ApiLexemeViewModel(
     repo: LexemeRepository,
-    private val apiRepo: ApiKanjiRepository? = null,
+    private val apiRepo: ApiKanjiRepository,
 ) : LexemeViewModel(repo) {
 
     private val _apiKanji: MutableLiveData<Resource?> = MutableLiveData()
@@ -25,7 +26,7 @@ abstract class ApiLexemeViewModel(
         _apiKanji.postValue(Resource.Loading)
         try {
             if (isNetworkAvailable()) {
-                val response = apiRepo!!.getKanjiInfo(character)
+                val response = apiRepo.getKanjiInfo(character)
                 _apiKanji.postValue(handleResponse(response))
             } else _apiKanji.postValue(Resource.Error(R.string.network_unavailable))
         } catch (t: Throwable) {

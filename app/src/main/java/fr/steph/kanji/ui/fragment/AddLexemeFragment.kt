@@ -39,10 +39,11 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
             Navigation.findNavController(view).navigateUp()
         }
 
-        initializeObservers(view)
+
+        initObservers(view)
     }
 
-    private fun initializeObservers(view: View) {
+    private fun initObservers(view: View) {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.validationEvents.collectLatest { event ->
                 when (event) {
