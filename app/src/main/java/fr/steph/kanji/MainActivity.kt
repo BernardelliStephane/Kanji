@@ -2,7 +2,7 @@ package fr.steph.kanji
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import fr.steph.kanji.data.utils.ConnectivityChecker
+import fr.steph.kanji.network.ConnectivityChecker
 import fr.steph.kanji.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

@@ -1,4 +1,4 @@
-package fr.steph.kanji.data.model
+package fr.steph.kanji.network.model
 
 import com.google.gson.annotations.SerializedName
 
