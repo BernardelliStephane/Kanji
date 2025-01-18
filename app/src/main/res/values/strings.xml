@@ -4,6 +4,16 @@
     <!-- Title -->
     <string name="home_kanji">家</string>
 
+    <!-- User messages -->
+    <string name="room_insertion_failure">An issue occurred with the database.\\nPlease try again.</string>
+    <string name="network_unavailable">Network is currently unavailable.</string>
+    <string name="connexion_timeout">Connexion timeout</string>
+    <string name="network_failure">A network failure occurred.</string>
+    <string name="conversion_error">Conversion error</string>
+
+    <!-- Text -->
+    <string name="translation_count_text">%1$d translations</string>
+
     <!-- Button -->
     <string name="dictionary">Dictionary</string>
     <string name="test">Test</string>
@@ -11,16 +21,12 @@
     <string name="settings">Settings</string>
     <string name="cancel">Cancel</string>
     <string name="confirm">Confirm</string>
+    <string name="search_kanji">Look for kanji</string>
 
-    <!-- Text -->
-    <string name="translation_count_text">%1$d translations</string>
-
-    <!-- User messages -->
-    <string name="room_insertion_failure">An issue occurred with the database.\\nPlease try again.</string>
-    <string name="network_unavailable">Network is currently unavailable.</string>
-    <string name="connexion_timeout">Connexion timeout</string>
-    <string name="network_failure">A network failure occurred.</string>
-    <string name="conversion_error">Conversion error</string>
+    <!-- Form hint -->
+    <string name="meaning_hint">Meaning</string>
+    <string name="romaji_hint">Romaji</string>
+    <string name="characters_hint">Characters</string>
 
     <!-- Content description -->
     <string name="add_translation">Add translation</string>
