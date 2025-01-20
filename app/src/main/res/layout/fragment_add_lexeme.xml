@@ -16,71 +16,168 @@
         android:layout_height="match_parent"
         tools:context=".ui.fragment.AddLexemeFragment">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/characters_input_layout"
-            style="@style/TextInputLayout.FormField"
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:hint="@string/characters_hint"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/characters_input"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textShortMessage"
-                android:text="@={viewModel.uiState.characters}" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <Button
-            android:id="@+id/search_kanji"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:onClick="@{() -> viewModel.getKanjiInfo(charactersInput.text.toString())}"
-            android:text="@string/search_kanji"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/characters_input_layout"
-            app:visibility="@{viewModel.uiState.charactersLoneKanji}" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/romaji_input_layout"
-            style="@style/TextInputLayout.FormField"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:hint="@string/romaji_hint"
-            app:layout_constraintTop_toBottomOf="@id/search_kanji">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/romaji_input"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
-                android:text="@={viewModel.uiState.romaji}" />
+                android:layout_marginBottom="@dimen/_20sdp">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/characters_input_layout"
+                    style="@style/TextInputLayout.FormField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:hint="@string/characters_hint"
+                    app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/meaning_input_layout"
-            style="@style/TextInputLayout.FormField"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:hint="@string/meaning_hint"
-            app:layout_constraintTop_toBottomOf="@id/romaji_input_layout">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/characters_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textShortMessage"
+                        android:text="@={viewModel.uiState.characters}" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/meaning_input"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:text="@={viewModel.uiState.meaning}" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <Button
+                    android:id="@+id/search_kanji"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:onClick="@{() -> viewModel.onSearchClicked()}"
+                    android:text="@string/search_kanji"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/characters_input_layout"
+                    app:visibility="@{viewModel.uiState.charactersLoneKanji &amp;&amp; !viewModel.uiState.charactersFetched}" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/romaji_input_layout"
+                    style="@style/TextInputLayout.FormField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:hint="@string/romaji_hint"
+                    app:layout_constraintTop_toBottomOf="@id/search_kanji"
+                    app:visibility="@{!viewModel.uiState.charactersFetched}">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/romaji_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:text="@={viewModel.uiState.romaji}" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/onyomi_layout"
+                    style="@style/TextInputLayout.FormField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:hint="@string/onyomi"
+                    app:layout_constraintTop_toBottomOf="@id/romaji_input_layout"
+                    app:visibility="@{viewModel.uiState.charactersFetched}">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/onyomi"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:inputType="none"
+                        android:text="@={viewModel.uiState.onyomi}" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/onyomi_romaji_layout"
+                    style="@style/TextInputLayout.FormField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:hint="@string/onyomi_romaji"
+                    app:layout_constraintTop_toBottomOf="@id/onyomi_layout"
+                    app:visibility="@{viewModel.uiState.charactersFetched}">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/onyomi_romaji"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:inputType="none"
+                        android:text="@={viewModel.uiState.onyomiRomaji}" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/kunyomi_layout"
+                    style="@style/TextInputLayout.FormField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:hint="@string/kunyomi"
+                    app:layout_constraintTop_toBottomOf="@id/onyomi_romaji_layout"
+                    app:visibility="@{viewModel.uiState.charactersFetched}">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/kunyomi"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:inputType="none"
+                        android:text="@={viewModel.uiState.kunyomi}" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/kunyomi_romaji_layout"
+                    style="@style/TextInputLayout.FormField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:hint="@string/kunyomi_romaji"
+                    app:layout_constraintTop_toBottomOf="@id/kunyomi_layout"
+                    app:visibility="@{viewModel.uiState.charactersFetched}">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/kunyomi_romaji"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:inputType="none"
+                        android:text="@={viewModel.uiState.kunyomiRomaji}" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/meaning_input_layout"
+                    style="@style/TextInputLayout.FormField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:hint="@string/meaning_hint"
+                    app:layout_constraintTop_toBottomOf="@id/kunyomi_romaji_layout">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/meaning_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:text="@={viewModel.uiState.meaning}" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
 
         <Button
             android:id="@+id/button_cancel"

@@ -8,6 +8,7 @@ import fr.steph.kanji.network.model.ApiKanji
 import fr.steph.kanji.data.repository.ApiKanjiRepository
 import fr.steph.kanji.data.repository.LexemeRepository
 import fr.steph.kanji.network.ConnectivityChecker.isNetworkAvailable
+import fr.steph.kanji.utils.extension.log
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.io.IOException
@@ -18,21 +19,22 @@ abstract class ApiLexemeViewModel(
     private val apiRepo: ApiKanjiRepository,
 ) : LexemeViewModel(repo) {
 
-    private val _apiKanji: MutableLiveData<Resource?> = MutableLiveData()
-    val apiKanji: LiveData<Resource?> = _apiKanji
+    private val _lastKanjiFetch: MutableLiveData<Resource?> = MutableLiveData()
+    val lastKanjiFetch: LiveData<Resource?> = _lastKanjiFetch
 
     fun getKanjiInfo(character: String) = viewModelScope.launch {
-        _apiKanji.postValue(Resource.Loading)
+        log("Search: $character")
+        _lastKanjiFetch.postValue(Resource.Loading)
         try {
             if (isNetworkAvailable()) {
                 val response = apiRepo.getKanjiInfo(character)
-                _apiKanji.postValue(handleResponse(response))
-            } else _apiKanji.postValue(Resource.Error(R.string.network_unavailable))
+                _lastKanjiFetch.postValue(handleResponse(response))
+            } else _lastKanjiFetch.postValue(Resource.Error(R.string.network_unavailable))
         } catch (t: Throwable) {
             when (t) {
-                is SocketTimeoutException -> _apiKanji.postValue(Resource.Error(R.string.connexion_timeout))
-                is IOException -> _apiKanji.postValue(Resource.Error(R.string.network_failure))
-                else -> _apiKanji.postValue(Resource.Error(R.string.conversion_error))
+                is SocketTimeoutException -> _lastKanjiFetch.postValue(Resource.Error(R.string.connexion_timeout))
+                is IOException -> _lastKanjiFetch.postValue(Resource.Error(R.string.network_failure))
+                else -> _lastKanjiFetch.postValue(Resource.Error(R.string.conversion_error))
             }
         }
     }

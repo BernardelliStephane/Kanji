@@ -22,11 +22,16 @@
     <string name="cancel">Cancel</string>
     <string name="confirm">Confirm</string>
     <string name="search_kanji">Look for kanji</string>
+    <string name="retry">Retry</string>
 
     <!-- Form hint -->
     <string name="meaning_hint">Meaning</string>
     <string name="romaji_hint">Romaji</string>
     <string name="characters_hint">Characters</string>
+    <string name="onyomi">On\'yomi</string>
+    <string name="onyomi_romaji">On\'yomi romaji</string>
+    <string name="kunyomi">Kun\'yomi</string>
+    <string name="kunyomi_romaji">Kun\'yomi romaji</string>
 
     <!-- Content description -->
     <string name="add_translation">Add translation</string>
