@@ -55,6 +55,11 @@ class AddLexemeViewModel(
                             onyomiRomaji = onReadings.joinToString { it.kanaToRomaji() },
                             kunyomi = kunReadings.joinToString(),
                             kunyomiRomaji = kunReadings.joinToString { it.kanaToRomaji() },
+                            nameReadings = nameReadings.joinToString(),
+                            nameReadingsRomaji = nameReadings.joinToString { it.kanaToRomaji() },
+                            gradeTaught = gradeTaught?.toString() ?: "",
+                            jlptLevel = jlptLevel?.toString() ?: "",
+                            useFrequencyIndicator = useFrequency?.toString() ?: "",
                             lastFetchedKanji = kanji,
                             isCharactersFetched = kanji == currentUiState.characters
                         )

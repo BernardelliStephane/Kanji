@@ -55,10 +55,10 @@
                     android:layout_marginTop="@dimen/_10sdp"
                     android:onClick="@{() -> viewModel.onSearchClicked()}"
                     android:text="@string/search_kanji"
+                    android:visibility="@{viewModel.uiState.charactersLoneKanji &amp;&amp; !viewModel.uiState.charactersFetched}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/characters_input_layout"
-                    app:visibility="@{viewModel.uiState.charactersLoneKanji &amp;&amp; !viewModel.uiState.charactersFetched}" />
+                    app:layout_constraintTop_toBottomOf="@id/characters_input_layout" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/romaji_input_layout"
@@ -67,8 +67,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_20sdp"
                     android:hint="@string/romaji_hint"
-                    app:layout_constraintTop_toBottomOf="@id/search_kanji"
-                    app:visibility="@{!viewModel.uiState.charactersFetched}">
+                    android:visibility="@{!viewModel.uiState.charactersFetched}"
+                    app:layout_constraintTop_toBottomOf="@id/search_kanji">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/romaji_input"
@@ -80,14 +80,44 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/onyomi_layout"
+                    android:id="@+id/meaning_input_layout"
                     style="@style/TextInputLayout.FormField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_20sdp"
+                    android:hint="@string/meaning_hint"
+                    app:layout_constraintTop_toBottomOf="@id/romaji_input_layout">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/meaning_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:text="@={viewModel.uiState.meaning}" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/prefill_warning"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:text="@string/warning_prefilled_fields"
+                    android:textColor="@color/navy_blue"
+                    android:visibility="@{viewModel.uiState.charactersFetched}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/meaning_input_layout" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/onyomi_layout"
+                    style="@style/TextInputLayout.FormField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:hint="@string/onyomi"
-                    app:layout_constraintTop_toBottomOf="@id/romaji_input_layout"
-                    app:visibility="@{viewModel.uiState.charactersFetched}">
+                    android:visibility="@{viewModel.uiState.charactersFetched &amp;&amp; !viewModel.uiState.onyomi.isBlank()}"
+                    app:layout_constraintTop_toBottomOf="@id/prefill_warning">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/onyomi"
@@ -106,8 +136,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_20sdp"
                     android:hint="@string/onyomi_romaji"
-                    app:layout_constraintTop_toBottomOf="@id/onyomi_layout"
-                    app:visibility="@{viewModel.uiState.charactersFetched}">
+                    android:visibility="@{viewModel.uiState.charactersFetched &amp;&amp; !viewModel.uiState.onyomiRomaji.isBlank()}"
+                    app:layout_constraintTop_toBottomOf="@id/onyomi_layout">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/onyomi_romaji"
@@ -124,10 +154,11 @@
                     style="@style/TextInputLayout.FormField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginTop="@{viewModel.uiState.onyomi.isBlank() ? @dimen/_10sdp : @dimen/_20sdp}"
                     android:hint="@string/kunyomi"
+                    android:visibility="@{viewModel.uiState.charactersFetched &amp;&amp; !viewModel.uiState.kunyomi.isBlank()}"
                     app:layout_constraintTop_toBottomOf="@id/onyomi_romaji_layout"
-                    app:visibility="@{viewModel.uiState.charactersFetched}">
+                    tools:layout_marginTop="@dimen/_20sdp">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/kunyomi"
@@ -146,8 +177,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_20sdp"
                     android:hint="@string/kunyomi_romaji"
-                    app:layout_constraintTop_toBottomOf="@id/kunyomi_layout"
-                    app:visibility="@{viewModel.uiState.charactersFetched}">
+                    android:visibility="@{viewModel.uiState.charactersFetched &amp;&amp; !viewModel.uiState.kunyomiRomaji.isBlank()}"
+                    app:layout_constraintTop_toBottomOf="@id/kunyomi_layout">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/kunyomi_romaji"
@@ -160,20 +191,102 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/meaning_input_layout"
+                    android:id="@+id/name_readings_layout"
                     style="@style/TextInputLayout.FormField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_20sdp"
-                    android:hint="@string/meaning_hint"
+                    android:hint="@string/name_readings"
+                    android:visibility="@{viewModel.uiState.charactersFetched &amp;&amp; !viewModel.uiState.nameReadings.isBlank()}"
                     app:layout_constraintTop_toBottomOf="@id/kunyomi_romaji_layout">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/meaning_input"
+                        android:id="@+id/name_readings"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="text"
-                        android:text="@={viewModel.uiState.meaning}" />
+                        android:focusable="false"
+                        android:inputType="none"
+                        android:text="@={viewModel.uiState.nameReadings}" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/name_readings_romaji_layout"
+                    style="@style/TextInputLayout.FormField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:hint="@string/name_readings_romaji"
+                    android:visibility="@{viewModel.uiState.charactersFetched &amp;&amp; !viewModel.uiState.nameReadingsRomaji.isBlank()}"
+                    app:layout_constraintTop_toBottomOf="@id/name_readings_layout">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/name_readings_romaji"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:inputType="none"
+                        android:text="@={viewModel.uiState.nameReadingsRomaji}" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/grade_taught_layout"
+                    style="@style/TextInputLayout.FormField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:hint="@string/grade_taught"
+                    android:visibility="@{viewModel.uiState.charactersFetched &amp;&amp; !viewModel.uiState.gradeTaught.isBlank()}"
+                    app:layout_constraintTop_toBottomOf="@id/name_readings_romaji_layout">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/grade_taught"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:inputType="none"
+                        android:text="@={viewModel.uiState.gradeTaught}" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/jlpt_level_layout"
+                    style="@style/TextInputLayout.FormField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:hint="@string/jlpt_level"
+                    android:visibility="@{viewModel.uiState.charactersFetched &amp;&amp; !viewModel.uiState.jlptLevel.isBlank()}"
+                    app:layout_constraintTop_toBottomOf="@id/grade_taught_layout">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/jlpt_level"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:inputType="none"
+                        android:text="@={viewModel.uiState.jlptLevel}" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/use_frequency_layout"
+                    style="@style/TextInputLayout.FormField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:hint="@string/use_frequency_indicator"
+                    android:visibility="@{viewModel.uiState.charactersFetched &amp;&amp; !viewModel.uiState.useFrequencyIndicator.isBlank()}"
+                    app:layout_constraintTop_toBottomOf="@id/jlpt_level_layout">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/use_frequency"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:inputType="none"
+                        android:text="@={viewModel.uiState.useFrequencyIndicator}" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 

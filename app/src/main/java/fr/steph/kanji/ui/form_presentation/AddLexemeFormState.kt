@@ -9,6 +9,11 @@ data class AddLexemeFormState(
     var onyomiRomaji: String = "",
     var kunyomi: String = "",
     var kunyomiRomaji: String = "",
+    var nameReadings: String = "",
+    var nameReadingsRomaji: String = "",
+    var gradeTaught: String = "",
+    var jlptLevel: String = "",
+    var useFrequencyIndicator: String = "",
     var lastFetchedKanji: String? = null,
     var isCharactersFetched: Boolean = false,
 )
