@@ -1,9 +1,8 @@
 package fr.steph.kanji.ui.viewmodel
 
-import fr.steph.kanji.data.model.Lexeme
+import fr.steph.kanji.data.model.Lexeme.Companion.buildLexemeFromFormState
 import fr.steph.kanji.data.repository.ApiKanjiRepository
 import fr.steph.kanji.data.repository.LexemeRepository
-import fr.steph.kanji.data.utils.enumeration.LexemeType
 import fr.steph.kanji.ui.form_presentation.AddLexemeFormEvent
 import fr.steph.kanji.ui.form_presentation.AddLexemeFormState
 import fr.steph.kanji.ui.form_presentation.validation.ValidateField
@@ -86,8 +85,35 @@ class AddLexemeViewModel(
     }
 
     fun submitData() {
-        // TODO Verify entries before upserting lexeme
-        val lexeme = Lexeme(id, LexemeType.KANA, _uiState.value.characters, _uiState.value.romaji, _uiState.value.meaning)
+        _uiState.update { currentUiState ->
+            currentUiState.copy(isSubmitting = true)
+        }
+
+        // TODO Error message if kanji alone with no fetch
+
+        val charactersResult = ValidateField.execute(uiState.value.characters)
+        val romajiResult = ValidateField.execute(uiState.value.romaji)
+        val meaningResult = ValidateField.execute(uiState.value.meaning)
+
+        _uiState.update { currentUiState ->
+            currentUiState.copy(
+                charactersErrorRes = charactersResult.errorMessageRes,
+                romajiErrorRes = romajiResult.errorMessageRes,
+                meaningErrorRes = meaningResult.errorMessageRes
+            )
+        }
+
+        val hasError = listOf(charactersResult, romajiResult, meaningResult).any { !it.successful }
+
+        if (hasError)
+            return _uiState.update { currentUiState ->
+                currentUiState.copy(isSubmitting = false)
+            }
+
+        /*if(uiState.value.isCharactersFetched) {
+            // TODO Store Api Kanji data
+        }*/
+        val lexeme = buildLexemeFromFormState(uiState.value, id)
         upsertLexeme(lexeme)
     }
 }

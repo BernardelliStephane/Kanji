@@ -19,4 +19,5 @@ data class AddLexemeFormState(
     var useFrequencyIndicator: String = "",
     var lastFetchedKanji: String? = null,
     var isCharactersFetched: Boolean = false,
+    var isSubmitting: Boolean = false,
 )
