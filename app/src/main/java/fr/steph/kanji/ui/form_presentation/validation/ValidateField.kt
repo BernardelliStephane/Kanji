@@ -4,8 +4,8 @@ import fr.steph.kanji.R
 
 class ValidateField {
     companion object {
-        fun execute(characters: String): ValidationResult {
-            if (characters.isBlank()) {
+        fun execute(value: String): ValidationResult {
+            if (value.isBlank()) {
                 return ValidationResult(
                     successful = false,
                     errorMessageRes = R.string.mandatory_field_error
