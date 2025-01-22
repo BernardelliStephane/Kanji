@@ -41,6 +41,7 @@
 
     <!-- Form error -->
     <string name="mandatory_field_error">Mandatory field</string>
+    <string name="kanji_not_fetched_error">Lone kanji must be fetched</string>
 
     <!-- Content description -->
     <string name="add_translation">Add translation</string>

@@ -1,5 +1,6 @@
 package fr.steph.kanji.ui.viewmodel
 
+import fr.steph.kanji.R
 import fr.steph.kanji.data.model.Lexeme.Companion.buildLexemeFromFormState
 import fr.steph.kanji.data.repository.ApiKanjiRepository
 import fr.steph.kanji.data.repository.LexemeRepository
@@ -86,10 +87,10 @@ class AddLexemeViewModel(
 
     fun submitData() {
         _uiState.update { currentUiState ->
-            currentUiState.copy(isSubmitting = true)
+            if (currentUiState.isCharactersLoneKanji && !currentUiState.isCharactersFetched)
+                currentUiState.copy(charactersErrorRes = R.string.kanji_not_fetched_error)
+            else currentUiState.copy(isSubmitting = true)
         }
-
-        // TODO Error message if kanji alone with no fetch
 
         val charactersResult = ValidateField.execute(uiState.value.characters)
         val romajiResult = ValidateField.execute(uiState.value.romaji)
