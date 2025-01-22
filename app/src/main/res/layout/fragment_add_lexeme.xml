@@ -37,6 +37,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_20sdp"
                     android:hint="@string/characters_hint"
+                    app:errorEnabled="true"
+                    app:errorRes="@{viewModel.uiState.charactersErrorRes}"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -68,6 +70,8 @@
                     android:layout_marginTop="@dimen/_20sdp"
                     android:hint="@string/romaji_hint"
                     android:visibility="@{!viewModel.uiState.charactersFetched}"
+                    app:errorEnabled="true"
+                    app:errorRes="@{viewModel.uiState.romajiErrorRes}"
                     app:layout_constraintTop_toBottomOf="@id/search_kanji">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -86,6 +90,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_20sdp"
                     android:hint="@string/meaning_hint"
+                    app:errorEnabled="true"
+                    app:errorRes="@{viewModel.uiState.meaningErrorRes}"
                     app:layout_constraintTop_toBottomOf="@id/romaji_input_layout">
 
                     <com.google.android.material.textfield.TextInputEditText

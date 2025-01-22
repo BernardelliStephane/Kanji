@@ -39,6 +39,9 @@
     <string name="jlpt_level">JLPT level</string>
     <string name="use_frequency_indicator">Use frequency indicator</string>
 
+    <!-- Form error -->
+    <string name="mandatory_field_error">Mandatory field</string>
+
     <!-- Content description -->
     <string name="add_translation">Add translation</string>
     <string name="option_menu">Option menu</string>

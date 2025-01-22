@@ -4,6 +4,7 @@ import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
 import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
+import com.google.android.material.textfield.TextInputLayout
 
 
 @BindingAdapter("android:visibility")
@@ -19,4 +20,10 @@ fun setBottomMargin(view: View, topMargin: Float) {
         layoutParams.marginEnd, layoutParams.bottomMargin
     )
     view.layoutParams = layoutParams
+}
+
+@BindingAdapter("errorRes")
+fun setErrorMessage(view: TextInputLayout, resError: Int?) {
+    view.error = if (resError == null) null
+    else view.context.resources.getString(resError)
 }

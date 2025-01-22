@@ -6,6 +6,8 @@ import fr.steph.kanji.data.repository.LexemeRepository
 import fr.steph.kanji.data.utils.enumeration.LexemeType
 import fr.steph.kanji.ui.form_presentation.AddLexemeFormEvent
 import fr.steph.kanji.ui.form_presentation.AddLexemeFormState
+import fr.steph.kanji.ui.form_presentation.validation.ValidateField
+import fr.steph.kanji.utils.extension.capitalized
 import fr.steph.kanji.utils.extension.isLoneKanji
 import fr.steph.kanji.utils.extension.kanaToRomaji
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,6 +30,7 @@ class AddLexemeViewModel(
                 return _uiState.update { currentUiState ->
                     currentUiState.copy(
                         characters = event.characters,
+                        charactersErrorRes = null,
                         isCharactersLoneKanji = event.characters.isLoneKanji(),
                         isCharactersFetched = event.characters == currentUiState.lastFetchedKanji
                     )
@@ -36,13 +39,19 @@ class AddLexemeViewModel(
 
             is AddLexemeFormEvent.RomajiChanged -> {
                 return _uiState.update { currentUiState ->
-                    currentUiState.copy(romaji = event.romaji)
+                    currentUiState.copy(
+                        romaji = event.romaji,
+                        romajiErrorRes = null
+                    )
                 }
             }
 
             is AddLexemeFormEvent.MeaningChanged -> {
                 return _uiState.update { currentUiState ->
-                    currentUiState.copy(meaning = event.meaning)
+                    currentUiState.copy(
+                        meaning = event.meaning,
+                        meaningErrorRes = null
+                    )
                 }
             }
 
@@ -50,7 +59,9 @@ class AddLexemeViewModel(
                 return _uiState.update { currentUiState ->
                     event.kanji.run {
                         currentUiState.copy(
-                            meaning = meanings.joinToString(),
+                            romajiErrorRes = null,
+                            meaning = meanings.joinToString().capitalized(),
+                            meaningErrorRes = null,
                             onyomi = onReadings.joinToString(),
                             onyomiRomaji = onReadings.joinToString { it.kanaToRomaji() },
                             kunyomi = kunReadings.joinToString(),
