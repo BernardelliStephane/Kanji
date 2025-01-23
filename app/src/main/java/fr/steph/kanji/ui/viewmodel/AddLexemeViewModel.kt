@@ -87,10 +87,16 @@ class AddLexemeViewModel(
     }
 
     fun submitData() {
-        _uiState.update { currentUiState ->
-            if (currentUiState.isCharactersLoneKanji && !currentUiState.isCharactersFetched)
+        val isCharactersLoneKanjiNotFetched =
+            uiState.value.isCharactersLoneKanji && !uiState.value.isCharactersFetched
+
+        if (isCharactersLoneKanjiNotFetched)
+            return _uiState.update { currentUiState ->
                 currentUiState.copy(charactersErrorRes = R.string.kanji_not_fetched_error)
-            else currentUiState.copy(isSubmitting = true)
+            }
+
+        _uiState.update { currentUiState ->
+            currentUiState.copy(isSubmitting = true)
         }
 
         val charactersResult = ValidateField.execute(uiState.value.characters)
