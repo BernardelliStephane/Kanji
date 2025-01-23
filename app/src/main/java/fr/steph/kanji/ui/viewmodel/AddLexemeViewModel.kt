@@ -59,6 +59,7 @@ class AddLexemeViewModel(
                 return _uiState.update { currentUiState ->
                     event.kanji.run {
                         currentUiState.copy(
+                            charactersErrorRes = null,
                             romajiErrorRes = null,
                             meaning = meanings.joinToString().capitalized(),
                             meaningErrorRes = null,
