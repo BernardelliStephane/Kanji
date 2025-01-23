@@ -37,7 +37,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_20sdp"
                     android:hint="@string/characters_hint"
-                    app:errorEnabled="true"
+                    app:errorEnabled="@{viewModel.uiState.charactersErrorRes != null}"
                     app:errorRes="@{viewModel.uiState.charactersErrorRes}"
                     app:layout_constraintTop_toTopOf="parent">
 
@@ -70,7 +70,7 @@
                     android:layout_marginTop="@dimen/_20sdp"
                     android:hint="@string/romaji_hint"
                     android:visibility="@{!viewModel.uiState.charactersFetched}"
-                    app:errorEnabled="true"
+                    app:errorEnabled="@{viewModel.uiState.romajiErrorRes != null}"
                     app:errorRes="@{viewModel.uiState.romajiErrorRes}"
                     app:layout_constraintTop_toBottomOf="@id/search_kanji">
 
@@ -90,7 +90,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_20sdp"
                     android:hint="@string/meaning_hint"
-                    app:errorEnabled="true"
+                    app:errorEnabled="@{viewModel.uiState.meaningErrorRes != null}"
                     app:errorRes="@{viewModel.uiState.meaningErrorRes}"
                     app:layout_constraintTop_toBottomOf="@id/romaji_input_layout">
 
