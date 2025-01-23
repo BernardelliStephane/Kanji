@@ -7,6 +7,7 @@ import fr.steph.kanji.data.repository.LexemeRepository
 import fr.steph.kanji.ui.form_presentation.AddLexemeFormEvent
 import fr.steph.kanji.ui.form_presentation.AddLexemeFormState
 import fr.steph.kanji.ui.form_presentation.validation.ValidateField
+import fr.steph.kanji.ui.form_presentation.validation.ValidationResult
 import fr.steph.kanji.utils.extension.capitalized
 import fr.steph.kanji.utils.extension.isLoneKanji
 import fr.steph.kanji.utils.extension.kanaToRomaji
@@ -100,7 +101,9 @@ class AddLexemeViewModel(
         }
 
         val charactersResult = ValidateField.execute(uiState.value.characters)
-        val romajiResult = ValidateField.execute(uiState.value.romaji)
+        val romajiResult =
+            if (uiState.value.isCharactersLoneKanji) ValidationResult(successful = true)
+            else ValidateField.execute(uiState.value.romaji)
         val meaningResult = ValidateField.execute(uiState.value.meaning)
 
         _uiState.update { currentUiState ->
