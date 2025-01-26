@@ -88,8 +88,8 @@ class AddLexemeViewModel(
     }
 
     fun submitData() {
-        val isCharactersLoneKanjiNotFetched =
-            uiState.value.isCharactersLoneKanji && !uiState.value.isCharactersFetched
+        val isCharactersLoneKanji = uiState.value.isCharactersLoneKanji
+        val isCharactersLoneKanjiNotFetched = isCharactersLoneKanji && !uiState.value.isCharactersFetched
 
         if (isCharactersLoneKanjiNotFetched)
             return _uiState.update { currentUiState ->
@@ -100,26 +100,26 @@ class AddLexemeViewModel(
             currentUiState.copy(isSubmitting = true)
         }
 
-        val charactersResult = ValidateField.execute(uiState.value.characters)
-        val romajiResult =
-            if (uiState.value.isCharactersLoneKanji) ValidationResult(successful = true)
-            else ValidateField.execute(uiState.value.romaji)
-        val meaningResult = ValidateField.execute(uiState.value.meaning)
+        if (!isCharactersLoneKanji) {
+            val charactersResult = ValidateField.validateCharacters(uiState.value.characters)
+            val romajiResult = ValidateField.validateRomaji(uiState.value.romaji)
+            val meaningResult = ValidateField.validateMeaning(uiState.value.meaning)
 
-        _uiState.update { currentUiState ->
-            currentUiState.copy(
-                charactersErrorRes = charactersResult.errorMessageRes,
-                romajiErrorRes = romajiResult.errorMessageRes,
-                meaningErrorRes = meaningResult.errorMessageRes
-            )
-        }
-
-        val hasError = listOf(charactersResult, romajiResult, meaningResult).any { !it.successful }
-
-        if (hasError)
-            return _uiState.update { currentUiState ->
-                currentUiState.copy(isSubmitting = false)
+            _uiState.update { currentUiState ->
+                currentUiState.copy(
+                    charactersErrorRes = charactersResult.errorMessageRes,
+                    romajiErrorRes = romajiResult.errorMessageRes,
+                    meaningErrorRes = meaningResult.errorMessageRes
+                )
             }
+
+            val hasError = listOf(charactersResult, romajiResult, meaningResult).any { !it.successful }
+
+            if (hasError)
+                return _uiState.update { currentUiState ->
+                    currentUiState.copy(isSubmitting = false)
+                }
+        }
 
         /*if(uiState.value.isCharactersFetched) {
             // TODO Store Api Kanji data

@@ -8,6 +8,15 @@ fun String.isLoneKanji(): Boolean {
     return length == 1 && mojiDetector.hasKanji(this)
 }
 
+fun String.isOnlyRomanLetters(): Boolean {
+    val regex = Regex("[a-zA-Z\\s]*")
+    return regex.matches(this)
+}
+
+fun String.isOnlyJapaneseCharacters(): Boolean {
+    return all { it.isKana() || it.isKanji() }
+}
+
 fun String.kanaToRomaji(): String {
     return mojiConverter.convertKanaToRomaji(this)
 }

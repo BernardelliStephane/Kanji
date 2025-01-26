@@ -42,6 +42,9 @@
     <!-- Form error -->
     <string name="mandatory_field_error">Mandatory field</string>
     <string name="kanji_not_fetched_error">Lone kanji must be fetched</string>
+    <string name="incorrect_romaji_filling_error">Must contain only roman letters</string>
+    <string name="incorrect_characters_filling_error">Must contain only kanjis, hiraganas and katakanas</string>
+    <string name="incorrect_meaning_filling_error">Must contain only roman letters</string>
 
     <!-- Content description -->
     <string name="add_translation">Add translation</string>
