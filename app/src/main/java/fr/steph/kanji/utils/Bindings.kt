@@ -1,8 +1,6 @@
 package fr.steph.kanji.utils
 
 import android.view.View
-import android.view.View.FOCUSABLE
-import android.view.View.NOT_FOCUSABLE
 import android.view.ViewGroup.MarginLayoutParams
 import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter

@@ -7,10 +7,8 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import fr.steph.kanji.data.dao.LexemeDao
 import fr.steph.kanji.data.model.Lexeme
-import fr.steph.kanji.data.utils.RoomTypeConverter
 
 @Database(entities = [Lexeme::class], version = 1)
-@TypeConverters(value = [RoomTypeConverter::class])
 abstract class LexemeDatabase: RoomDatabase() {
     abstract fun dao(): LexemeDao
 

@@ -12,7 +12,10 @@
     <string name="conversion_error">Conversion error</string>
 
     <!-- Text -->
-    <string name="translation_count_text">%1$d translations</string>
+    <plurals name="translation_count_text">
+        <item quantity="one">%1$d translation</item>
+        <item quantity="other">%1$d translations</item>
+    </plurals>
     <string name="warning_prefilled_fields">Below fields have been pre-filled and can\'t be edited</string>
 
     <!-- Button -->
