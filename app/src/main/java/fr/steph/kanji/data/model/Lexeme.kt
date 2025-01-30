@@ -14,24 +14,26 @@ data class Lexeme(
     val characters: String,
     val romaji: String,
     val meaning: String,
-    // TODO val childrenKanji: List<Kanji>? = emptyList(),
-    // TODO Ordre des traits
+    val unicode: String?,
 ) {
     companion object {
-        fun buildLexemeFromFormState(uiState: AddLexemeFormState, id: Int): Lexeme {
+        fun buildLexemeFromFormState(id: Int, uiState: AddLexemeFormState, unicode: String?): Lexeme {
             val lexemeType = when {
                 uiState.isCharactersFetched -> LexemeType.KANJI
                 mojiDetector.hasKanji(uiState.characters) -> LexemeType.COMPOUND
                 else -> LexemeType.KANA
             }
 
+            val romaji = if (lexemeType == LexemeType.KANJI)
+                uiState.onyomiRomaji else uiState.romaji
+
             return Lexeme(
                 id = id,
                 type = lexemeType,
                 characters = uiState.characters,
-                romaji = if (lexemeType == LexemeType.KANJI)
-                    uiState.onyomiRomaji else uiState.romaji,
-                meaning = uiState.meaning
+                romaji = romaji,
+                meaning = uiState.meaning,
+                unicode = unicode
             )
         }
     }

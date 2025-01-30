@@ -22,7 +22,8 @@ class AddLexemeViewModel(
     private val _uiState = MutableStateFlow(AddLexemeFormState())
     val uiState = _uiState.asStateFlow()
 
-    var id = 0
+    private var id = 0
+    private var unicode: String? = null
 
     fun onEvent(event: AddLexemeFormEvent) {
         when (event) {
@@ -63,6 +64,7 @@ class AddLexemeViewModel(
             }
 
             is AddLexemeFormEvent.KanjiFetched -> {
+                unicode = event.kanji.unicode
                 return _uiState.update { currentUiState ->
                     event.kanji.run {
                         currentUiState.copy(
@@ -128,10 +130,7 @@ class AddLexemeViewModel(
                 }
         }
 
-        /*if(uiState.value.isCharactersFetched) {
-            // TODO Store Api Kanji data
-        }*/
-        val lexeme = buildLexemeFromFormState(uiState.value, id)
+        val lexeme = buildLexemeFromFormState(id, uiState.value, unicode)
         upsertLexeme(lexeme)
     }
 }
