@@ -54,7 +54,7 @@
                     android:id="@+id/translation_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    tools:text="@string/translation_count_text" />
+                    tools:text="@plurals/translation_count_text" />
 
             </LinearLayout>
 

@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
 import fr.steph.kanji.data.dao.LexemeDao
 import fr.steph.kanji.data.model.Lexeme
 
