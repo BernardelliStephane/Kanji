@@ -13,8 +13,8 @@
 
     <!-- Text -->
     <plurals name="translation_count_text">
-        <item quantity="one">%1$d translation</item>
-        <item quantity="other">%1$d translations</item>
+        <item quantity="one">%d translation</item>
+        <item quantity="other">%d translations</item>
     </plurals>
     <string name="warning_prefilled_fields">Below fields have been pre-filled and can\'t be edited</string>
 
