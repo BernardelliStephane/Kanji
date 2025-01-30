@@ -88,7 +88,7 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
 
     private fun initObservers() {
         viewModel.lexemes.observe(viewLifecycleOwner) { lexemes ->
-            binding.translationCount.text = getString(R.string.translation_count_text, lexemes.size)
+            binding.translationCount.text = resources.getQuantityString(R.plurals.translation_count_text, lexemes.size)
             lexemeAdapter.submitList(lexemes)
         }
     }
