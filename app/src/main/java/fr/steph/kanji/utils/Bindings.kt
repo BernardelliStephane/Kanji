@@ -14,11 +14,6 @@ fun setVisibility(view: View, isVisible: Boolean) {
     view.isVisible = isVisible
 }
 
-@BindingAdapter("focusable")
-fun setFocusability(view: View, isFocusable: Boolean) {
-    view.focusable = if(isFocusable) FOCUSABLE else NOT_FOCUSABLE
-}
-
 @BindingAdapter("android:layout_marginTop")
 fun setBottomMargin(view: View, topMargin: Float) {
     val layoutParams = view.layoutParams as MarginLayoutParams

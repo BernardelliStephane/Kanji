@@ -113,8 +113,10 @@
                         android:id="@+id/meaning_input"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:focusable="@{!viewModel.uiState.charactersFetched}"
+                        android:focusableInTouchMode="@{!viewModel.uiState.charactersFetched}"
                         android:inputType="@{viewModel.uiState.charactersFetched ? InputType.TYPE_NULL : InputType.TYPE_CLASS_TEXT}"
-                        android:text="@={viewModel.uiState.meaning}"
+                        android:text="@={viewModel.uiState.meaning}" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
