@@ -7,7 +7,6 @@ import fr.steph.kanji.data.repository.LexemeRepository
 import fr.steph.kanji.ui.form_presentation.AddLexemeFormEvent
 import fr.steph.kanji.ui.form_presentation.AddLexemeFormState
 import fr.steph.kanji.ui.form_presentation.validation.ValidateField
-import fr.steph.kanji.ui.form_presentation.validation.ValidationResult
 import fr.steph.kanji.utils.extension.capitalized
 import fr.steph.kanji.utils.extension.isLoneKanji
 import fr.steph.kanji.utils.extension.kanaToRomaji
@@ -29,11 +28,18 @@ class AddLexemeViewModel(
         when (event) {
             is AddLexemeFormEvent.CharactersChanged -> {
                 return _uiState.update { currentUiState ->
+                    val charactersFetched = event.characters == currentUiState.lastFetchedKanji
+                    // Update meaning depending on if the characters were fetched
+                    val meaning = if (charactersFetched) currentUiState.lastFetchedKanjiMeaning
+                        else if (currentUiState.isCharactersFetched) ""
+                        else currentUiState.meaning
+
                     currentUiState.copy(
                         characters = event.characters,
                         charactersErrorRes = null,
+                        meaning = meaning,
                         isCharactersLoneKanji = event.characters.isLoneKanji(),
-                        isCharactersFetched = event.characters == currentUiState.lastFetchedKanji
+                        isCharactersFetched = charactersFetched,
                     )
                 }
             }
@@ -64,6 +70,7 @@ class AddLexemeViewModel(
                             romajiErrorRes = null,
                             meaning = meanings.joinToString().capitalized(),
                             meaningErrorRes = null,
+                            lastFetchedKanjiMeaning = meanings.joinToString().capitalized(),
                             onyomi = onReadings.joinToString(),
                             onyomiRomaji = onReadings.joinToString { it.kanaToRomaji() },
                             kunyomi = kunReadings.joinToString(),

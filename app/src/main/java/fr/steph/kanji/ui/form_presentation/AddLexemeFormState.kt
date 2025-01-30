@@ -8,6 +8,7 @@ data class AddLexemeFormState(
     var romajiErrorRes: Int? = null,
     var meaning: String = "",
     var meaningErrorRes: Int? = null,
+    var lastFetchedKanjiMeaning: String = "",
     var onyomi: String = "",
     var onyomiRomaji: String = "",
     var kunyomi: String = "",
