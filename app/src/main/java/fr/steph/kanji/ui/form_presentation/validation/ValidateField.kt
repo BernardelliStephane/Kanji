@@ -2,6 +2,7 @@ package fr.steph.kanji.ui.form_presentation.validation
 
 import fr.steph.kanji.R
 import fr.steph.kanji.utils.extension.isOnlyJapaneseCharacters
+import fr.steph.kanji.utils.extension.isOnlyRomanCharacters
 import fr.steph.kanji.utils.extension.isOnlyRomanLetters
 
 class ValidateField {
@@ -45,7 +46,7 @@ class ValidateField {
                     errorMessageRes = R.string.mandatory_field_error
                 )
 
-            if (!meaning.isOnlyRomanLetters())
+            if (!meaning.isOnlyRomanCharacters())
                 return ValidationResult(
                     successful = false,
                     errorMessageRes = R.string.incorrect_meaning_filling_error
@@ -54,4 +55,6 @@ class ValidateField {
             return ValidationResult(successful = true)
         }
     }
+
+    class ValidationResult(val successful: Boolean, val errorMessageRes: Int? = null)
 }

@@ -13,6 +13,11 @@ fun String.isOnlyRomanLetters(): Boolean {
     return regex.matches(this)
 }
 
+fun String.isOnlyRomanCharacters(): Boolean {
+    val regex = Regex("[a-zA-ZÀ-ÿ0-9\\s,.!_\"'–-]*")
+    return regex.matches(this)
+}
+
 fun String.isOnlyJapaneseCharacters(): Boolean {
     return all { it.isKana() || it.isKanji() }
 }
