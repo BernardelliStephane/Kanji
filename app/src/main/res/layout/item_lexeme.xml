@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="lexeme"
             type="fr.steph.kanji.data.model.Lexeme" />
@@ -11,30 +12,36 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_45sdp">
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/lexeme_characters"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="@dimen/_15sdp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:paddingHorizontal="@dimen/_10sdp"
             android:text="@{lexeme.characters}"
-            android:textSize="@dimen/_20ssp"
-            android:textStyle="bold"
+            android:textSize="@dimen/_15ssp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/lexeme_meaning"
+            app:layout_constraintHorizontal_weight="2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="@string/home_kanji" />
 
         <TextView
+            android:id="@+id/lexeme_meaning"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_20sdp"
-            android:paddingHorizontal="@dimen/_20sdp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:layout_marginEnd="@dimen/_10sdp"
             android:text="@{lexeme.meaning}"
             android:textSize="@dimen/_15ssp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="3"
             app:layout_constraintStart_toEndOf="@id/lexeme_characters"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Home" />
