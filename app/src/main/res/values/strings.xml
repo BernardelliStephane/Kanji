@@ -50,7 +50,8 @@
     <string name="incorrect_meaning_filling_error">Must contain only roman letters</string>
 
     <!-- Content description -->
+    <string name="filter_translations">Filter translations</string>
+    <string name="search_translation">Search translation</string>
     <string name="add_translation">Add translation</string>
-    <string name="option_menu">Option menu</string>
 
 </resources>
