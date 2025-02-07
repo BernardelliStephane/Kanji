@@ -54,7 +54,7 @@
                     android:id="@+id/translation_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    tools:text="@plurals/translation_count_text" />
+                    tools:text="101 translations" />
 
             </LinearLayout>
 
@@ -64,38 +64,36 @@
                 android:layout_gravity="bottom|end"
                 android:layout_marginEnd="@dimen/_20sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
-                android:divider="@drawable/option_layout_divider"
-                android:showDividers="middle"
                 app:layout_collapseMode="pin">
 
                 <ImageButton
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/_24sdp"
+                    android:layout_height="@dimen/_30sdp"
                     android:adjustViewBounds="true"
-                    android:background="@android:color/transparent"
+                    android:background="@drawable/button_ripple"
+                    android:padding="@dimen/_8sdp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_dictionary" />
 
                 <ImageButton
                     android:id="@+id/add_lexeme"
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/_24sdp"
+                    android:layout_height="@dimen/_30sdp"
                     android:adjustViewBounds="true"
-                    android:background="@android:color/transparent"
-                    android:contentDescription="@string/add_translation"
+                    android:background="@drawable/button_ripple"
+                    android:padding="@dimen/_8sdp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_add" />
 
                 <ImageButton
                     android:id="@+id/menu"
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/_24sdp"
+                    android:layout_height="@dimen/_30sdp"
                     android:adjustViewBounds="true"
-                    android:background="@android:color/transparent"
-                    android:contentDescription="@string/option_menu"
+                    android:background="@drawable/button_ripple"
+                    android:padding="@dimen/_8sdp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_more" />
-
 
             </LinearLayout>
 
