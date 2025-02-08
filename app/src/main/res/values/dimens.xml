@@ -5,6 +5,7 @@
     <dimen name="home_title_size">@dimen/_80ssp</dimen>
     <dimen name="home_button_size">@dimen/_90sdp</dimen>
     <dimen name="home_button_margin">@dimen/_25sdp</dimen>
+    <dimen name="home_button_image_size">@dimen/_45sdp</dimen>
     <dimen name="home_top_bg_height">@dimen/_120sdp</dimen>
     <dimen name="home_bottom_bg_height">@dimen/_180sdp</dimen>
 

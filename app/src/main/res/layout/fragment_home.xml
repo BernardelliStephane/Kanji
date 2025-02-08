@@ -39,11 +39,10 @@
             android:id="@+id/button_dictionary"
             layout="@layout/button_home_fragment"
             android:layout_width="@dimen/home_button_size"
-            android:layout_height="0dp"
+            android:layout_height="@dimen/home_button_size"
             android:layout_margin="@dimen/home_button_margin"
             app:icon="@{@drawable/ic_dictionary}"
             app:layout_constraintBottom_toBottomOf="@id/guideline_horizontal"
-            app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="@id/guideline_vertical"
             app:text="@{@string/dictionary}" />
 
@@ -51,11 +50,10 @@
             android:id="@+id/button_test"
             layout="@layout/button_home_fragment"
             android:layout_width="@dimen/home_button_size"
-            android:layout_height="0dp"
+            android:layout_height="@dimen/home_button_size"
             android:layout_margin="@dimen/home_button_margin"
             app:icon='@{@drawable/ic_quiz}'
             app:layout_constraintBottom_toBottomOf="@id/guideline_horizontal"
-            app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintStart_toStartOf="@id/guideline_vertical"
             app:text='@{@string/test}' />
 
@@ -63,10 +61,9 @@
             android:id="@+id/button_learn"
             layout="@layout/button_home_fragment"
             android:layout_width="@dimen/home_button_size"
-            android:layout_height="0dp"
+            android:layout_height="@dimen/home_button_size"
             android:layout_margin="@dimen/home_button_margin"
             app:icon='@{@drawable/ic_learn}'
-            app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="@id/guideline_vertical"
             app:layout_constraintTop_toTopOf="@id/guideline_horizontal"
             app:text='@{@string/learn}' />
@@ -75,10 +72,9 @@
             android:id="@+id/button_settings"
             layout="@layout/button_home_fragment"
             android:layout_width="@dimen/home_button_size"
-            android:layout_height="0dp"
+            android:layout_height="@dimen/home_button_size"
             android:layout_margin="@dimen/home_button_margin"
             app:icon='@{@drawable/ic_settings}'
-            app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintStart_toStartOf="@id/guideline_vertical"
             app:layout_constraintTop_toTopOf="@id/guideline_horizontal"
             app:text='@{@string/settings}' />
