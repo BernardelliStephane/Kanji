@@ -14,8 +14,6 @@
     <dimen name="dictionary_action_button_size">@dimen/_40sdp</dimen>
     <dimen name="dictionary_action_button_padding">@dimen/_10sdp</dimen>
     <dimen name="dictionary_action_button_marginStart">@dimen/_minus8sdp</dimen>
-
-    <!-- Item Lexeme -->
     <dimen name="item_lexeme_text_size">@dimen/_15ssp</dimen>
 
     <!-- Add lexeme fragment -->
