@@ -66,39 +66,33 @@
                 android:layout_marginEnd="@dimen/_20sdp"
                 app:layout_collapseMode="pin">
 
-                <ImageButton
-                    android:layout_width="@dimen/dictionary_action_button_size"
-                    android:layout_height="@dimen/dictionary_action_button_size"
+                <Button
+                    style="@style/Button.ToolbarActionButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:background="@drawable/button_ripple"
                     android:contentDescription="@string/filter_translations"
-                    android:padding="@dimen/dictionary_action_button_padding"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_filter" />
+                    app:icon="@drawable/ic_filter" />
 
-                <ImageButton
+                <Button
                     android:id="@+id/search"
-                    android:layout_width="@dimen/dictionary_action_button_size"
-                    android:layout_height="@dimen/dictionary_action_button_size"
+                    style="@style/Button.ToolbarActionButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="@dimen/dictionary_action_button_marginStart"
-                    android:background="@drawable/button_ripple"
                     android:contentDescription="@string/search_translation"
-                    android:padding="@dimen/dictionary_action_button_padding"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_search" />
+                    app:icon="@drawable/ic_search" />
 
-                <ImageButton
+                <Button
                     android:id="@+id/add_lexeme"
-                    android:layout_width="@dimen/dictionary_action_button_size"
-                    android:layout_height="@dimen/dictionary_action_button_size"
+                    style="@style/Button.ToolbarActionButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="@dimen/dictionary_action_button_marginStart"
-                    android:background="@drawable/button_ripple"
                     android:contentDescription="@string/add_translation"
-                    android:padding="@dimen/dictionary_action_button_padding"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_add" />
+                    app:icon="@drawable/ic_add" />
 
             </LinearLayout>
 
