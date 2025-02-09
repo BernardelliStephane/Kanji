@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
@@ -15,10 +16,10 @@ import fr.steph.kanji.KanjiApplication
 import fr.steph.kanji.R
 import fr.steph.kanji.databinding.FragmentDictionaryBinding
 import fr.steph.kanji.ui.adapter.LexemeAdapter
-import fr.steph.kanji.ui.utils.viewModelFactory
-import fr.steph.kanji.ui.viewmodel.DictionaryViewModel
 import fr.steph.kanji.ui.utils.LexemeDetailsLookup
 import fr.steph.kanji.ui.utils.LexemeKeyProvider
+import fr.steph.kanji.ui.utils.viewModelFactory
+import fr.steph.kanji.ui.viewmodel.DictionaryViewModel
 import fr.steph.kanji.utils.extension.safeNavigate
 
 class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
@@ -46,6 +47,19 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
 
         tracker?.onRestoreInstanceState(savedInstanceState)
 
+        requireActivity()
+            .onBackPressedDispatcher
+            .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if(tracker?.hasSelection() == true)
+                        tracker?.clearSelection()
+
+                    else if (isEnabled) {
+                        isEnabled = false
+                        requireActivity().onBackPressedDispatcher.onBackPressed()
+                    }
+                }
+            })
     }
 
     private fun initViews(view: View) {
