@@ -14,7 +14,7 @@
         <item name="android:textColor">@color/black</item>
         <item name="android:colorBackground">@color/white</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/darker_gray</item>
     </style>
 
     <style name="Button.ActionButton" parent="Widget.AppCompat.Button">
