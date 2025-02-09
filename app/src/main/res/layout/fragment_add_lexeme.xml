@@ -306,7 +306,7 @@
 
         <Button
             android:id="@+id/button_cancel"
-            style="@style/Button.ActionButton"
+            style="@style/Button.FormActionButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/add_lexeme_default_margin"
@@ -318,7 +318,7 @@
 
         <Button
             android:id="@+id/button_confirm"
-            style="@style/Button.ActionButton"
+            style="@style/Button.FormActionButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/add_lexeme_default_margin"
