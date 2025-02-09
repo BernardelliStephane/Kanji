@@ -8,11 +8,17 @@
         <variable
             name="lexeme"
             type="fr.steph.kanji.data.model.Lexeme" />
+
+        <variable
+            name="isActivated"
+            type="Boolean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/_20sdp"
+        android:background="@{isActivated ? @color/navy_blue : @android:color/transparent}">
 
         <TextView
             android:id="@+id/lexeme_characters"

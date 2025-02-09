@@ -2,6 +2,8 @@ package fr.steph.kanji.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.selection.ItemDetailsLookup
+import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -10,12 +12,40 @@ import fr.steph.kanji.databinding.ItemLexemeBinding
 
 class LexemeAdapter : ListAdapter<Lexeme, LexemeAdapter.LexemeViewHolder>(LexemeDiffUtil()) {
     var itemClickedCallback: ((Lexeme) -> Unit) = {}
+    var tracker: SelectionTracker<Long>? = null
 
-    class LexemeViewHolder(private val binding: ItemLexemeBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(lexeme: Lexeme) {
+    init {
+        setHasStableIds(true)
+    }
+
+    override fun getItemId(position: Int) = getItem(position).id.toLong()
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LexemeViewHolder =
+        LexemeViewHolder.from(parent)
+
+    override fun onBindViewHolder(holder: LexemeViewHolder, position: Int) {
+        val currentLexeme = getItem(position)
+        holder.itemView.setOnClickListener { itemClickedCallback(currentLexeme) }
+
+        tracker?.let {
+            holder.bind(currentLexeme, it.isSelected(currentLexeme.id.toLong()))
+        }
+    }
+
+    class LexemeViewHolder(private val binding: ItemLexemeBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(lexeme: Lexeme, isActivated: Boolean = false) {
             binding.lexeme = lexeme
+            binding.isActivated = isActivated
             binding.executePendingBindings()
         }
+
+        fun getLexemeDetails(): ItemDetailsLookup.ItemDetails<Long> =
+            object : ItemDetailsLookup.ItemDetails<Long>() {
+                override fun getPosition(): Int = bindingAdapterPosition
+                override fun getSelectionKey(): Long = itemId
+            }
 
         companion object {
             fun from(parent: ViewGroup): LexemeViewHolder {
@@ -24,17 +54,6 @@ class LexemeAdapter : ListAdapter<Lexeme, LexemeAdapter.LexemeViewHolder>(Lexeme
                 )
                 return LexemeViewHolder(binding)
             }
-        }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LexemeViewHolder =
-        LexemeViewHolder.from(parent)
-
-    override fun onBindViewHolder(holder: LexemeViewHolder, position: Int) {
-        val currentLexeme = getItem(position)
-        holder.apply {
-            bind(currentLexeme)
-            itemView.setOnClickListener { itemClickedCallback(currentLexeme) }
         }
     }
 

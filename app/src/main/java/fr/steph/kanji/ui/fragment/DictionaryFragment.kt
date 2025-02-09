@@ -8,12 +8,17 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
+import androidx.recyclerview.selection.SelectionPredicates
+import androidx.recyclerview.selection.SelectionTracker
+import androidx.recyclerview.selection.StorageStrategy
 import fr.steph.kanji.KanjiApplication
 import fr.steph.kanji.R
 import fr.steph.kanji.databinding.FragmentDictionaryBinding
 import fr.steph.kanji.ui.adapter.LexemeAdapter
 import fr.steph.kanji.ui.utils.viewModelFactory
 import fr.steph.kanji.ui.viewmodel.DictionaryViewModel
+import fr.steph.kanji.ui.utils.LexemeDetailsLookup
+import fr.steph.kanji.ui.utils.LexemeKeyProvider
 import fr.steph.kanji.utils.extension.safeNavigate
 
 class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
@@ -30,12 +35,17 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
 
     private lateinit var lexemeAdapter: LexemeAdapter
 
+    private var tracker: SelectionTracker<Long>? = null
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentDictionaryBinding.bind(view)
 
         initViews(view)
         initObservers()
+
+        tracker?.onRestoreInstanceState(savedInstanceState)
+
     }
 
     private fun initViews(view: View) {
@@ -56,6 +66,22 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
                 }
             }
 
+            tracker = SelectionTracker.Builder(
+                "lexeme_selection",
+                recyclerView,
+                LexemeKeyProvider(recyclerView),
+                LexemeDetailsLookup(recyclerView),
+                StorageStrategy.createLongStorage()
+            ).withSelectionPredicate(SelectionPredicates.createSelectAnything()
+            ).build()
+
+            tracker?.addObserver(
+                object : SelectionTracker.SelectionObserver<Long>() {
+                    override fun onSelectionChanged() {
+                        super.onSelectionChanged()
+                        val selectionSize = tracker?.selection!!.size()
+                    }
+                })
 
             appBar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
                 val range = appBarLayout.totalScrollRange
@@ -84,6 +110,8 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
                 safeNavigate(action)
             }
         }
+
+        lexemeAdapter.tracker = tracker
     }
 
     private fun initObservers() {
@@ -91,6 +119,11 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
             binding.translationCount.text = resources.getQuantityString(R.plurals.translation_count_text, lexemes.size, lexemes.size)
             lexemeAdapter.submitList(lexemes)
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        tracker?.onSaveInstanceState(outState)
     }
 
     override fun onDestroyView() {
