@@ -133,9 +133,9 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
             .onBackPressedDispatcher
             .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    if (tracker?.hasSelection() == true) {
-                        tracker?.clearSelection()
+                    if(viewModel.uiState.value.isSelectionMode) {
                         viewModel.onSelectionCleared()
+                        tracker?.clearSelection()
                     } else if (isEnabled) {
                         isEnabled = false
                         requireActivity().onBackPressedDispatcher.onBackPressed()
