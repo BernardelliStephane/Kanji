@@ -4,9 +4,9 @@ import fr.steph.kanji.R
 import fr.steph.kanji.data.model.Lexeme.Companion.buildLexemeFromFormState
 import fr.steph.kanji.data.repository.ApiKanjiRepository
 import fr.steph.kanji.data.repository.LexemeRepository
-import fr.steph.kanji.ui.form_presentation.AddLexemeFormEvent
-import fr.steph.kanji.ui.form_presentation.AddLexemeFormState
-import fr.steph.kanji.ui.form_presentation.validation.ValidateField
+import fr.steph.kanji.ui.uistate.AddLexemeFormEvent
+import fr.steph.kanji.ui.uistate.AddLexemeFormState
+import fr.steph.kanji.ui.utils.form_validation.ValidateField
 import fr.steph.kanji.utils.extension.capitalized
 import fr.steph.kanji.utils.extension.isLoneKanji
 import fr.steph.kanji.utils.extension.kanaToRomaji

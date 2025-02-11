@@ -12,7 +12,7 @@ import com.google.android.material.snackbar.Snackbar
 import fr.steph.kanji.KanjiApplication
 import fr.steph.kanji.R
 import fr.steph.kanji.databinding.FragmentAddLexemeBinding
-import fr.steph.kanji.ui.form_presentation.AddLexemeFormEvent
+import fr.steph.kanji.ui.uistate.AddLexemeFormEvent
 import fr.steph.kanji.ui.utils.viewModelFactory
 import fr.steph.kanji.ui.viewmodel.AddLexemeViewModel
 import fr.steph.kanji.ui.viewmodel.ApiLexemeViewModel

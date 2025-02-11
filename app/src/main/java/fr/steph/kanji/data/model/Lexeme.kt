@@ -3,7 +3,7 @@ package fr.steph.kanji.data.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import fr.steph.kanji.data.utils.enumeration.LexemeType
-import fr.steph.kanji.ui.form_presentation.AddLexemeFormState
+import fr.steph.kanji.ui.uistate.AddLexemeFormState
 import fr.steph.kanji.utils.Moji.mojiDetector
 
 @Entity

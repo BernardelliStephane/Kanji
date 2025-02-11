@@ -1,4 +1,4 @@
-package fr.steph.kanji.ui.utils
+package fr.steph.kanji.ui.utils.recyclerview_selection
 
 import android.view.MotionEvent
 import androidx.recyclerview.selection.ItemDetailsLookup

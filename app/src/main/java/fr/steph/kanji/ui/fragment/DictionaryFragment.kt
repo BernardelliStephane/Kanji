@@ -16,8 +16,8 @@ import fr.steph.kanji.KanjiApplication
 import fr.steph.kanji.R
 import fr.steph.kanji.databinding.FragmentDictionaryBinding
 import fr.steph.kanji.ui.adapter.LexemeAdapter
-import fr.steph.kanji.ui.utils.LexemeDetailsLookup
-import fr.steph.kanji.ui.utils.LexemeKeyProvider
+import fr.steph.kanji.ui.utils.recyclerview_selection.LexemeDetailsLookup
+import fr.steph.kanji.ui.utils.recyclerview_selection.LexemeKeyProvider
 import fr.steph.kanji.ui.utils.viewModelFactory
 import fr.steph.kanji.ui.viewmodel.DictionaryViewModel
 import fr.steph.kanji.utils.extension.safeNavigate
@@ -66,7 +66,8 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
         lexemeAdapter = LexemeAdapter().apply {
             itemClickedCallback = { lexeme ->
                 //TODO Display details fragment
-                Toast.makeText(requireContext(), "Details fragment should open", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Details fragment should open", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
 
@@ -81,10 +82,8 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
             }
 
             tracker = SelectionTracker.Builder(
-                "lexeme_selection",
-                recyclerView,
-                LexemeKeyProvider(recyclerView),
-                LexemeDetailsLookup(recyclerView),
+                "lexeme_selection", recyclerView,
+                LexemeKeyProvider(recyclerView), LexemeDetailsLookup(recyclerView),
                 StorageStrategy.createLongStorage()
             ).withSelectionPredicate(SelectionPredicates.createSelectAnything()
             ).build()
@@ -94,16 +93,19 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
                     override fun onSelectionChanged() {
                         super.onSelectionChanged()
                         val selectionSize = tracker?.selection!!.size()
+                        viewModel.onSelectionChanged(selectionSize)
                     }
                 })
+
+            lexemeAdapter.tracker = tracker
 
             appBar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
                 val range = appBarLayout.totalScrollRange
                 val displayRatio = (range + verticalOffset).toFloat() / range
 
                 // Ranges from 0 to 255 as the displayRatio goes from 0 to 0.5 | 0 above 0.5
-                val opacity = if(displayRatio > 0.5) 0
-                    else 255 - (((displayRatio * 255).toInt() * 2) - 255)
+                val opacity = if (displayRatio > 0.5) 0
+                else 255 - (((displayRatio * 255).toInt() * 2) - 255)
 
                 val color = Color.argb(opacity, 0, 0, 0)
                 val colorStateList = ColorStateList.valueOf(color)
@@ -120,19 +122,38 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
             }
 
             addLexeme.setOnClickListener {
-                val action = DictionaryFragmentDirections.actionDictionaryFragmentToAddLexemeFragment()
+                val action =
+                    DictionaryFragmentDirections.actionDictionaryFragmentToAddLexemeFragment()
                 safeNavigate(action)
             }
         }
-
-        lexemeAdapter.tracker = tracker
     }
 
     private fun initObservers() {
         viewModel.lexemes.observe(viewLifecycleOwner) { lexemes ->
-            binding.translationCount.text = resources.getQuantityString(R.plurals.translation_count_text, lexemes.size, lexemes.size)
+            binding.translationCount.text = resources.getQuantityString(
+                R.plurals.translation_count_text,
+                lexemes.size,
+                lexemes.size
+            )
             lexemeAdapter.submitList(lexemes)
         }
+    }
+
+    private fun handleBackPressed() {
+        requireActivity()
+            .onBackPressedDispatcher
+            .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (tracker?.hasSelection() == true) {
+                        tracker?.clearSelection()
+                        viewModel.onSelectionCleared()
+                    } else if (isEnabled) {
+                        isEnabled = false
+                        requireActivity().onBackPressedDispatcher.onBackPressed()
+                    }
+                }
+            })
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

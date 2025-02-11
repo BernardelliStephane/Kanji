@@ -1,4 +1,4 @@
-package fr.steph.kanji.ui.form_presentation
+package fr.steph.kanji.ui.uistate
 
 data class AddLexemeFormState(
     var characters: String = "",

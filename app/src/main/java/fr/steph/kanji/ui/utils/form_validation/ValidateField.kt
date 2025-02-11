@@ -1,4 +1,4 @@
-package fr.steph.kanji.ui.form_presentation.validation
+package fr.steph.kanji.ui.utils.form_validation
 
 import fr.steph.kanji.R
 import fr.steph.kanji.utils.extension.isOnlyJapaneseCharacters
