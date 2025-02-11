@@ -27,6 +27,7 @@
     <string name="confirm">Confirm</string>
     <string name="search_kanji">Look for kanji</string>
     <string name="retry">Retry</string>
+    <string name="delete">Delete</string>
 
     <!-- Form hint -->
     <string name="meaning_hint">Meaning(s)</string>

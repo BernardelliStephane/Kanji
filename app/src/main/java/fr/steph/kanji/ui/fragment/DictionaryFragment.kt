@@ -47,19 +47,7 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
 
         tracker?.onRestoreInstanceState(savedInstanceState)
 
-        requireActivity()
-            .onBackPressedDispatcher
-            .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    if(tracker?.hasSelection() == true)
-                        tracker?.clearSelection()
-
-                    else if (isEnabled) {
-                        isEnabled = false
-                        requireActivity().onBackPressedDispatcher.onBackPressed()
-                    }
-                }
-            })
+        handleBackPressed()
     }
 
     private fun initViews(view: View) {
