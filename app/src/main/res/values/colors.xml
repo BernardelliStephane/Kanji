@@ -6,4 +6,6 @@
     <color name="yellow">#FFF7E728</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFF1F2F2</color>
+
+    <color name="highlight">#1F000000</color>
 </resources>

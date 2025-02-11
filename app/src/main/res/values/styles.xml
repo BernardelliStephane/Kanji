@@ -3,12 +3,12 @@
     <style name="Button.ToolbarMenuButton" parent="Widget.Material3.Button.IconButton">
         <item name="iconSize">24dp</item>
         <item name="iconTint">@color/black</item>
-        <item name="rippleColor">?android:colorControlHighlight</item>
+        <item name="rippleColor">@color/highlight</item>
     </style>
 
     <style name="TextButton.ActionButton" parent="Widget.Material3.Button.TextButton">
         <item name="android:textColor">@color/black</item>
-        <item name="rippleColor">?android:colorControlHighlight</item>
+        <item name="rippleColor">@color/highlight</item>
     </style>
 
     <style name="FormActionButton" parent="TextButton.ActionButton">
