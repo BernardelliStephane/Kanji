@@ -25,20 +25,23 @@ class LexemeAdapter : ListAdapter<Lexeme, LexemeAdapter.LexemeViewHolder>(Lexeme
 
     override fun onBindViewHolder(holder: LexemeViewHolder, position: Int) {
         val currentLexeme = getItem(position)
-        holder.itemView.setOnClickListener { itemClickedCallback(currentLexeme) }
-
-        tracker?.let {
-            holder.bind(currentLexeme, it.isSelected(currentLexeme.id.toLong()))
+        val isSelected = tracker?.isSelected(currentLexeme.id.toLong()) ?: false
+        holder.bind(currentLexeme, isSelected) {
+            itemClickedCallback(currentLexeme)
         }
     }
 
     class LexemeViewHolder(private val binding: ItemLexemeBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(lexeme: Lexeme, isActivated: Boolean = false) {
-            binding.lexeme = lexeme
+        fun bind(lexeme: Lexeme, isActivated: Boolean = false, itemClickedCallback: () -> Unit) {
             binding.isActivated = isActivated
-            binding.executePendingBindings()
+            binding.run {
+                root.setOnClickListener { itemClickedCallback() }
+                lexemeCharacters.text = lexeme.characters
+                lexemeMeaning.text = lexeme.meaning
+                executePendingBindings()
+            }
         }
 
         fun getLexemeDetails(): ItemDetailsLookup.ItemDetails<Long> =

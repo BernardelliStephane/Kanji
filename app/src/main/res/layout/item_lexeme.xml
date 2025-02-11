@@ -4,21 +4,29 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
-        <variable
-            name="lexeme"
-            type="fr.steph.kanji.data.model.Lexeme" />
-
-        <variable
-            name="isActivated"
-            type="Boolean" />
+        <variable name="isActivated" type="Boolean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="@dimen/_20sdp"
-        android:background="@{isActivated ? @color/navy_blue : @android:color/transparent}">
+        android:background="@{isActivated ? @color/highlight : @android:color/transparent}"
+        android:paddingVertical="@dimen/_20sdp">
+
+        <CheckBox
+            android:id="@+id/selection_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:button="@drawable/round_checkbox"
+            android:buttonTint="@{isActivated ? @color/navy_blue : @color/black}"
+            android:checked="@{isActivated}"
+            android:clickable="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/lexeme_characters"
@@ -27,12 +35,11 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:paddingHorizontal="@dimen/_10sdp"
-            android:text="@{lexeme.characters}"
             android:textSize="@dimen/item_lexeme_text_size"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/lexeme_meaning"
             app:layout_constraintHorizontal_weight="2"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/selection_checkbox"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="@string/home_kanji" />
 
@@ -43,7 +50,6 @@
             android:layout_marginEnd="@dimen/_10sdp"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="@{lexeme.meaning}"
             android:textSize="@dimen/item_lexeme_text_size"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
