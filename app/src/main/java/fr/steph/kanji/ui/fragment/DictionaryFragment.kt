@@ -6,8 +6,12 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.Navigation
 import androidx.recyclerview.selection.SelectionPredicates
 import androidx.recyclerview.selection.SelectionTracker
@@ -21,6 +25,7 @@ import fr.steph.kanji.ui.utils.recyclerview_selection.LexemeKeyProvider
 import fr.steph.kanji.ui.utils.viewModelFactory
 import fr.steph.kanji.ui.viewmodel.DictionaryViewModel
 import fr.steph.kanji.utils.extension.safeNavigate
+import kotlinx.coroutines.launch
 
 class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
 
@@ -125,6 +130,26 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
                 lexemes.size
             )
             lexemeAdapter.submitList(lexemes)
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.selectionSize.collect { selectionSize ->
+                    val isSelectionMode = selectionSize != 0
+                    binding.run {
+                        translationCount.isVisible = !isSelectionMode
+                        addLexeme.isVisible = !isSelectionMode
+                        filterLexemes.isVisible = !isSelectionMode
+
+                        deleteLayout.isVisible = isSelectionMode
+
+                        val title = if (!isSelectionMode) "Dictionary" else "$selectionSize selected"
+
+                        expandedTitle.text = title
+                        collapsingToolbarLayout.title = title
+                    }
+                }
+            }
         }
     }
 
