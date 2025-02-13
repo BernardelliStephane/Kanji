@@ -4,6 +4,7 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.widget.CheckBox
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
@@ -16,6 +17,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.selection.SelectionPredicates
 import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.selection.StorageStrategy
+import androidx.recyclerview.widget.LinearLayoutManager
 import fr.steph.kanji.KanjiApplication
 import fr.steph.kanji.R
 import fr.steph.kanji.databinding.FragmentDictionaryBinding
@@ -147,6 +149,18 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
 
                         expandedTitle.text = title
                         collapsingToolbarLayout.title = title
+                    }
+
+                    if (isSelectionMode != lexemeAdapter.isSelectionMode) {
+                        lexemeAdapter.isSelectionMode = isSelectionMode
+                        val layoutManager = binding.recyclerView.layoutManager as LinearLayoutManager
+                        val first = layoutManager.findFirstVisibleItemPosition()
+                        val last = layoutManager.findLastVisibleItemPosition()
+
+                        for (index in first..last) {
+                            val view = layoutManager.findViewByPosition(index)
+                            view?.findViewById<CheckBox>(R.id.selection_checkbox)?.isVisible = isSelectionMode
+                        }
                     }
                 }
             }
