@@ -2,6 +2,7 @@ package fr.steph.kanji.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.selection.ItemDetailsLookup
 import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.widget.DiffUtil
@@ -13,35 +14,44 @@ import fr.steph.kanji.databinding.ItemLexemeBinding
 class LexemeAdapter : ListAdapter<Lexeme, LexemeAdapter.LexemeViewHolder>(LexemeDiffUtil()) {
     var itemClickedCallback: ((Lexeme) -> Unit) = {}
     var tracker: SelectionTracker<Long>? = null
+    var isSelectionMode = false
 
     init {
         setHasStableIds(true)
     }
-
-    override fun getItemId(position: Int) = getItem(position).id.toLong()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LexemeViewHolder =
         LexemeViewHolder.from(parent)
 
     override fun onBindViewHolder(holder: LexemeViewHolder, position: Int) {
         val currentLexeme = getItem(position)
-        val isSelected = tracker?.isSelected(currentLexeme.id.toLong()) ?: false
-        holder.bind(currentLexeme, isSelected) {
-            itemClickedCallback(currentLexeme)
+        holder.itemView.setOnClickListener { itemClickedCallback(currentLexeme) }
+
+        tracker?.let {
+            holder.bind(currentLexeme, isSelectionMode, it.isSelected(getItemId(position)))
         }
     }
+
+
+    override fun getItemId(position: Int) = getItem(position).id.toLong()
 
     class LexemeViewHolder(private val binding: ItemLexemeBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(lexeme: Lexeme, isActivated: Boolean = false, itemClickedCallback: () -> Unit) {
-            binding.isActivated = isActivated
-            binding.run {
-                root.setOnClickListener { itemClickedCallback() }
-                lexemeCharacters.text = lexeme.characters
-                lexemeMeaning.text = lexeme.meaning
-                executePendingBindings()
-            }
+        fun bind(lexeme: Lexeme, isSelectionMode: Boolean, isSelected: Boolean) {
+            binding.lexemeCharacters.text = lexeme.characters
+            binding.lexemeMeaning.text = lexeme.meaning
+
+            setSelection(isSelectionMode, isSelected)
+
+            binding.executePendingBindings()
+        }
+
+        fun setSelection(isSelectionMode: Boolean, isSelected: Boolean) {
+            binding.selectionCheckbox.isVisible = isSelectionMode
+
+            binding.isActivated = isSelected
+            binding.selectionCheckbox.isChecked = isSelected
         }
 
         fun getLexemeDetails(): ItemDetailsLookup.ItemDetails<Long> =
