@@ -32,6 +32,11 @@ class LexemeAdapter : ListAdapter<Lexeme, LexemeAdapter.LexemeViewHolder>(Lexeme
         }
     }
 
+    override fun onViewAttachedToWindow(holder: LexemeViewHolder) {
+        val isSelected = tracker?.isSelected(holder.itemId)
+        if(isSelected != null)
+            holder.setSelection(isSelectionMode, isSelected)
+    }
 
     override fun getItemId(position: Int) = getItem(position).id.toLong()
 
