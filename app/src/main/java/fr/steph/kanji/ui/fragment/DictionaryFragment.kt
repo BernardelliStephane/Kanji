@@ -42,7 +42,7 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
         }
     }
 
-    private var tracker: SelectionTracker<Long>? = null
+    private lateinit var tracker: SelectionTracker<Long>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -51,7 +51,7 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
         initViews(view)
         initObservers()
 
-        tracker?.onRestoreInstanceState(savedInstanceState)
+        tracker.onRestoreInstanceState(savedInstanceState)
 
         handleBackPressed()
     }
@@ -74,11 +74,11 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
             ).withSelectionPredicate(SelectionPredicates.createSelectAnything()
             ).build()
 
-            tracker?.addObserver(
+            tracker.addObserver(
                 object : SelectionTracker.SelectionObserver<Long>() {
                     override fun onSelectionChanged() {
                         super.onSelectionChanged()
-                        val selectionSize = tracker?.selection!!.size()
+                        val selectionSize = tracker.selection.size()
                         viewModel.onSelectionChanged(selectionSize)
                     }
                 })
@@ -100,7 +100,7 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
                 collapsingToolbarLayout.setCollapsedTitleTextColor(color)
 
                 // Ranges from 1 to 0 as the displayRatio goes from 1 to 0.5 | 0 below 0.5
-                expandedTitle.alpha = 1 - ((1 - displayRatio) * 2)
+                expandedTitleLayout.alpha = 1 - ((1 - displayRatio) * 2)
             }
 
             dictionaryToolbar.setNavigationOnClickListener {
@@ -131,10 +131,10 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
             .onBackPressedDispatcher
             .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    if(viewModel.uiState.value.isSelectionMode) {
-                        viewModel.onSelectionCleared()
-                        tracker?.clearSelection()
-                    } else if (isEnabled) {
+                    if (viewModel.selectionSize.value != 0) {
+                        tracker.clearSelection()
+                    }
+                    else if (isEnabled) {
                         isEnabled = false
                         requireActivity().onBackPressedDispatcher.onBackPressed()
                     }
@@ -144,7 +144,7 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        tracker?.onSaveInstanceState(outState)
+        tracker.onSaveInstanceState(outState)
     }
 
     override fun onDestroyView() {
