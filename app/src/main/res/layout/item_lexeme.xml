@@ -1,65 +1,54 @@
-<?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_lexeme_layout"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_60sdp"
+    android:background="@drawable/item_lexeme_background"
+    android:paddingVertical="@dimen/_20sdp">
 
-    <data>
-        <variable name="isActivated" type="Boolean" />
-    </data>
+    <CheckBox
+        android:id="@+id/selection_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:button="@drawable/round_checkbox"
+        android:clickable="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        app:buttonTint="@drawable/checkbox_tint"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_60sdp"
-        android:background="@{isActivated ? @color/highlight : @android:color/transparent}"
-        android:paddingVertical="@dimen/_20sdp">
+    <TextView
+        android:id="@+id/lexeme_characters"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:paddingHorizontal="@dimen/_10sdp"
+        android:textSize="@dimen/item_lexeme_text_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/lexeme_meaning"
+        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintStart_toEndOf="@id/selection_checkbox"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/home_kanji" />
 
-        <CheckBox
-            android:id="@+id/selection_checkbox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:button="@drawable/round_checkbox"
-            android:buttonTint="@{isActivated ? @color/navy_blue : @android:color/darker_gray}"
-            android:checked="@{isActivated}"
-            android:clickable="false"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:buttonTint="@android:color/darker_gray" />
+    <TextView
+        android:id="@+id/lexeme_meaning"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textSize="@dimen/item_lexeme_text_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="3"
+        app:layout_constraintStart_toEndOf="@id/lexeme_characters"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Home" />
 
-        <TextView
-            android:id="@+id/lexeme_characters"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:paddingHorizontal="@dimen/_10sdp"
-            android:textSize="@dimen/item_lexeme_text_size"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/lexeme_meaning"
-            app:layout_constraintHorizontal_weight="2"
-            app:layout_constraintStart_toEndOf="@id/selection_checkbox"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="@string/home_kanji" />
-
-        <TextView
-            android:id="@+id/lexeme_meaning"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textSize="@dimen/item_lexeme_text_size"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_weight="3"
-            app:layout_constraintStart_toEndOf="@id/lexeme_characters"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Home" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</layout>
+</androidx.constraintlayout.widget.ConstraintLayout>

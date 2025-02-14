@@ -48,13 +48,12 @@ class LexemeAdapter : ListAdapter<Lexeme, LexemeAdapter.LexemeViewHolder>(Lexeme
             binding.lexemeMeaning.text = lexeme.meaning
 
             setSelection(isSelectionMode, isSelected)
-
-            binding.executePendingBindings()
         }
 
         fun setSelection(isSelectionMode: Boolean, isSelected: Boolean) {
+            binding.itemLexemeLayout.isActivated = isSelected
             binding.selectionCheckbox.isVisible = isSelectionMode
-            binding.isActivated = isSelected
+            binding.selectionCheckbox.isChecked = isSelected
         }
 
         fun getLexemeDetails(): ItemDetailsLookup.ItemDetails<Long> =
