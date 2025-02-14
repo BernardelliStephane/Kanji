@@ -22,7 +22,7 @@ class AddLexemeViewModel(
     private val _uiState = MutableStateFlow(AddLexemeFormState())
     val uiState = _uiState.asStateFlow()
 
-    private var id = 0
+    private var id = 0L
     private var unicode: String? = null
 
     fun onEvent(event: AddLexemeFormEvent) {

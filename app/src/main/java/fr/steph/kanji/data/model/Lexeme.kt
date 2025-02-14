@@ -9,7 +9,7 @@ import fr.steph.kanji.utils.Moji.mojiDetector
 @Entity
 data class Lexeme(
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    val id: Long,
     val type: LexemeType,
     val characters: String,
     val romaji: String,
@@ -17,7 +17,7 @@ data class Lexeme(
     val unicode: String?,
 ) {
     companion object {
-        fun buildLexemeFromFormState(id: Int, uiState: AddLexemeFormState, unicode: String?): Lexeme {
+        fun buildLexemeFromFormState(id: Long, uiState: AddLexemeFormState, unicode: String?): Lexeme {
             val lexemeType = when {
                 uiState.isCharactersFetched -> LexemeType.KANJI
                 mojiDetector.hasKanji(uiState.characters) -> LexemeType.COMPOUND
