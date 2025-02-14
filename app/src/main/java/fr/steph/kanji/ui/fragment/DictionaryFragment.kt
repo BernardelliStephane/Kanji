@@ -56,9 +56,8 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
         _binding = FragmentDictionaryBinding.bind(view)
 
         initViews(view)
+        initTracker(savedInstanceState)
         initObservers()
-
-        tracker.onRestoreInstanceState(savedInstanceState)
 
         handleBackPressed()
     }
@@ -73,24 +72,6 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
                     true
                 }
             }
-
-            tracker = SelectionTracker.Builder(
-                "lexeme_selection", recyclerView,
-                LexemeKeyProvider(recyclerView), LexemeDetailsLookup(recyclerView),
-                StorageStrategy.createLongStorage()
-            ).withSelectionPredicate(SelectionPredicates.createSelectAnything()
-            ).build()
-
-            tracker.addObserver(
-                object : SelectionTracker.SelectionObserver<Long>() {
-                    override fun onSelectionChanged() {
-                        super.onSelectionChanged()
-                        val selectionSize = tracker.selection.size()
-                        viewModel.onSelectionChanged(selectionSize)
-                    }
-                })
-
-            lexemeAdapter.tracker = tracker
 
             appBar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
                 val range = appBarLayout.totalScrollRange
@@ -122,6 +103,28 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
                 safeNavigate(action)
             }
         }
+    }
+
+    private fun initTracker(savedInstanceState: Bundle?) {
+        tracker = SelectionTracker.Builder(
+            "lexeme_selection", binding.recyclerView,
+            LexemeKeyProvider(binding.recyclerView), LexemeDetailsLookup(binding.recyclerView),
+            StorageStrategy.createLongStorage()
+        ).withSelectionPredicate(SelectionPredicates.createSelectAnything()
+        ).build()
+
+        tracker.addObserver(
+            object : SelectionTracker.SelectionObserver<Long>() {
+                override fun onSelectionChanged() {
+                    super.onSelectionChanged()
+                    val selectionSize = tracker.selection.size()
+                    viewModel.onSelectionChanged(selectionSize)
+                }
+            })
+
+        lexemeAdapter.tracker = tracker
+
+        tracker.onRestoreInstanceState(savedInstanceState)
     }
 
     private fun initObservers() {
