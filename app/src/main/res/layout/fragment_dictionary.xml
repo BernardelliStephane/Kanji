@@ -26,15 +26,9 @@
                 android:id="@+id/collapsing_toolbar_layout"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/app_bar_height"
-                app:collapsedTitleGravity="start"
-                app:collapsedTitleTextAppearance="@style/Toolbar.CollapsedTitle"
-                app:expandedTitleMarginStart="@dimen/toolbar_title_start_inset"
-                app:expandedTitleTextAppearance="@style/Toolbar.CollapsedTitle"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                app:title="Dictionary"
                 app:titleCollapseMode="scale"
-                app:toolbarId="@id/dictionary_toolbar"
-                tools:title="">
+                app:toolbarId="@id/dictionary_toolbar">
 
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/dictionary_toolbar"
@@ -67,6 +61,17 @@
                         tools:text="101 translations" />
 
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/collapsed_title"
+                    style="@style/TextAppearance.Material3.TitleLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="?attr/actionBarSize"
+                    android:layout_gravity="bottom|start"
+                    android:layout_marginStart="@dimen/toolbar_title_start_inset"
+                    android:gravity="center_vertical"
+                    android:textStyle="bold"
+                    app:layout_collapseMode="pin" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/select_all_layout"
