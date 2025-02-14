@@ -89,6 +89,12 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
                 Navigation.findNavController(view).navigateUp()
             }
 
+            selectAllCheckbox.setOnCheckedChangeListener { button, isChecked ->
+                val items = viewModel.lexemes.value!!.map { it.id.toLong() }
+                if (isChecked) tracker.setItemsSelected(items, true)
+                if (!isChecked) tracker.clearSelection()
+            }
+
             addLexeme.setOnClickListener {
                 val action =
                     DictionaryFragmentDirections.actionDictionaryFragmentToAddLexemeFragment()
