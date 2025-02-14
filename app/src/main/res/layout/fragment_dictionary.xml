@@ -70,8 +70,7 @@
                     android:layout_gravity="bottom|start"
                     android:layout_marginStart="@dimen/toolbar_title_start_inset"
                     android:gravity="center_vertical"
-                    android:textStyle="bold"
-                    app:layout_collapseMode="pin" />
+                    android:textStyle="bold"/>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/select_all_layout"
@@ -107,8 +106,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="?attr/actionBarSize"
                     android:layout_gravity="bottom|end"
-                    android:layout_marginEnd="@dimen/_20sdp"
-                    app:layout_collapseMode="pin">
+                    android:layout_marginEnd="@dimen/_20sdp">
 
                     <Button
                         android:id="@+id/filter_lexemes"
