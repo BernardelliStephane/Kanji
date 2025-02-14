@@ -89,15 +89,16 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
                 Navigation.findNavController(view).navigateUp()
             }
 
-            selectAllCheckbox.setOnCheckedChangeListener { button, isChecked ->
-                val items = viewModel.lexemes.value!!.map { it.id.toLong() }
-                if (isChecked) tracker.setItemsSelected(items, true)
-                if (!isChecked) tracker.clearSelection()
+            selectAllCheckbox.setOnClickListener {
+                if (!selectAllCheckbox.isChecked) tracker.clearSelection()
+                else {
+                    val items = viewModel.lexemes.value!!.map { it.id }
+                    tracker.setItemsSelected(items, true)
+                }
             }
 
             addLexeme.setOnClickListener {
-                val action =
-                    DictionaryFragmentDirections.actionDictionaryFragmentToAddLexemeFragment()
+                val action = DictionaryFragmentDirections.actionDictionaryFragmentToAddLexemeFragment()
                 safeNavigate(action)
             }
         }
@@ -170,6 +171,14 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
                         }
                     }
                     isSelectionMode = isSelectionActive
+                }
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.allSelected.collect { allSelected ->
+                    binding.selectAllCheckbox.isChecked = allSelected
                 }
             }
         }
