@@ -86,7 +86,7 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
             }
 
             dictionaryToolbar.setNavigationOnClickListener {
-                if (!isSelectionMode) Navigation.findNavController(view).navigateUp()
+                Navigation.findNavController(view).navigateUp()
             }
 
             addLexeme.setOnClickListener {
