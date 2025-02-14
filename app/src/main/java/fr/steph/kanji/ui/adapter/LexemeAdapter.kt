@@ -54,9 +54,7 @@ class LexemeAdapter : ListAdapter<Lexeme, LexemeAdapter.LexemeViewHolder>(Lexeme
 
         fun setSelection(isSelectionMode: Boolean, isSelected: Boolean) {
             binding.selectionCheckbox.isVisible = isSelectionMode
-
             binding.isActivated = isSelected
-            binding.selectionCheckbox.isChecked = isSelected
         }
 
         fun getLexemeDetails(): ItemDetailsLookup.ItemDetails<Long> =

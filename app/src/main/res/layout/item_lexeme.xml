@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:button="@drawable/round_checkbox"
-            android:buttonTint="@{isActivated ? @color/navy_blue : @color/black}"
+            android:buttonTint="@{isActivated ? @color/navy_blue : @android:color/darker_gray}"
             android:checked="@{isActivated}"
             android:clickable="false"
             android:focusable="false"
@@ -27,7 +27,8 @@
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:buttonTint="@android:color/darker_gray" />
 
         <TextView
             android:id="@+id/lexeme_characters"
