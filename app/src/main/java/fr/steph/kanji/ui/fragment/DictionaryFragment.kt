@@ -51,6 +51,8 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
 
     private lateinit var tracker: SelectionTracker<Long>
 
+    private var isSelectionMode = false
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentDictionaryBinding.bind(view)
@@ -140,32 +142,35 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.selectionSize.collect { selectionSize ->
-                    val isSelectionMode = selectionSize != 0
+                    val isSelectionActive = selectionSize != 0
+                    val isDifferentMode = isSelectionMode != isSelectionActive
+
                     binding.run {
-                        translationCount.isVisible = !isSelectionMode
-                        selectAllLayout.isVisible = isSelectionMode
-                        addLexeme.isVisible = !isSelectionMode
-                        filterLexemes.isVisible = !isSelectionMode
-
-                        deleteLayout.isVisible = isSelectionMode
-
-                        val title = if (!isSelectionMode) "Dictionary" else "$selectionSize selected"
+                        val title = if (!isSelectionActive) "Dictionary" else "$selectionSize selected"
 
                         expandedTitle.text = title
                         collapsingToolbarLayout.title = title
-                    }
 
-                    if (isSelectionMode != lexemeAdapter.isSelectionMode) {
-                        lexemeAdapter.isSelectionMode = isSelectionMode
-                        val layoutManager = binding.recyclerView.layoutManager as LinearLayoutManager
-                        val first = layoutManager.findFirstVisibleItemPosition()
-                        val last = layoutManager.findLastVisibleItemPosition()
+                        if (isDifferentMode) {
+                            translationCount.isVisible = !isSelectionActive
+                            selectAllLayout.isVisible = isSelectionActive
+                            addLexeme.isVisible = !isSelectionActive
+                            filterLexemes.isVisible = !isSelectionActive
+                            deleteLayout.isVisible = isSelectionActive
 
-                        for (index in first..last) {
-                            val view = layoutManager.findViewByPosition(index)
-                            view?.findViewById<CheckBox>(R.id.selection_checkbox)?.isVisible = isSelectionMode
+                            lexemeAdapter.isSelectionMode = isSelectionActive
+                            val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                            val first = layoutManager.findFirstVisibleItemPosition()
+                            val last = layoutManager.findLastVisibleItemPosition()
+
+                            for (index in first..last) {
+                                val view = layoutManager.findViewByPosition(index)
+                                view?.findViewById<CheckBox>(R.id.selection_checkbox)?.isVisible = isSelectionActive
+                            }
                         }
                     }
+
+                    isSelectionMode = isSelectionActive
                 }
             }
         }
@@ -176,9 +181,8 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
             .onBackPressedDispatcher
             .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    if (viewModel.selectionSize.value != 0) {
+                    if (isSelectionMode)
                         tracker.clearSelection()
-                    }
                     else if (isEnabled) {
                         isEnabled = false
                         requireActivity().onBackPressedDispatcher.onBackPressed()
