@@ -140,6 +140,7 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
                     val isSelectionMode = selectionSize != 0
                     binding.run {
                         translationCount.isVisible = !isSelectionMode
+                        selectAllLayout.isVisible = isSelectionMode
                         addLexeme.isVisible = !isSelectionMode
                         filterLexemes.isVisible = !isSelectionMode
 
