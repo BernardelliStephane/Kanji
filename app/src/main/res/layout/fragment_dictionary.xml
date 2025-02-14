@@ -27,8 +27,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/app_bar_height"
                 app:collapsedTitleGravity="start"
-                app:collapsedTitleTextAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-                app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+                app:collapsedTitleTextAppearance="@style/Toolbar.CollapsedTitle"
+                app:expandedTitleMarginStart="@dimen/toolbar_title_start_inset"
+                app:expandedTitleTextAppearance="@style/Toolbar.CollapsedTitle"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
                 app:title="Dictionary"
                 app:titleCollapseMode="scale"
@@ -70,22 +71,26 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/select_all_layout"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|start">
+                    android:layout_height="?attr/actionBarSize"
+                    android:layout_gravity="bottom|start"
+                    android:visibility="gone">
 
                     <CheckBox
                         android:id="@+id/select_all_checkbox"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:button="@drawable/round_checkbox"
-                        app:buttonTint="@drawable/checkbox_tint" />
+                        app:buttonTint="@drawable/checkbox_tint"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/select_all_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="All"
+                        android:text="@string/select_all"
+                        android:textSize="@dimen/_10ssp"
                         app:layout_constraintBottom_toBottomOf="@id/select_all_checkbox"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"

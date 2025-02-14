@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+    <resources>
+    <style name="Toolbar.CollapsedTitle" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="Button.ToolbarMenuButton" parent="Widget.Material3.Button.IconButton">
         <item name="iconSize">24dp</item>
         <item name="iconTint">@color/black</item>

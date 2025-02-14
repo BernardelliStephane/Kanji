@@ -28,6 +28,7 @@
     <string name="search_kanji">Look for kanji</string>
     <string name="retry">Retry</string>
     <string name="delete">Delete</string>
+    <string name="select_all">All</string>
 
     <!-- Form hint -->
     <string name="meaning_hint">Meaning(s)</string>

@@ -94,9 +94,7 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
             }
 
             dictionaryToolbar.setNavigationOnClickListener {
-                if (viewModel.selectionSize.value != 0)
-                    tracker.clearSelection()
-                else Navigation.findNavController(view).navigateUp()
+                if (!isSelectionMode) Navigation.findNavController(view).navigateUp()
             }
 
             addLexeme.setOnClickListener {
@@ -152,6 +150,7 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
                         collapsingToolbarLayout.title = title
 
                         if (isDifferentMode) {
+                            dictionaryToolbar.navigationIcon?.alpha = if (isSelectionActive) 0 else 255
                             translationCount.isVisible = !isSelectionActive
                             selectAllLayout.isVisible = isSelectionActive
                             addLexeme.isVisible = !isSelectionActive
@@ -169,7 +168,6 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
                             }
                         }
                     }
-
                     isSelectionMode = isSelectionActive
                 }
             }
