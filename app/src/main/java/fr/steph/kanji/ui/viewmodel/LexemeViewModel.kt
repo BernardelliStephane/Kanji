@@ -46,7 +46,7 @@ abstract class LexemeViewModel(private val repo: LexemeRepository) : ViewModel()
 
     fun deleteLexemesById(selection: List<Long>) = viewModelScope.launch {
         repo.deleteLexemesById(selection).let {
-            if (it != 0)
+            if (it != selection.size)
                 validationEventChannel.send(ValidationEvent.Failure(R.string.room_deletion_failure))
             else validationEventChannel.send(ValidationEvent.Success)
         }
