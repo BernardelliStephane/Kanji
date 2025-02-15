@@ -3,14 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item_lexeme_layout"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/_60sdp"
-    android:background="@drawable/item_lexeme_background"
-    android:paddingVertical="@dimen/_20sdp">
+    android:layout_height="wrap_content"
+    android:paddingVertical="@dimen/_10sdp"
+    android:background="@drawable/item_lexeme_background">
 
     <CheckBox
         android:id="@+id/selection_checkbox"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:background="@android:color/transparent"
         android:button="@drawable/round_checkbox"
         android:clickable="false"
@@ -31,7 +31,7 @@
         android:textSize="@dimen/item_lexeme_text_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/lexeme_meaning"
-        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toEndOf="@id/selection_checkbox"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@string/home_kanji" />
@@ -46,7 +46,7 @@
         android:textSize="@dimen/item_lexeme_text_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_weight="3"
+        app:layout_constraintHorizontal_weight="2"
         app:layout_constraintStart_toEndOf="@id/lexeme_characters"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Home" />
