@@ -16,6 +16,9 @@ interface LexemeDao {
     @Delete
     suspend fun deleteLexeme(lexeme: Lexeme): Int
 
+    @Query("DELETE FROM lexeme WHERE id in (:selection)")
+    suspend fun deleteLexemesById(selection: List<Long>): Int
+
     // TODO rajouter les filtres (par type de lexeme etc)
     @Query("SELECT * FROM lexeme ORDER BY " +
             "CASE WHEN :isAsc = 0 THEN id END ASC, " +

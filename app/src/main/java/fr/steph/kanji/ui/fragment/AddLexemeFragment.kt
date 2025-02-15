@@ -45,7 +45,7 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
         }
 
         initViews()
-        initObservers(view)
+        initObservers()
     }
 
     private fun initViews() {
@@ -62,7 +62,7 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
         }
     }
 
-    private fun initObservers(view: View) {
+    private fun initObservers() {
         viewModel.lastKanjiFetch.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is ApiLexemeViewModel.Resource.Success ->
@@ -79,10 +79,8 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
             viewModel.validationEvents.collectLatest { event ->
                 when (event) {
                     is Failure ->
-                        Snackbar.make(view, event.failureMessage, Snackbar.LENGTH_SHORT).show()
-
-                    is Success ->
-                        Navigation.findNavController(view).navigateUp()
+                        Snackbar.make(requireView(), event.failureMessage, Snackbar.LENGTH_SHORT).show()
+                    is Success -> Navigation.findNavController(requireView()).navigateUp()
                 }
             }
         }

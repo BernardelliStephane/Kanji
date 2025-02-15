@@ -17,6 +17,7 @@ import androidx.recyclerview.selection.SelectionPredicates
 import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.selection.StorageStrategy
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import fr.steph.kanji.KanjiApplication
 import fr.steph.kanji.R
 import fr.steph.kanji.databinding.FragmentDictionaryBinding
@@ -25,7 +26,10 @@ import fr.steph.kanji.ui.utils.recyclerview_selection.LexemeDetailsLookup
 import fr.steph.kanji.ui.utils.recyclerview_selection.LexemeKeyProvider
 import fr.steph.kanji.ui.utils.viewModelFactory
 import fr.steph.kanji.ui.viewmodel.DictionaryViewModel
+import fr.steph.kanji.ui.viewmodel.LexemeViewModel.ValidationEvent.Failure
+import fr.steph.kanji.ui.viewmodel.LexemeViewModel.ValidationEvent.Success
 import fr.steph.kanji.utils.extension.safeNavigate
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
@@ -100,6 +104,10 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
             addLexeme.setOnClickListener {
                 val action = DictionaryFragmentDirections.actionDictionaryFragmentToAddLexemeFragment()
                 safeNavigate(action)
+            }
+
+            deleteButton.setOnClickListener {
+                viewModel.deleteLexemesById(tracker.selection.toList())
             }
         }
     }
@@ -179,6 +187,16 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.allSelected.collect { allSelected ->
                     binding.selectAllCheckbox.isChecked = allSelected
+                }
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.validationEvents.collectLatest { event ->
+                when (event) {
+                    is Failure ->
+                        Snackbar.make(requireView(), event.failureMessage, Snackbar.LENGTH_SHORT).show()
+                    is Success -> tracker.clearSelection()
                 }
             }
         }

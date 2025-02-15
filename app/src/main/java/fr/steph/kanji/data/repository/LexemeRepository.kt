@@ -13,6 +13,9 @@ class LexemeRepository(private val lexemeDao: LexemeDao) {
     suspend fun deleteLexeme(lexeme: Lexeme) =
         lexemeDao.deleteLexeme(lexeme)
 
+    suspend fun deleteLexemesById(selection: List<Long>) =
+        lexemeDao.deleteLexemesById(selection)
+
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
     suspend fun lexemesOrderedById(sortOrder: SortOrder) =
