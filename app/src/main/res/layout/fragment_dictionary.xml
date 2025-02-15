@@ -70,7 +70,7 @@
                     android:layout_gravity="bottom|start"
                     android:layout_marginStart="@dimen/toolbar_title_start_inset"
                     android:gravity="center_vertical"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/select_all_layout"
@@ -170,7 +170,7 @@
             android:layout_height="wrap_content"
             android:paddingHorizontal="@dimen/_60sdp"
             android:text="@string/delete"
-            app:icon="@drawable/ic_search"
+            app:icon="@drawable/ic_delete"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
