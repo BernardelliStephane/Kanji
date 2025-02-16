@@ -22,6 +22,7 @@ import fr.steph.kanji.KanjiApplication
 import fr.steph.kanji.R
 import fr.steph.kanji.databinding.FragmentDictionaryBinding
 import fr.steph.kanji.ui.adapter.LexemeAdapter
+import fr.steph.kanji.ui.utils.autoCleared
 import fr.steph.kanji.ui.utils.recyclerview_selection.LexemeDetailsLookup
 import fr.steph.kanji.ui.utils.recyclerview_selection.LexemeKeyProvider
 import fr.steph.kanji.ui.utils.viewModelFactory
@@ -34,8 +35,7 @@ import kotlinx.coroutines.launch
 
 class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
 
-    private var _binding: FragmentDictionaryBinding? = null
-    private val binding get() = _binding!!
+    private var binding: FragmentDictionaryBinding by autoCleared()
 
     private val viewModel: DictionaryViewModel by viewModels {
         val app = (activity?.application as KanjiApplication)
@@ -58,7 +58,7 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentDictionaryBinding.bind(view)
+        binding = FragmentDictionaryBinding.bind(view)
 
         initViews(view)
         initTracker(savedInstanceState)
@@ -220,10 +220,5 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         tracker.onSaveInstanceState(outState)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

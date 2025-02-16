@@ -13,6 +13,7 @@ import fr.steph.kanji.KanjiApplication
 import fr.steph.kanji.R
 import fr.steph.kanji.databinding.FragmentAddLexemeBinding
 import fr.steph.kanji.ui.uistate.AddLexemeFormEvent
+import fr.steph.kanji.ui.utils.autoCleared
 import fr.steph.kanji.ui.utils.viewModelFactory
 import fr.steph.kanji.ui.viewmodel.AddLexemeViewModel
 import fr.steph.kanji.ui.viewmodel.ApiLexemeViewModel
@@ -23,8 +24,7 @@ import kotlinx.coroutines.launch
 
 class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
 
-    private var _binding: FragmentAddLexemeBinding? = null
-    private val binding get() = _binding!!
+    private var binding: FragmentAddLexemeBinding by autoCleared()
 
     private val viewModel: AddLexemeViewModel by viewModels {
         val app = (activity?.application as KanjiApplication)
@@ -35,7 +35,7 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentAddLexemeBinding.bind(view)
+        binding = FragmentAddLexemeBinding.bind(view)
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
@@ -84,10 +84,5 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
                 }
             }
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }
