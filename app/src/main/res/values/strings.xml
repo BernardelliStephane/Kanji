@@ -21,6 +21,9 @@
         <item quantity="one">Delete %d element from your dictionary?</item>
         <item quantity="other">Delete %d elements from your dictionary?</item>
     </plurals>
+    <string name="dictionary_title_default">Dictionary</string>
+    <string name="dictionary_title_empty_selection">Select items</string>
+    <string name="dictionary_title_selection">%d selected</string>
     <string name="warning_prefilled_fields">Below fields have been pre-filled and can\'t be edited</string>
 
     <!-- Button -->

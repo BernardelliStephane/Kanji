@@ -165,10 +165,10 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.selectionSize.collect { selectionSize ->
+                    if (!viewModel.isSelectionMode.value) return@collect
                     val title =
-                        if (!viewModel.isSelectionMode.value) "Dictionary"
-                        else if (selectionSize == 0) "Select items"
-                        else "$selectionSize selected"
+                        if (selectionSize == 0) resources.getString(R.string.dictionary_title_empty_selection)
+                        else resources.getString(R.string.dictionary_title_selection, selectionSize)
                     binding.expandedTitle.text = title
                     binding.collapsedTitle.text = title
                 }
@@ -182,6 +182,11 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
                     isSelectionActive = isSelectionMode
 
                     binding.run {
+                        if (!isSelectionMode) {
+                            expandedTitle.text = resources.getString(R.string.dictionary_title_default)
+                            collapsedTitle.text = resources.getString(R.string.dictionary_title_default)
+                        }
+
                         dictionaryToolbar.navigationIcon =
                             if (isSelectionMode) null
                             else ResourcesCompat.getDrawable(resources, R.drawable.ic_back, null)
