@@ -48,9 +48,13 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
 
     private var lexemeAdapter = LexemeAdapter().apply {
         itemClickedCallback = { lexeme ->
-            //TODO Display details fragment
-            Toast.makeText(requireContext(), "Details fragment should open", Toast.LENGTH_SHORT)
-                .show()
+            if (isSelectionActive)
+                tracker?.select(lexeme.id)
+            else {
+                //TODO Display details fragment
+                Toast.makeText(requireContext(), "Details fragment should open", Toast.LENGTH_SHORT)
+                    .show()
+            }
         }
     }
 
@@ -98,7 +102,7 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
             }
 
             selectAllCheckbox.setOnClickListener {
-                if (!selectAllCheckbox.isChecked) tracker.clearSelection()
+                if (!selectAllCheckbox.isChecked) clearSelection()
                 else {
                     val items = viewModel.lexemes.value!!.map { it.id }
                     tracker.setItemsSelected(items, true)
@@ -153,7 +157,7 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
             viewModel.validationEvents.collectLatest { event ->
                 when (event) {
                     is Failure -> Snackbar.make(requireView(), event.failureMessage, Snackbar.LENGTH_SHORT).show()
-                    is Success -> tracker.clearSelection()
+                    is Success -> clearSelection(true)
                 }
             }
         }
@@ -161,9 +165,10 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.selectionSize.collect { selectionSize ->
-                    val isSelectionMode = selectionSize != 0
-
-                    val title = if (!isSelectionMode) "Dictionary" else "$selectionSize selected"
+                    val title =
+                        if (!viewModel.isSelectionMode.value) "Dictionary"
+                        else if (selectionSize == 0) "Select items"
+                        else "$selectionSize selected"
                     binding.expandedTitle.text = title
                     binding.collapsedTitle.text = title
                 }
@@ -173,31 +178,28 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.isSelectionMode.collect { isSelectionMode ->
-                    val isDifferentMode = isSelectionMode != isSelectionActive
+                    if (isSelectionMode == isSelectionActive) return@collect
+                    isSelectionActive = isSelectionMode
 
-                    if (isDifferentMode) {
-                        isSelectionActive = isSelectionMode
+                    binding.run {
+                        dictionaryToolbar.navigationIcon =
+                            if (isSelectionMode) null
+                            else ResourcesCompat.getDrawable(resources, R.drawable.ic_back, null)
 
-                        binding.run {
-                            dictionaryToolbar.navigationIcon =
-                                if (isSelectionMode) null
-                                else ResourcesCompat.getDrawable(resources, R.drawable.ic_back, null)
+                        translationCount.isVisible = !isSelectionMode
+                        selectAllLayout.isVisible = isSelectionMode
+                        addLexeme.isVisible = !isSelectionMode
+                        filterLexemes.isVisible = !isSelectionMode
+                        deleteLayout.isVisible = isSelectionMode
 
-                            translationCount.isVisible = !isSelectionMode
-                            selectAllLayout.isVisible = isSelectionMode
-                            addLexeme.isVisible = !isSelectionMode
-                            filterLexemes.isVisible = !isSelectionMode
-                            deleteLayout.isVisible = isSelectionMode
+                        lexemeAdapter.isSelectionMode = isSelectionMode
+                        val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                        val first = layoutManager.findFirstVisibleItemPosition()
+                        val last = layoutManager.findLastVisibleItemPosition()
 
-                            lexemeAdapter.isSelectionMode = isSelectionMode
-                            val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-                            val first = layoutManager.findFirstVisibleItemPosition()
-                            val last = layoutManager.findLastVisibleItemPosition()
-
-                            for (index in first..last) {
-                                val view = layoutManager.findViewByPosition(index)
-                                view?.findViewById<CheckBox>(R.id.selection_checkbox)?.isVisible = isSelectionMode
-                            }
+                        for (index in first..last) {
+                            val view = layoutManager.findViewByPosition(index)
+                            view?.findViewById<CheckBox>(R.id.selection_checkbox)?.isVisible = isSelectionMode
                         }
                     }
                 }
@@ -222,13 +224,18 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
         }
     }
 
+    private fun clearSelection(disableSelectionMode: Boolean = false) {
+        if (disableSelectionMode) viewModel.disableSelectionMode()
+        tracker.clearSelection()
+    }
+
     private fun handleBackPressed() {
         requireActivity()
             .onBackPressedDispatcher
             .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     if (isSelectionActive)
-                        tracker.clearSelection()
+                        clearSelection(true)
                     else if (isEnabled) {
                         isEnabled = false
                         requireActivity().onBackPressedDispatcher.onBackPressed()

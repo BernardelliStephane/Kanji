@@ -21,7 +21,11 @@ class DictionaryViewModel(repo: LexemeRepository) : LexemeViewModel(repo) {
         .stateIn(viewModelScope, SharingStarted.Lazily, false)
 
     fun onSelectionChanged(selectionSize: Int) {
+        _isSelectionMode.update { it || selectionSize > 0 }
         _selectionSize.update { selectionSize }
-        _isSelectionMode.update { selectionSize > 0 }
+    }
+
+    fun disableSelectionMode() {
+        _isSelectionMode.update { false }
     }
 }
