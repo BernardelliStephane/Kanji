@@ -22,6 +22,8 @@ import fr.steph.kanji.KanjiApplication
 import fr.steph.kanji.R
 import fr.steph.kanji.databinding.FragmentDictionaryBinding
 import fr.steph.kanji.ui.adapter.LexemeAdapter
+import fr.steph.kanji.ui.dialog.ConfirmDeletionDialogFragment
+import fr.steph.kanji.ui.dialog.DELETE_DIALOG_TAG
 import fr.steph.kanji.ui.utils.autoCleared
 import fr.steph.kanji.ui.utils.recyclerview_selection.LexemeDetailsLookup
 import fr.steph.kanji.ui.utils.recyclerview_selection.LexemeKeyProvider
@@ -61,8 +63,10 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
         binding = FragmentDictionaryBinding.bind(view)
 
         initViews(view)
-        initTracker(savedInstanceState)
+        initTracker()
         initObservers()
+
+        restoreInstanceState(savedInstanceState)
 
         handleBackPressed()
     }
@@ -107,12 +111,15 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
             }
 
             deleteButton.setOnClickListener {
-                viewModel.deleteLexemesById(tracker.selection.toList())
+                val selection = tracker.selection
+                ConfirmDeletionDialogFragment.newInstance(selection.size())
+                    .setConfirmCallback { viewModel.deleteLexemesById(selection.toList()) }
+                    .show(parentFragmentManager, DELETE_DIALOG_TAG)
             }
         }
     }
 
-    private fun initTracker(savedInstanceState: Bundle?) {
+    private fun initTracker() {
         tracker = SelectionTracker.Builder(
             "lexeme_selection", binding.recyclerView,
             LexemeKeyProvider(binding.recyclerView), LexemeDetailsLookup(binding.recyclerView),
@@ -130,14 +137,12 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
             })
 
         lexemeAdapter.tracker = tracker
-
-        tracker.onRestoreInstanceState(savedInstanceState)
     }
 
     private fun initObservers() {
         viewModel.lexemes.observe(viewLifecycleOwner) { lexemes ->
             binding.translationCount.text = resources.getQuantityString(
-                R.plurals.translation_count_text,
+                R.plurals.translation_count,
                 lexemes.size,
                 lexemes.size
             )
@@ -194,11 +199,19 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.validationEvents.collectLatest { event ->
                 when (event) {
-                    is Failure ->
-                        Snackbar.make(requireView(), event.failureMessage, Snackbar.LENGTH_SHORT).show()
+                    is Failure -> Snackbar.make(requireView(), event.failureMessage, Snackbar.LENGTH_SHORT).show()
                     is Success -> tracker.clearSelection()
                 }
             }
+        }
+    }
+
+    private fun restoreInstanceState(savedInstanceState: Bundle?) {
+        savedInstanceState?.run {
+            tracker.onRestoreInstanceState(savedInstanceState)
+
+            val dialog = parentFragmentManager.findFragmentByTag(DELETE_DIALOG_TAG) as? ConfirmDeletionDialogFragment
+            dialog?.setConfirmCallback { viewModel.deleteLexemesById(tracker.selection.toList()) }
         }
     }
 

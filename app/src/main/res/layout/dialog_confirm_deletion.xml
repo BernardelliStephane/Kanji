@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/confirmation_dialog_background"
+    android:maxWidth="@dimen/_360sdp"
+    android:padding="@dimen/_10sdp">
+
+    <TextView
+        android:id="@+id/dialog_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Delete 10 elements from your dictionary?" />
+
+    <Button
+        android:id="@+id/dialog_cancel_button"
+        style="@style/FormActionButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:text="@string/cancel"
+        app:layout_constraintEnd_toStartOf="@id/dialog_delete_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialog_text" />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:layout_marginVertical="@dimen/_15sdp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintBottom_toBottomOf="@id/dialog_cancel_button"
+        app:layout_constraintEnd_toStartOf="@id/dialog_cancel_button"
+        app:layout_constraintStart_toEndOf="@id/dialog_delete_button"
+        app:layout_constraintTop_toTopOf="@id/dialog_cancel_button" />
+
+    <Button
+        android:id="@+id/dialog_delete_button"
+        style="@style/FormActionButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:text="@string/delete"
+        android:textColor="@android:color/holo_red_dark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/dialog_cancel_button"
+        app:layout_constraintTop_toBottomOf="@id/dialog_text" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

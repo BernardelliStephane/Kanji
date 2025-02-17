@@ -13,9 +13,13 @@
     <string name="conversion_error">Conversion error</string>
 
     <!-- Text -->
-    <plurals name="translation_count_text">
+    <plurals name="translation_count">
         <item quantity="one">%d translation</item>
         <item quantity="other">%d translations</item>
+    </plurals>
+    <plurals name="item_deletion_count">
+        <item quantity="one">Delete %d element from your dictionary?</item>
+        <item quantity="other">Delete %d elements from your dictionary?</item>
     </plurals>
     <string name="warning_prefilled_fields">Below fields have been pre-filled and can\'t be edited</string>
 
