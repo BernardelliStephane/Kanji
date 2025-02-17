@@ -106,6 +106,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="?attr/actionBarSize"
                     android:layout_gravity="bottom|end"
+                    android:divider="@drawable/option_layout_divider"
+                    android:showDividers="middle"
                     android:layout_marginEnd="@dimen/_20sdp">
 
                     <Button
@@ -123,7 +125,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginStart="@dimen/dictionary_action_button_marginStart"
                         android:contentDescription="@string/search_translation"
                         app:icon="@drawable/ic_search" />
 
@@ -133,7 +134,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginStart="@dimen/dictionary_action_button_marginStart"
                         android:contentDescription="@string/add_translation"
                         app:icon="@drawable/ic_add" />
 
