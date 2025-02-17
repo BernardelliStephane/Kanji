@@ -56,7 +56,7 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
 
     private lateinit var tracker: SelectionTracker<Long>
 
-    private var isSelectionMode = false
+    private var isSelectionActive = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -150,40 +150,56 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.validationEvents.collectLatest { event ->
+                when (event) {
+                    is Failure -> Snackbar.make(requireView(), event.failureMessage, Snackbar.LENGTH_SHORT).show()
+                    is Success -> tracker.clearSelection()
+                }
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.selectionSize.collect { selectionSize ->
-                    val isSelectionActive = selectionSize != 0
+                    val isSelectionMode = selectionSize != 0
+
+                    val title = if (!isSelectionMode) "Dictionary" else "$selectionSize selected"
+                    binding.expandedTitle.text = title
+                    binding.collapsedTitle.text = title
+                }
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.isSelectionMode.collect { isSelectionMode ->
                     val isDifferentMode = isSelectionMode != isSelectionActive
 
-                    binding.run {
-                        val title = if (!isSelectionActive) "Dictionary" else "$selectionSize selected"
+                    if (isDifferentMode) {
+                        isSelectionActive = isSelectionMode
 
-                        expandedTitle.text = title
-                        collapsedTitle.text = title
-
-                        if (isDifferentMode) {
+                        binding.run {
                             dictionaryToolbar.navigationIcon =
-                                if (isSelectionActive) null
+                                if (isSelectionMode) null
                                 else ResourcesCompat.getDrawable(resources, R.drawable.ic_back, null)
 
-                            translationCount.isVisible = !isSelectionActive
-                            selectAllLayout.isVisible = isSelectionActive
-                            addLexeme.isVisible = !isSelectionActive
-                            filterLexemes.isVisible = !isSelectionActive
-                            deleteLayout.isVisible = isSelectionActive
+                            translationCount.isVisible = !isSelectionMode
+                            selectAllLayout.isVisible = isSelectionMode
+                            addLexeme.isVisible = !isSelectionMode
+                            filterLexemes.isVisible = !isSelectionMode
+                            deleteLayout.isVisible = isSelectionMode
 
-                            lexemeAdapter.isSelectionMode = isSelectionActive
+                            lexemeAdapter.isSelectionMode = isSelectionMode
                             val layoutManager = recyclerView.layoutManager as LinearLayoutManager
                             val first = layoutManager.findFirstVisibleItemPosition()
                             val last = layoutManager.findLastVisibleItemPosition()
 
                             for (index in first..last) {
                                 val view = layoutManager.findViewByPosition(index)
-                                view?.findViewById<CheckBox>(R.id.selection_checkbox)?.isVisible = isSelectionActive
+                                view?.findViewById<CheckBox>(R.id.selection_checkbox)?.isVisible = isSelectionMode
                             }
                         }
                     }
-                    isSelectionMode = isSelectionActive
                 }
             }
         }
@@ -192,15 +208,6 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.allSelected.collect { allSelected ->
                     binding.selectAllCheckbox.isChecked = allSelected
-                }
-            }
-        }
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.validationEvents.collectLatest { event ->
-                when (event) {
-                    is Failure -> Snackbar.make(requireView(), event.failureMessage, Snackbar.LENGTH_SHORT).show()
-                    is Success -> tracker.clearSelection()
                 }
             }
         }
@@ -220,7 +227,7 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
             .onBackPressedDispatcher
             .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    if (isSelectionMode)
+                    if (isSelectionActive)
                         tracker.clearSelection()
                     else if (isEnabled) {
                         isEnabled = false
