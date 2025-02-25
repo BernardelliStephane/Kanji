@@ -24,6 +24,7 @@ import fr.steph.kanji.databinding.FragmentDictionaryBinding
 import fr.steph.kanji.ui.adapter.LexemeAdapter
 import fr.steph.kanji.ui.dialog.ConfirmDeletionDialogFragment
 import fr.steph.kanji.ui.dialog.DELETE_DIALOG_TAG
+import fr.steph.kanji.ui.utils.StretchEdgeEffectFactory
 import fr.steph.kanji.ui.utils.autoCleared
 import fr.steph.kanji.ui.utils.recyclerview_selection.LexemeDetailsLookup
 import fr.steph.kanji.ui.utils.recyclerview_selection.LexemeKeyProvider
@@ -84,6 +85,7 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
                     startPostponedEnterTransition()
                     true
                 }
+                edgeEffectFactory = StretchEdgeEffectFactory()
             }
 
             appBar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
