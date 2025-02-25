@@ -50,7 +50,7 @@
                         android:id="@+id/expanded_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Dictionary"
+                        android:text="@string/dictionary_title_default"
                         android:textSize="@dimen/_30ssp"
                         android:textStyle="bold" />
 
@@ -69,7 +69,9 @@
                     android:layout_height="?attr/actionBarSize"
                     android:layout_gravity="bottom|start"
                     android:layout_marginStart="@dimen/toolbar_title_start_inset"
+                    android:alpha="0"
                     android:gravity="center_vertical"
+                    android:text="@string/dictionary_title_default"
                     android:textStyle="bold" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -106,9 +108,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="?attr/actionBarSize"
                     android:layout_gravity="bottom|end"
+                    android:layout_marginEnd="@dimen/_20sdp"
                     android:divider="@drawable/option_layout_divider"
-                    android:showDividers="middle"
-                    android:layout_marginEnd="@dimen/_20sdp">
+                    android:showDividers="middle">
 
                     <Button
                         android:id="@+id/filter_lexemes"
