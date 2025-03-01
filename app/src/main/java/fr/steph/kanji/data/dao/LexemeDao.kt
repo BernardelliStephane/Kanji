@@ -19,6 +19,12 @@ interface LexemeDao {
     @Query("DELETE FROM lexeme WHERE id in (:selection)")
     suspend fun deleteLexemesFromSelection(selection: List<Long>): Int
 
+    @Query("SELECT * FROM lexeme WHERE " +
+            "lower(meaning) LIKE '%' || :query || '%' OR " +
+            "romaji LIKE '%' || :query || '%' OR " +
+            "characters LIKE '%' || :query || '%'")
+    fun searchLexemes(query: String): Flow<List<Lexeme>>
+
     // TODO rajouter les filtres (par type de lexeme etc)
     @Query("SELECT * FROM lexeme ORDER BY " +
             "CASE WHEN :isAsc = 0 THEN id END ASC, " +

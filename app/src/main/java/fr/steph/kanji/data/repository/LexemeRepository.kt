@@ -18,6 +18,11 @@ class LexemeRepository(private val lexemeDao: LexemeDao) {
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
+    suspend fun searchLexemes(query: String) =
+        lexemeDao.searchLexemes(query)
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
     suspend fun lexemesOrderedById(sortOrder: SortOrder) =
         lexemeDao.lexemesOrderedById(sortOrder.index)
 

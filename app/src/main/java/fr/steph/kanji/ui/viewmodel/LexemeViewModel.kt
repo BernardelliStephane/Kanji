@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 const val FAILURE = -1L
@@ -39,6 +40,12 @@ abstract class LexemeViewModel(private val repo: LexemeRepository) : ViewModel()
 
     private val validationEventChannel = Channel<ValidationEvent>()
     val validationEvents = validationEventChannel.receiveAsFlow()
+
+    fun updateFilter(query: String) {
+        _filterOptions.update { options ->
+            options.copy(searchQuery = query)
+        }
+    }
 
     fun upsertLexeme(lexeme: Lexeme) = viewModelScope.launch {
         repo.upsertLexeme(lexeme).let {

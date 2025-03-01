@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.CheckBox
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.widget.SearchView
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -116,6 +117,15 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
                 val action = DictionaryFragmentDirections.actionDictionaryFragmentToAddLexemeFragment()
                 safeNavigate(action)
             }
+
+            searchView.setOnQueryTextListener (object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String): Boolean { return false }
+
+                override fun onQueryTextChange(newText: String): Boolean {
+                    viewModel.updateFilter(newText.lowercase())
+                    return false
+                }
+            })
 
             deleteButton.setOnClickListener {
                 val selection = tracker.selection

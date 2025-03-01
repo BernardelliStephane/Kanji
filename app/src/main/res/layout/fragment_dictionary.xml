@@ -122,15 +122,6 @@
                         app:icon="@drawable/ic_filter" />
 
                     <Button
-                        android:id="@+id/search_lexeme"
-                        style="@style/Button.ToolbarMenuButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:contentDescription="@string/search_translation"
-                        app:icon="@drawable/ic_search" />
-
-                    <Button
                         android:id="@+id/add_lexeme"
                         style="@style/Button.ToolbarMenuButton"
                         android:layout_width="wrap_content"
@@ -142,6 +133,17 @@
                 </LinearLayout>
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/search_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:background="@drawable/rounded_corners_background"
+                app:iconifiedByDefault="false"
+                app:queryBackground="@android:color/transparent"
+                app:queryHint="@string/search_translation" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
