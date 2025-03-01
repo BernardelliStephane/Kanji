@@ -6,8 +6,8 @@
     <color name="yellow">#FFF7E728</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFF1F2F2</color>
-    <color name="light_gray">#FFDDDDDD</color>
-    <color name="gray">#FFBBBBBB</color>
+    <color name="light_grey">#FFDDDDDD</color>
+    <color name="grey">#FFBBBBBB</color>
 
     <color name="highlight">#1F000000</color>
 </resources>

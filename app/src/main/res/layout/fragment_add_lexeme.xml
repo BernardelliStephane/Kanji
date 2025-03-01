@@ -57,6 +57,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/add_lexeme_half_margin"
+                    android:backgroundTint="?attr/colorPrimaryVariant"
                     android:onClick="@{() -> viewModel.onSearchClicked()}"
                     android:text="@string/search_kanji"
                     android:visibility="@{viewModel.uiState.charactersLoneKanji &amp;&amp; !viewModel.uiState.charactersFetched}"

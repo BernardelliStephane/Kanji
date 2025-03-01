@@ -24,9 +24,7 @@
     </style>
 
     <style name="TextInputLayout.FormField" parent="Widget.Material3.TextInputLayout.FilledBox">
-        <item name="boxBackgroundColor">@color/light_gray</item>
-        <item name="boxStrokeColor">?attr/colorPrimaryVariant</item>
-        <item name="cursorColor">?attr/colorPrimaryVariant</item>
-        <item name="hintTextColor">?attr/colorPrimaryVariant</item>
+        <item name="boxBackgroundColor">@color/light_grey</item>
+    </style>
     </style>
 </resources>

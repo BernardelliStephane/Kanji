@@ -12,7 +12,7 @@
         android:id="@+id/button_learn"
         android:layout_width="@dimen/home_button_size"
         android:layout_height="@dimen/home_button_size"
-        app:cardBackgroundColor="?attr/colorPrimary"
+        app:cardBackgroundColor="?attr/colorPrimaryVariant"
         app:cardCornerRadius="10dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
