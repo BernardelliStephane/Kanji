@@ -7,7 +7,7 @@ import fr.steph.kanji.R
 import fr.steph.kanji.data.model.Lexeme
 import fr.steph.kanji.data.repository.LexemeRepository
 import fr.steph.kanji.data.utils.enumeration.SortField
-import fr.steph.kanji.data.utils.enumeration.SortOrder
+import fr.steph.kanji.ui.uistate.FilterOptions
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,12 +22,16 @@ const val FAILURE = -1L
 @OptIn(ExperimentalCoroutinesApi::class)
 abstract class LexemeViewModel(private val repo: LexemeRepository) : ViewModel() {
 
-    private val _sortType = MutableStateFlow(Pair(SortField.ID, SortOrder.ASCENDING))
-    private val _lexemes = _sortType.flatMapLatest {
-        when (it.first) {
-            SortField.ID -> repo.lexemesOrderedById(it.second)
-            SortField.ROMAJI -> repo.lexemesOrderedByRomaji(it.second)
-            SortField.MEANING -> repo.lexemesOrderedByTranslation(it.second)
+    private val _filterOptions = MutableStateFlow(FilterOptions())
+
+    private val _lexemes = _filterOptions.flatMapLatest { options ->
+        if (options.searchQuery.isNotBlank())
+            return@flatMapLatest repo.searchLexemes(options.searchQuery)
+
+        when (options.sortField) {
+            SortField.ID -> repo.lexemesOrderedById(options.sortOrder)
+            SortField.ROMAJI -> repo.lexemesOrderedByRomaji(options.sortOrder)
+            SortField.MEANING -> repo.lexemesOrderedByTranslation(options.sortOrder)
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
