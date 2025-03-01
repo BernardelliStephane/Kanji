@@ -13,8 +13,8 @@ class LexemeRepository(private val lexemeDao: LexemeDao) {
     suspend fun deleteLexeme(lexeme: Lexeme) =
         lexemeDao.deleteLexeme(lexeme)
 
-    suspend fun deleteLexemesById(selection: List<Long>) =
-        lexemeDao.deleteLexemesById(selection)
+    suspend fun deleteLexemesFromSelection(selection: List<Long>) =
+        lexemeDao.deleteLexemesFromSelection(selection)
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread

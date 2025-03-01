@@ -38,7 +38,7 @@ class LexemeAdapter : ListAdapter<Lexeme, LexemeAdapter.LexemeViewHolder>(Lexeme
             holder.setSelection(isSelectionMode, isSelected)
     }
 
-    override fun getItemId(position: Int) = getItem(position).id.toLong()
+    override fun getItemId(position: Int) = getItem(position).id
 
     class LexemeViewHolder(private val binding: ItemLexemeBinding) :
         RecyclerView.ViewHolder(binding.root) {

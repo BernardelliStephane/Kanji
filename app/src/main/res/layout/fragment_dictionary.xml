@@ -108,7 +108,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="?attr/actionBarSize"
                     android:layout_gravity="bottom|end"
-                    android:layout_marginEnd="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
                     android:divider="@drawable/option_layout_divider"
                     android:showDividers="middle">
 

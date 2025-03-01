@@ -85,6 +85,7 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
                     startPostponedEnterTransition()
                     true
                 }
+                itemAnimator = null
                 edgeEffectFactory = StretchEdgeEffectFactory()
             }
 
@@ -119,7 +120,7 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
             deleteButton.setOnClickListener {
                 val selection = tracker.selection
                 ConfirmDeletionDialogFragment.newInstance(selection.size())
-                    .setConfirmCallback { viewModel.deleteLexemesById(selection.toList()) }
+                    .setConfirmCallback { viewModel.deleteLexemesFromSelection(selection.toList()) }
                     .show(parentFragmentManager, DELETE_DIALOG_TAG)
             }
         }
@@ -227,7 +228,7 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
             tracker.onRestoreInstanceState(savedInstanceState)
 
             val dialog = parentFragmentManager.findFragmentByTag(DELETE_DIALOG_TAG) as? ConfirmDeletionDialogFragment
-            dialog?.setConfirmCallback { viewModel.deleteLexemesById(tracker.selection.toList()) }
+            dialog?.setConfirmCallback { viewModel.deleteLexemesFromSelection(tracker.selection.toList()) }
         }
     }
 
