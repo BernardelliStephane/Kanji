@@ -70,85 +70,88 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentDictionaryBinding.bind(view)
 
-        initViews(view)
-        initTracker()
-        initObservers()
+        setupRecyclerView()
+        setupListeners()
+        setupTracker()
+        setupObservers()
 
         restoreInstanceState(savedInstanceState)
 
         handleBackPressed()
     }
 
-    private fun initViews(view: View) {
-        binding.run {
-            recyclerView.apply {
-                adapter = lexemeAdapter
-                postponeEnterTransition()
-                viewTreeObserver.addOnPreDrawListener {
-                    startPostponedEnterTransition()
-                    true
+    private fun setupRecyclerView() = binding.recyclerView.apply {
+        adapter = lexemeAdapter
+        postponeEnterTransition()
+        viewTreeObserver.addOnPreDrawListener {
+            startPostponedEnterTransition()
+            true
+        }
+        itemAnimator = null
+        edgeEffectFactory = StretchEdgeEffectFactory()
+    }
+
+    private fun setupListeners() = with(binding) {
+        appBar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
+            val range = appBarLayout.totalScrollRange
+            val displayRatio = (range + verticalOffset).toFloat() / range
+
+            // Ranges from 0 to 255 as the displayRatio goes from 0 to 0.5 | 0 above 0.5
+            collapsedTitle.alpha = 1 - (displayRatio * 2)
+
+            // Ranges from 1 to 0 as the displayRatio goes from 1 to 0.5 | 0 below 0.5
+            expandedTitleLayout.alpha = 1 - ((1 - displayRatio) * 2)
+        }
+
+        dictionaryToolbar.setNavigationOnClickListener {
+            Navigation.findNavController(requireView()).navigateUp()
+        }
+
+        filterLexemes.setOnClickListener {
+            // TODO display filtering popup
+        }
+
+        sortLexemes.setOnClickListener {
+            val sortingState = viewModel.getSortingState()
+            SortTranslationsDialogFragment
+                .newInstance(sortingState.sortField, sortingState.sortOrder)
+                .setConfirmCallback { sortField, sortOrder ->
+                    viewModel.updateSorting(sortField, sortOrder)
                 }
-                itemAnimator = null
-                edgeEffectFactory = StretchEdgeEffectFactory()
+                .show(parentFragmentManager, SORT_TRANSLATIONS_DIALOG_TAG)
+        }
+
+        addLexeme.setOnClickListener {
+            val action = DictionaryFragmentDirections.actionDictionaryFragmentToAddLexemeFragment()
+            safeNavigate(action)
+        }
+
+        searchView.setOnQueryTextListener (object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean { return false }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                viewModel.updateQuery(newText.lowercase())
+                return false
             }
+        })
 
-            appBar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
-                val range = appBarLayout.totalScrollRange
-                val displayRatio = (range + verticalOffset).toFloat() / range
-
-                // Ranges from 0 to 255 as the displayRatio goes from 0 to 0.5 | 0 above 0.5
-                collapsedTitle.alpha = 1 - (displayRatio * 2)
-
-                // Ranges from 1 to 0 as the displayRatio goes from 1 to 0.5 | 0 below 0.5
-                expandedTitleLayout.alpha = 1 - ((1 - displayRatio) * 2)
+        selectAllCheckbox.setOnClickListener {
+            if (!selectAllCheckbox.isChecked) clearSelection()
+            else {
+                val items = viewModel.lexemes.value!!.map { it.id }
+                tracker.setItemsSelected(items, true)
             }
+        }
 
-            dictionaryToolbar.setNavigationOnClickListener {
-                Navigation.findNavController(view).navigateUp()
-            }
-
-            selectAllCheckbox.setOnClickListener {
-                if (!selectAllCheckbox.isChecked) clearSelection()
-                else {
-                    val items = viewModel.lexemes.value!!.map { it.id }
-                    tracker.setItemsSelected(items, true)
-                }
-            }
-
-            sortLexemes.setOnClickListener {
-                val sortingState = viewModel.getSortingState()
-                SortTranslationsDialogFragment
-                    .newInstance(sortingState.sortField, sortingState.sortOrder)
-                    .setConfirmCallback { sortField, sortOrder ->
-                        viewModel.updateSorting(sortField, sortOrder)
-                    }
-                    .show(parentFragmentManager, SORT_TRANSLATIONS_DIALOG_TAG)
-            }
-
-            addLexeme.setOnClickListener {
-                val action = DictionaryFragmentDirections.actionDictionaryFragmentToAddLexemeFragment()
-                safeNavigate(action)
-            }
-
-            searchView.setOnQueryTextListener (object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String): Boolean { return false }
-
-                override fun onQueryTextChange(newText: String): Boolean {
-                    viewModel.updateQuery(newText.lowercase())
-                    return false
-                }
-            })
-
-            deleteButton.setOnClickListener {
-                val selection = tracker.selection
-                ConfirmDeletionDialogFragment.newInstance(selection.size())
-                    .setConfirmCallback { viewModel.deleteLexemesFromSelection(selection.toList()) }
-                    .show(parentFragmentManager, DELETE_DIALOG_TAG)
-            }
+        deleteButton.setOnClickListener {
+            val selection = tracker.selection
+            ConfirmDeletionDialogFragment.newInstance(selection.size())
+                .setConfirmCallback { viewModel.deleteLexemesFromSelection(selection.toList()) }
+                .show(parentFragmentManager, DELETE_DIALOG_TAG)
         }
     }
 
-    private fun initTracker() {
+    private fun setupTracker() {
         tracker = SelectionTracker.Builder(
             "lexeme_selection", binding.recyclerView,
             LexemeKeyProvider(binding.recyclerView), LexemeDetailsLookup(binding.recyclerView),
@@ -168,7 +171,7 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
         lexemeAdapter.tracker = tracker
     }
 
-    private fun initObservers() {
+    private fun setupObservers() {
         viewModel.lexemes.observe(viewLifecycleOwner) { lexemes ->
             binding.translationCount.text = resources.getQuantityString(
                 R.plurals.translation_count,

@@ -16,15 +16,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentHomeBinding.bind(view)
 
-        initializeViews()
+        setupListeners()
     }
 
-    private fun initializeViews() {
-        binding.apply {
-            buttonDictionary.view.setOnClickListener {
-                val action = HomeFragmentDirections.actionHomeFragmentToDictionaryFragment()
-                safeNavigate(action)
-            }
+    private fun setupListeners() = with(binding) {
+        buttonDictionary.view.setOnClickListener {
+            val action = HomeFragmentDirections.actionHomeFragmentToDictionaryFragment()
+            safeNavigate(action)
         }
     }
 }

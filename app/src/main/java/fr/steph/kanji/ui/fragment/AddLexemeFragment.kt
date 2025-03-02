@@ -40,29 +40,29 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-        binding.buttonCancel.setOnClickListener {
-            Navigation.findNavController(view).navigateUp()
-        }
-
-        initViews()
-        initObservers()
+        setupListeners()
+        setupObservers()
     }
 
-    private fun initViews() {
-        binding.charactersInput.doAfterTextChanged {
+    private fun setupListeners() = with(binding) {
+        buttonCancel.setOnClickListener {
+            Navigation.findNavController(requireView()).navigateUp()
+        }
+
+        charactersInput.doAfterTextChanged {
             viewModel.onEvent(AddLexemeFormEvent.CharactersChanged(it.toString()))
         }
 
-        binding.romajiInput.doAfterTextChanged {
+        romajiInput.doAfterTextChanged {
             viewModel.onEvent(AddLexemeFormEvent.RomajiChanged(it.toString()))
         }
 
-        binding.meaningInput.doAfterTextChanged {
+        meaningInput.doAfterTextChanged {
             viewModel.onEvent(AddLexemeFormEvent.MeaningChanged(it.toString()))
         }
     }
 
-    private fun initObservers() {
+    private fun setupObservers() {
         viewModel.lastKanjiFetch.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is ApiLexemeViewModel.Resource.Success ->
@@ -78,8 +78,7 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.validationEvents.collectLatest { event ->
                 when (event) {
-                    is Failure ->
-                        Snackbar.make(requireView(), event.failureMessage, Snackbar.LENGTH_SHORT).show()
+                    is Failure -> Snackbar.make(requireView(), event.failureMessage, Snackbar.LENGTH_SHORT).show()
                     is Success -> Navigation.findNavController(requireView()).navigateUp()
                 }
             }
