@@ -1,6 +1,5 @@
 package fr.steph.kanji.ui.dialog
 
-import android.os.Build
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
@@ -12,6 +11,7 @@ import fr.steph.kanji.data.utils.enumeration.SortField
 import fr.steph.kanji.data.utils.enumeration.SortOrder
 import fr.steph.kanji.databinding.DialogSortTranslationsBinding
 import fr.steph.kanji.ui.utils.autoCleared
+import fr.steph.kanji.utils.extension.getSerializable
 
 const val SORT_TRANSLATIONS_DIALOG_TAG = "sort_translations_dialog"
 
@@ -26,14 +26,8 @@ class SortTranslationsDialogFragment : DialogFragment(R.layout.dialog_sort_trans
         super.onViewCreated(view, savedInstanceState)
         binding = DialogSortTranslationsBinding.bind(view)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            sortField = requireArguments().getSerializable(ARG_DEFAULT_FIELD, SortField::class.java)!!
-            sortOrder = requireArguments().getSerializable(ARG_DEFAULT_ORDER, SortOrder::class.java)!!
-        }
-        else {
-            sortField = requireArguments().getSerializable(ARG_DEFAULT_FIELD) as SortField
-            sortOrder = requireArguments().getSerializable(ARG_DEFAULT_ORDER) as SortOrder
-        }
+        sortField = requireArguments().getSerializable<SortField>(ARG_DEFAULT_FIELD)!!
+        sortOrder = requireArguments().getSerializable<SortOrder>(ARG_DEFAULT_ORDER)!!
 
         dialog?.window?.apply {
             setLayout(MATCH_PARENT, WRAP_CONTENT)
@@ -41,34 +35,39 @@ class SortTranslationsDialogFragment : DialogFragment(R.layout.dialog_sort_trans
             decorView.background.alpha = 0
         }
 
-        binding.apply {
-            when (sortField) {
-                SortField.ID -> radioCreationDate.isChecked = true
-                SortField.ROMAJI -> radioRomaji.isChecked = true
-                SortField.MEANING -> radioTranslation.isChecked = true
+        setupUI()
+        setupListeners()
+    }
+
+    private fun setupUI() = with(binding) {
+        when (sortField) {
+            SortField.ID -> radioCreationDate.isChecked = true
+            SortField.ROMAJI -> radioRomaji.isChecked = true
+            SortField.MEANING -> radioTranslation.isChecked = true
+        }
+
+        when (sortOrder) {
+            SortOrder.ASCENDING -> radioAscending.isChecked = true
+            SortOrder.DESCENDING -> radioDescending.isChecked = true
+        }
+    }
+
+    private fun setupListeners() = with(binding) {
+        dialogCancelButton.setOnClickListener { dismiss() }
+        dialogDoneButton.setOnClickListener {
+            val sortField = when (sortBySelectionRadio.checkedRadioButtonId) {
+                R.id.radio_translation -> SortField.MEANING
+                R.id.radio_romaji -> SortField.ROMAJI
+                else -> SortField.ID
             }
 
-            if (sortOrder == SortOrder.ASCENDING) radioAscending.isChecked = true
-            else radioDescending.isChecked = true
-
-            dialogCancelButton.setOnClickListener { dismiss() }
-            dialogDoneButton.setOnClickListener {
-                val sortField = when(sortBySelectionRadio.checkedRadioButtonId) {
-                    R.id.radio_translation -> SortField.MEANING
-                    R.id.radio_romaji -> SortField.ROMAJI
-                    R.id.radio_creation_date -> SortField.ID
-                    else -> SortField.ID
-                }
-
-                val sortOrder = when(directionSelectionRadio.checkedRadioButtonId) {
-                    R.id.radio_ascending -> SortOrder.ASCENDING
-                    R.id.radio_descending -> SortOrder.DESCENDING
-                    else -> SortOrder.ASCENDING
-                }
-
-                confirmCallback?.invoke(sortField, sortOrder)
-                dismiss()
+            val sortOrder = when (directionSelectionRadio.checkedRadioButtonId) {
+                R.id.radio_ascending -> SortOrder.ASCENDING
+                else -> SortOrder.DESCENDING
             }
+
+            confirmCallback?.invoke(sortField, sortOrder)
+            dismiss()
         }
     }
 
