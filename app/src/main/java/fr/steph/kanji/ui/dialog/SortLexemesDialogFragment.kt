@@ -43,7 +43,7 @@ class SortLexemesDialogFragment : DialogFragment(R.layout.dialog_sort_lexemes) {
         when (sortField) {
             SortField.ID -> radioCreationDate.isChecked = true
             SortField.ROMAJI -> radioRomaji.isChecked = true
-            SortField.MEANING -> radioTranslation.isChecked = true
+            SortField.MEANING -> radioMeaning.isChecked = true
         }
 
         when (sortOrder) {

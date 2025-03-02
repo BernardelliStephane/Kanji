@@ -44,20 +44,20 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
         setupObservers()
     }
 
-    private fun setupListeners() = with(binding) {
-        buttonCancel.setOnClickListener {
+    private fun setupListeners() {
+        binding.buttonCancel.setOnClickListener {
             Navigation.findNavController(requireView()).navigateUp()
         }
 
-        charactersInput.doAfterTextChanged {
+        binding.charactersInput.doAfterTextChanged {
             viewModel.onEvent(AddLexemeFormEvent.CharactersChanged(it.toString()))
         }
 
-        romajiInput.doAfterTextChanged {
+        binding.romajiInput.doAfterTextChanged {
             viewModel.onEvent(AddLexemeFormEvent.RomajiChanged(it.toString()))
         }
 
-        meaningInput.doAfterTextChanged {
+        binding.meaningInput.doAfterTextChanged {
             viewModel.onEvent(AddLexemeFormEvent.MeaningChanged(it.toString()))
         }
     }
