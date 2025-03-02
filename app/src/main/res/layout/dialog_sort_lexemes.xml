@@ -28,7 +28,7 @@
         app:layout_constraintTop_toBottomOf="@id/sort_by_text">
 
         <RadioButton
-            android:id="@+id/radio_translation"
+            android:id="@+id/radio_meaning"
             style="@style/RadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

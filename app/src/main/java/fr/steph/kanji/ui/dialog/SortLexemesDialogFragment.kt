@@ -9,22 +9,22 @@ import androidx.fragment.app.DialogFragment
 import fr.steph.kanji.R
 import fr.steph.kanji.data.utils.enumeration.SortField
 import fr.steph.kanji.data.utils.enumeration.SortOrder
-import fr.steph.kanji.databinding.DialogSortTranslationsBinding
+import fr.steph.kanji.databinding.DialogSortLexemesBinding
 import fr.steph.kanji.ui.utils.autoCleared
 import fr.steph.kanji.utils.extension.getSerializable
 
-const val SORT_TRANSLATIONS_DIALOG_TAG = "sort_translations_dialog"
+const val SORT_LEXEMES_DIALOG_TAG = "sort_lexemes_dialog"
 
-class SortTranslationsDialogFragment : DialogFragment(R.layout.dialog_sort_translations) {
+class SortLexemesDialogFragment : DialogFragment(R.layout.dialog_sort_lexemes) {
 
-    private var binding: DialogSortTranslationsBinding by autoCleared()
+    private var binding: DialogSortLexemesBinding by autoCleared()
     private var confirmCallback: ((SortField, SortOrder) -> Unit?)? = null
     private lateinit var sortField: SortField
     private lateinit var sortOrder: SortOrder
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = DialogSortTranslationsBinding.bind(view)
+        binding = DialogSortLexemesBinding.bind(view)
 
         sortField = requireArguments().getSerializable<SortField>(ARG_DEFAULT_FIELD)!!
         sortOrder = requireArguments().getSerializable<SortOrder>(ARG_DEFAULT_ORDER)!!
@@ -56,7 +56,7 @@ class SortTranslationsDialogFragment : DialogFragment(R.layout.dialog_sort_trans
         dialogCancelButton.setOnClickListener { dismiss() }
         dialogDoneButton.setOnClickListener {
             val sortField = when (sortBySelectionRadio.checkedRadioButtonId) {
-                R.id.radio_translation -> SortField.MEANING
+                R.id.radio_meaning -> SortField.MEANING
                 R.id.radio_romaji -> SortField.ROMAJI
                 else -> SortField.ID
             }
@@ -71,7 +71,7 @@ class SortTranslationsDialogFragment : DialogFragment(R.layout.dialog_sort_trans
         }
     }
 
-    fun setConfirmCallback(callback: (SortField, SortOrder) -> Unit): SortTranslationsDialogFragment {
+    fun setConfirmCallback(callback: (SortField, SortOrder) -> Unit): SortLexemesDialogFragment {
         confirmCallback = callback
         return this
     }
@@ -80,8 +80,8 @@ class SortTranslationsDialogFragment : DialogFragment(R.layout.dialog_sort_trans
         private const val ARG_DEFAULT_FIELD = "sort_field"
         private const val ARG_DEFAULT_ORDER = "sort_order"
 
-        fun newInstance(sortField: SortField, sortOrder: SortOrder): SortTranslationsDialogFragment {
-            return SortTranslationsDialogFragment().apply {
+        fun newInstance(sortField: SortField, sortOrder: SortOrder): SortLexemesDialogFragment {
+            return SortLexemesDialogFragment().apply {
                 arguments = Bundle().apply {
                     putSerializable(ARG_DEFAULT_FIELD, sortField)
                     putSerializable(ARG_DEFAULT_ORDER, sortOrder)

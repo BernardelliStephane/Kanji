@@ -25,8 +25,8 @@ import fr.steph.kanji.databinding.FragmentDictionaryBinding
 import fr.steph.kanji.ui.adapter.LexemeAdapter
 import fr.steph.kanji.ui.dialog.ConfirmDeletionDialogFragment
 import fr.steph.kanji.ui.dialog.DELETE_DIALOG_TAG
-import fr.steph.kanji.ui.dialog.SORT_TRANSLATIONS_DIALOG_TAG
-import fr.steph.kanji.ui.dialog.SortTranslationsDialogFragment
+import fr.steph.kanji.ui.dialog.SORT_LEXEMES_DIALOG_TAG
+import fr.steph.kanji.ui.dialog.SortLexemesDialogFragment
 import fr.steph.kanji.ui.utils.StretchEdgeEffectFactory
 import fr.steph.kanji.ui.utils.autoCleared
 import fr.steph.kanji.ui.utils.recyclerview_selection.LexemeDetailsLookup
@@ -113,12 +113,12 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
 
         sortLexemes.setOnClickListener {
             val sortingState = viewModel.getSortingState()
-            SortTranslationsDialogFragment
+            SortLexemesDialogFragment
                 .newInstance(sortingState.sortField, sortingState.sortOrder)
                 .setConfirmCallback { sortField, sortOrder ->
                     viewModel.updateSorting(sortField, sortOrder)
                 }
-                .show(parentFragmentManager, SORT_TRANSLATIONS_DIALOG_TAG)
+                .show(parentFragmentManager, SORT_LEXEMES_DIALOG_TAG)
         }
 
         addLexeme.setOnClickListener {

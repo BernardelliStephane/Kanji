@@ -31,9 +31,9 @@ abstract class LexemeViewModel(private val repo: LexemeRepository) : ViewModel()
             return@flatMapLatest repo.searchLexemes(options.searchQuery)
 
         when (options.sortField) {
-            SortField.ID -> repo.lexemesOrderedById(options.sortOrder)
+            SortField.MEANING -> repo.lexemesOrderedByMeaning(options.sortOrder)
             SortField.ROMAJI -> repo.lexemesOrderedByRomaji(options.sortOrder)
-            SortField.MEANING -> repo.lexemesOrderedByTranslation(options.sortOrder)
+            SortField.ID -> repo.lexemesOrderedById(options.sortOrder)
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 

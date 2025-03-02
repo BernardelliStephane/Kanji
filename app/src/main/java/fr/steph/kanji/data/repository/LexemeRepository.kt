@@ -33,6 +33,6 @@ class LexemeRepository(private val lexemeDao: LexemeDao) {
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
-    suspend fun lexemesOrderedByTranslation(sortOrder: SortOrder) =
+    suspend fun lexemesOrderedByMeaning(sortOrder: SortOrder) =
         lexemeDao.lexemesOrderedByMeaning(sortOrder.index)
 }
