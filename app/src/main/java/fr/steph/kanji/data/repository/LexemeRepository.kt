@@ -16,10 +16,28 @@ class LexemeRepository(private val lexemeDao: LexemeDao) {
     suspend fun deleteLexemesFromSelection(selection: List<Long>) =
         lexemeDao.deleteLexemesFromSelection(selection)
 
+
+    /********* Lexemes matching search query **********/
+
+
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
-    suspend fun searchLexemes(query: String) =
-        lexemeDao.searchLexemes(query)
+    suspend fun searchLexemesOrderedByMeaning(query: String, sortOrder: SortOrder) =
+        lexemeDao.searchLexemesOrderedByMeaning(query, sortOrder.index)
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun searchLexemesOrderedByRomaji(query: String, sortOrder: SortOrder) =
+        lexemeDao.searchLexemesOrderedByRomaji(query, sortOrder.index)
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun searchLexemesOrderedById(query: String, sortOrder: SortOrder) =
+        lexemeDao.searchLexemesOrderedById(query, sortOrder.index)
+
+
+    /******************** All lexemes ********************/
+
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
