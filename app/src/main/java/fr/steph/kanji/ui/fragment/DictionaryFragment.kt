@@ -25,6 +25,8 @@ import fr.steph.kanji.databinding.FragmentDictionaryBinding
 import fr.steph.kanji.ui.adapter.LexemeAdapter
 import fr.steph.kanji.ui.dialog.ConfirmDeletionDialogFragment
 import fr.steph.kanji.ui.dialog.DELETE_DIALOG_TAG
+import fr.steph.kanji.ui.dialog.SORT_TRANSLATIONS_DIALOG_TAG
+import fr.steph.kanji.ui.dialog.SortTranslationsDialogFragment
 import fr.steph.kanji.ui.utils.StretchEdgeEffectFactory
 import fr.steph.kanji.ui.utils.autoCleared
 import fr.steph.kanji.ui.utils.recyclerview_selection.LexemeDetailsLookup
@@ -113,6 +115,16 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
                 }
             }
 
+            sortLexemes.setOnClickListener {
+                val sortingState = viewModel.getSortingState()
+                SortTranslationsDialogFragment
+                    .newInstance(sortingState.sortField, sortingState.sortOrder)
+                    .setConfirmCallback { sortField, sortOrder ->
+                        viewModel.updateSorting(sortField, sortOrder)
+                    }
+                    .show(parentFragmentManager, SORT_TRANSLATIONS_DIALOG_TAG)
+            }
+
             addLexeme.setOnClickListener {
                 val action = DictionaryFragmentDirections.actionDictionaryFragmentToAddLexemeFragment()
                 safeNavigate(action)
@@ -122,7 +134,7 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
                 override fun onQueryTextSubmit(query: String): Boolean { return false }
 
                 override fun onQueryTextChange(newText: String): Boolean {
-                    viewModel.updateFilter(newText.lowercase())
+                    viewModel.updateQuery(newText.lowercase())
                     return false
                 }
             })
@@ -207,6 +219,7 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
                         translationCount.isVisible = !isSelectionMode
                         selectAllLayout.isVisible = isSelectionMode
                         addLexeme.isVisible = !isSelectionMode
+                        sortLexemes.isVisible = !isSelectionMode
                         filterLexemes.isVisible = !isSelectionMode
                         deleteLayout.isVisible = isSelectionMode
 

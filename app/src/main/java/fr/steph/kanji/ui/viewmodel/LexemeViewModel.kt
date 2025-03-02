@@ -7,6 +7,7 @@ import fr.steph.kanji.R
 import fr.steph.kanji.data.model.Lexeme
 import fr.steph.kanji.data.repository.LexemeRepository
 import fr.steph.kanji.data.utils.enumeration.SortField
+import fr.steph.kanji.data.utils.enumeration.SortOrder
 import fr.steph.kanji.ui.uistate.FilterOptions
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
@@ -41,12 +42,6 @@ abstract class LexemeViewModel(private val repo: LexemeRepository) : ViewModel()
     private val validationEventChannel = Channel<ValidationEvent>()
     val validationEvents = validationEventChannel.receiveAsFlow()
 
-    fun updateFilter(query: String) {
-        _filterOptions.update { options ->
-            options.copy(searchQuery = query)
-        }
-    }
-
     fun upsertLexeme(lexeme: Lexeme) = viewModelScope.launch {
         repo.upsertLexeme(lexeme).let {
             if (it == FAILURE)
@@ -62,6 +57,20 @@ abstract class LexemeViewModel(private val repo: LexemeRepository) : ViewModel()
             else validationEventChannel.send(ValidationEvent.Success)
         }
     }
+
+    fun updateQuery(query: String) {
+        _filterOptions.update { options ->
+            options.copy(searchQuery = query)
+        }
+    }
+
+    fun updateSorting(sortField: SortField, sortOrder: SortOrder) {
+        _filterOptions.update { options ->
+            options.copy(sortField = sortField, sortOrder = sortOrder)
+        }
+    }
+
+    fun getSortingState() = _filterOptions.value
 
     sealed class ValidationEvent {
         data class Failure(val failureMessage: Int) : ValidationEvent()

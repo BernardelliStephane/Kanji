@@ -122,6 +122,15 @@
                         app:icon="@drawable/ic_filter" />
 
                     <Button
+                        android:id="@+id/sort_lexemes"
+                        style="@style/Button.ToolbarMenuButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:contentDescription="@string/sort_translations"
+                        app:icon="@drawable/ic_sort" />
+
+                    <Button
                         android:id="@+id/add_lexeme"
                         style="@style/Button.ToolbarMenuButton"
                         android:layout_width="wrap_content"
