@@ -70,7 +70,7 @@ abstract class LexemeViewModel(private val repo: LexemeRepository) : ViewModel()
         }
     }
 
-    fun getSortingState() = _filterOptions.value
+    fun getSortingState() = _filterOptions.value.run { Pair (sortField, sortOrder) }
 
     fun updateSorting(sortField: SortField, sortOrder: SortOrder) {
         _filterOptions.update { options ->

@@ -26,8 +26,8 @@ class SortLexemesDialogFragment : DialogFragment(R.layout.dialog_sort_lexemes) {
         super.onViewCreated(view, savedInstanceState)
         binding = DialogSortLexemesBinding.bind(view)
 
-        sortField = requireArguments().getSerializable<SortField>(ARG_DEFAULT_FIELD)!!
-        sortOrder = requireArguments().getSerializable<SortOrder>(ARG_DEFAULT_ORDER)!!
+        sortField = requireArguments().getSerializable<SortField>(ARG_INITIAL_FIELD)!!
+        sortOrder = requireArguments().getSerializable<SortOrder>(ARG_INITIAL_ORDER)!!
 
         dialog?.window?.apply {
             setLayout(MATCH_PARENT, WRAP_CONTENT)
@@ -77,14 +77,14 @@ class SortLexemesDialogFragment : DialogFragment(R.layout.dialog_sort_lexemes) {
     }
 
     companion object {
-        private const val ARG_DEFAULT_FIELD = "sort_field"
-        private const val ARG_DEFAULT_ORDER = "sort_order"
+        private const val ARG_INITIAL_FIELD = "initial_sort_field"
+        private const val ARG_INITIAL_ORDER = "initial_sort_order"
 
         fun newInstance(sortField: SortField, sortOrder: SortOrder): SortLexemesDialogFragment {
             return SortLexemesDialogFragment().apply {
                 arguments = Bundle().apply {
-                    putSerializable(ARG_DEFAULT_FIELD, sortField)
-                    putSerializable(ARG_DEFAULT_ORDER, sortOrder)
+                    putSerializable(ARG_INITIAL_FIELD, sortField)
+                    putSerializable(ARG_INITIAL_ORDER, sortOrder)
                 }
             }
         }

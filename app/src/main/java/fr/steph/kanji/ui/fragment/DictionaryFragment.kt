@@ -112,11 +112,11 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
         }
 
         sortLexemes.setOnClickListener {
-            val sortingState = viewModel.getSortingState()
+            val (sortField, sortOrder) = viewModel.getSortingState()
             SortLexemesDialogFragment
-                .newInstance(sortingState.sortField, sortingState.sortOrder)
-                .setConfirmCallback { sortField, sortOrder ->
-                    viewModel.updateSorting(sortField, sortOrder)
+                .newInstance(sortField, sortOrder)
+                .setConfirmCallback { field, order ->
+                    viewModel.updateSorting(field, order)
                 }
                 .show(parentFragmentManager, SORT_LEXEMES_DIALOG_TAG)
         }
