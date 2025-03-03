@@ -11,6 +11,7 @@ import fr.steph.kanji.data.utils.enumeration.SortOrder
 import fr.steph.kanji.ui.uistate.FilterOptions
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.flatMapLatest
@@ -28,17 +29,8 @@ abstract class LexemeViewModel(private val repo: LexemeRepository) : ViewModel()
 
     private val _lexemes = _filterOptions.flatMapLatest { options ->
         if (options.searchQuery.isNotBlank())
-            when (options.sortField) {
-                SortField.MEANING -> repo.searchLexemesOrderedByMeaning(options.searchQuery, options.sortOrder)
-                SortField.ROMAJI -> repo.searchLexemesOrderedByRomaji(options.searchQuery, options.sortOrder)
-                SortField.ID -> repo.searchLexemesOrderedById(options.searchQuery, options.sortOrder)
-            }
-
-        else when (options.sortField) {
-            SortField.MEANING -> repo.lexemesOrderedByMeaning(options.sortOrder)
-            SortField.ROMAJI -> repo.lexemesOrderedByRomaji(options.sortOrder)
-            SortField.ID -> repo.lexemesOrderedById(options.sortOrder)
-        }
+            searchLexemes(options.searchQuery, options.sortField, options.sortOrder)
+        else getAllLexemes(options.sortField, options.sortOrder)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
     val lexemes = _lexemes.asLiveData()
@@ -62,11 +54,23 @@ abstract class LexemeViewModel(private val repo: LexemeRepository) : ViewModel()
         }
     }
 
-    fun updateQuery(query: String) {
-        _filterOptions.update { options ->
-            options.copy(searchQuery = query)
+    private suspend fun searchLexemes(searchQuery: String, sortField: SortField, sortOrder: SortOrder): Flow<List<Lexeme>> {
+        return when (sortField) {
+            SortField.MEANING -> repo.searchLexemesOrderedByMeaning(searchQuery, sortOrder)
+            SortField.ROMAJI -> repo.searchLexemesOrderedByRomaji(searchQuery, sortOrder)
+            SortField.ID -> repo.searchLexemesOrderedById(searchQuery, sortOrder)
         }
     }
+
+    private suspend fun getAllLexemes(sortField: SortField, sortOrder: SortOrder): Flow<List<Lexeme>> {
+        return when (sortField) {
+            SortField.MEANING -> repo.lexemesOrderedByMeaning(sortOrder)
+            SortField.ROMAJI -> repo.lexemesOrderedByRomaji(sortOrder)
+            SortField.ID -> repo.lexemesOrderedById(sortOrder)
+        }
+    }
+
+    fun getSortingState() = _filterOptions.value
 
     fun updateSorting(sortField: SortField, sortOrder: SortOrder) {
         _filterOptions.update { options ->
@@ -74,7 +78,11 @@ abstract class LexemeViewModel(private val repo: LexemeRepository) : ViewModel()
         }
     }
 
-    fun getSortingState() = _filterOptions.value
+    fun updateQuery(query: String) {
+        _filterOptions.update { options ->
+            options.copy(searchQuery = query)
+        }
+    }
 
     sealed class ValidationEvent {
         data class Failure(val failureMessage: Int) : ValidationEvent()
