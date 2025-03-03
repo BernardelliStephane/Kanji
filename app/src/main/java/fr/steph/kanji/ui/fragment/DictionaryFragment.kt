@@ -178,7 +178,12 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
                 lexemes.size,
                 lexemes.size
             )
-            lexemeAdapter.submitList(lexemes)
+            binding.recyclerView.layoutManager?.run {
+                val state = onSaveInstanceState()
+                lexemeAdapter.submitList(lexemes) {
+                    onRestoreInstanceState(state)
+                }
+            }
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
