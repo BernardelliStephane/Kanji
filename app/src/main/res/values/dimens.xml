@@ -13,7 +13,7 @@
     <dimen name="app_bar_height">@dimen/_200sdp</dimen>
     <dimen name="toolbar_title_start_inset">60dp</dimen>
     <dimen name="dictionary_action_button_marginStart">@dimen/_minus10sdp</dimen>
-    <dimen name="item_lexeme_text_size">@dimen/_15ssp</dimen>
+    <dimen name="default_text_size">@dimen/_15ssp</dimen>
     <dimen name="item_lexeme_margin">@dimen/_10sdp</dimen>
 
     <!-- Add lexeme fragment -->

@@ -16,12 +16,10 @@
 
     <TextView
         android:id="@+id/lesson_label"
+        style="@style/TextView.OneLiner"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/item_lexeme_margin"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:textSize="@dimen/item_lexeme_text_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="1"

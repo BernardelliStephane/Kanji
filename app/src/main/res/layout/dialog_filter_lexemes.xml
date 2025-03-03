@@ -17,13 +17,11 @@
 
     <TextView
         android:id="@+id/select_all_text"
+        style="@style/TextView.OneLiner"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/item_lexeme_margin"
-        android:ellipsize="end"
-        android:maxLines="1"
         android:text="All"
-        android:textSize="@dimen/item_lexeme_text_size"
         app:layout_constraintBottom_toBottomOf="@id/select_all_checkbox"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="1"
@@ -50,7 +48,6 @@
         android:layout_height="wrap_content"
         android:layout_marginVertical="@dimen/_5sdp"
         android:text="@string/cancel"
-        app:layout_constrainedHeight="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/dialog_done_button"
         app:layout_constraintStart_toStartOf="parent"
