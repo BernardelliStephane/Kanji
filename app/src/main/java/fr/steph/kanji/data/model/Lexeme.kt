@@ -11,6 +11,7 @@ data class Lexeme(
     @PrimaryKey(autoGenerate = true)
     val id: Long,
     val type: LexemeType,
+    val lesson: Int = 0,
     val characters: String,
     val romaji: String,
     val meaning: String,
