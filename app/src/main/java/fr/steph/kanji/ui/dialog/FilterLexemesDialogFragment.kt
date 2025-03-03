@@ -93,6 +93,9 @@ class FilterLexemesDialogFragment : DialogFragment(R.layout.dialog_filter_lexeme
             })
 
         lessonAdapter.tracker = tracker
+
+        if (initialSelection.isNotEmpty())
+            tracker.setItemsSelected(initialSelection.toList(), true)
     }
 
     fun setConfirmCallback(callback: (List<Long>) -> Unit): FilterLexemesDialogFragment {
