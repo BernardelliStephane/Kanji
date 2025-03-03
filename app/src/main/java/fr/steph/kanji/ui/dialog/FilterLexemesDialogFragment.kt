@@ -23,18 +23,18 @@ const val FILTER_LEXEMES_DIALOG_TAG = "filter_lexemes_dialog"
 
 class FilterLexemesDialogFragment : DialogFragment(R.layout.dialog_filter_lexemes) {
     private var binding: DialogFilterLexemesBinding by autoCleared()
-    private var confirmCallback: ((ArrayList<Int>) -> Unit?)? = null
-    private lateinit var lessons: ArrayList<Int>
+    private lateinit var initialSelection: LongArray
     private lateinit var tracker: SelectionTracker<Long>
 
     private val items = List(100) { Lesson(it + 1L, "Label ${it + 1}") }
     private var lessonAdapter = LessonAdapter(items)
+    private var confirmCallback: ((List<Long>) -> Unit?)? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = DialogFilterLexemesBinding.bind(view)
 
-        lessons = requireArguments().getIntegerArrayList(ARG_INITIAL_SELECTION)!!
+        initialSelection = requireArguments().getLongArray(ARG_INITIAL_SELECTION)!!
 
         dialog?.window?.apply {
             setLayout(MATCH_PARENT, WRAP_CONTENT)
@@ -43,8 +43,8 @@ class FilterLexemesDialogFragment : DialogFragment(R.layout.dialog_filter_lexeme
         }
 
         setupUI()
-        setupListeners()
         setupTracker()
+        setupListeners()
     }
 
     private fun setupUI() {
@@ -71,7 +71,7 @@ class FilterLexemesDialogFragment : DialogFragment(R.layout.dialog_filter_lexeme
 
         dialogCancelButton.setOnClickListener { dismiss() }
         dialogDoneButton.setOnClickListener {
-            confirmCallback?.invoke(lessons)
+            confirmCallback?.invoke(tracker.selection.toList())
             dismiss()
         }
     }
@@ -81,8 +81,7 @@ class FilterLexemesDialogFragment : DialogFragment(R.layout.dialog_filter_lexeme
             "lexeme_selection", binding.lessonRecyclerView,
             ItemKeyProvider(binding.lessonRecyclerView), LessonDetailsLookup(binding.lessonRecyclerView),
             StorageStrategy.createLongStorage()
-        ).withSelectionPredicate(
-            SelectionPredicates.createSelectAnything()
+        ).withSelectionPredicate(SelectionPredicates.createSelectAnything()
         ).build()
 
         tracker.addObserver(
@@ -97,7 +96,7 @@ class FilterLexemesDialogFragment : DialogFragment(R.layout.dialog_filter_lexeme
         lessonAdapter.tracker = tracker
     }
 
-    fun setConfirmCallback(callback: (ArrayList<Int>) -> Unit): FilterLexemesDialogFragment {
+    fun setConfirmCallback(callback: (List<Long>) -> Unit): FilterLexemesDialogFragment {
         confirmCallback = callback
         return this
     }
@@ -105,10 +104,10 @@ class FilterLexemesDialogFragment : DialogFragment(R.layout.dialog_filter_lexeme
     companion object {
         private const val ARG_INITIAL_SELECTION = "initial_lessons"
 
-        fun newInstance(lessons: ArrayList<Int>): FilterLexemesDialogFragment {
+        fun newInstance(lessons: LongArray): FilterLexemesDialogFragment {
             return FilterLexemesDialogFragment().apply {
                 arguments = Bundle().apply {
-                    putIntegerArrayList(ARG_INITIAL_SELECTION, lessons)
+                    putLongArray(ARG_INITIAL_SELECTION, lessons)
                 }
             }
         }

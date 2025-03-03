@@ -106,7 +106,7 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
 
         filterLexemes.setOnClickListener {
             FilterLexemesDialogFragment
-                .newInstance(viewModel.getFilter())
+                .newInstance(viewModel.getFilter().toLongArray())
                 .setConfirmCallback { filter ->
                     viewModel.updateFilter(filter)
                 }

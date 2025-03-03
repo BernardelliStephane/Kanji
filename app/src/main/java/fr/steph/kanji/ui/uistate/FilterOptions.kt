@@ -6,6 +6,6 @@ import fr.steph.kanji.data.utils.enumeration.SortOrder
 data class FilterOptions(
     var sortField: SortField = SortField.MEANING,
     var sortOrder: SortOrder = SortOrder.ASCENDING,
-    val filter: ArrayList<Int> = ArrayList(),
+    val filter: List<Long> = listOf(),
     var searchQuery: String = "",
 )

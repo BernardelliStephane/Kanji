@@ -79,7 +79,7 @@ abstract class LexemeViewModel(private val repo: LexemeRepository) : ViewModel()
 
     fun getFilter() = _filterOptions.value.filter
 
-    fun updateFilter(filter: ArrayList<Int>) = _filterOptions.update { options ->
+    fun updateFilter(filter: List<Long>) = _filterOptions.update { options ->
         options.copy(filter = filter)
     }
 

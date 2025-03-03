@@ -22,7 +22,6 @@
         android:layout_marginHorizontal="@dimen/item_lexeme_margin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toEndOf="@id/selection_checkbox"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Lesson 1" />
