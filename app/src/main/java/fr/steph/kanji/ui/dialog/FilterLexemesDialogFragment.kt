@@ -15,7 +15,6 @@ import fr.steph.kanji.databinding.DialogFilterLexemesBinding
 import fr.steph.kanji.ui.adapter.LessonAdapter
 import fr.steph.kanji.ui.utils.StretchEdgeEffectFactory
 import fr.steph.kanji.ui.utils.autoCleared
-import fr.steph.kanji.ui.utils.recyclerview_selection.LexemeDetailsLookup
 import fr.steph.kanji.ui.utils.recyclerview_selection.ItemKeyProvider
 import fr.steph.kanji.ui.utils.recyclerview_selection.LessonDetailsLookup
 
@@ -23,12 +22,15 @@ const val FILTER_LEXEMES_DIALOG_TAG = "filter_lexemes_dialog"
 
 class FilterLexemesDialogFragment : DialogFragment(R.layout.dialog_filter_lexemes) {
     private var binding: DialogFilterLexemesBinding by autoCleared()
+
+    private lateinit var lessonAdapter: LessonAdapter
+
     private lateinit var initialSelection: LongArray
     private lateinit var tracker: SelectionTracker<Long>
 
-    private val items = List(100) { Lesson(it + 1L, "Label ${it + 1}") }
-    private var lessonAdapter = LessonAdapter(items)
     private var confirmCallback: ((List<Long>) -> Unit?)? = null
+
+    private val items = List(100) { Lesson(it + 1L, "Lesson ${it + 1}") }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -48,25 +50,22 @@ class FilterLexemesDialogFragment : DialogFragment(R.layout.dialog_filter_lexeme
     }
 
     private fun setupUI() {
+        //TODO Items = viewModel.lessons
+        lessonAdapter = LessonAdapter(items)
+
         binding.lessonRecyclerView.apply {
             adapter = lessonAdapter
             edgeEffectFactory = StretchEdgeEffectFactory()
         }
 
-        if (lessons.isEmpty()) {
-            //TODO Check "all"
-        }
-        else {
-            //TODO Check all in lessons
-        }
+        if (initialSelection.isEmpty())
+            binding.selectAllCheckbox.isChecked = true
     }
 
     private fun setupListeners() = with(binding) {
-        selectAllCheckbox.setOnClickListener {
-            if (!selectAllCheckbox.isChecked) {
-                /*TODO val items = viewModel.lexemes.value!!.map { it.id }
-                tracker.setItemsSelected(items, true)*/
-            }
+        selectAllLayout.setOnClickListener {
+            if (tracker.selection.size() != 0)
+                tracker.clearSelection()
         }
 
         dialogCancelButton.setOnClickListener { dismiss() }
@@ -88,8 +87,8 @@ class FilterLexemesDialogFragment : DialogFragment(R.layout.dialog_filter_lexeme
             object : SelectionTracker.SelectionObserver<Long>() {
                 override fun onSelectionChanged() {
                     super.onSelectionChanged()
-                    /*val selectionSize = tracker.selection.size()
-                    viewModel.onSelectionChanged(selectionSize)*/
+                    val selectionSize = tracker.selection.size()
+                    binding.selectAllCheckbox.isChecked = selectionSize == 0 || selectionSize == items.size
                 }
             })
 
