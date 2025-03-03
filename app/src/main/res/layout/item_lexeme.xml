@@ -4,19 +4,14 @@
     android:id="@+id/item_lexeme_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingVertical="@dimen/_10sdp"
-    android:background="@drawable/item_lexeme_background">
+    android:background="@drawable/item_lexeme_background"
+    android:paddingVertical="@dimen/_10sdp">
 
     <CheckBox
         android:id="@+id/selection_checkbox"
+        style="@style/Checkbox.Unclickable"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:background="@android:color/transparent"
-        android:button="@drawable/round_checkbox"
-        android:clickable="false"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        app:buttonTint="@drawable/checkbox_tint"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

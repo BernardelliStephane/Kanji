@@ -83,10 +83,9 @@
 
                     <CheckBox
                         android:id="@+id/select_all_checkbox"
+                        style="@style/Checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:button="@drawable/round_checkbox"
-                        app:buttonTint="@drawable/checkbox_tint"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 

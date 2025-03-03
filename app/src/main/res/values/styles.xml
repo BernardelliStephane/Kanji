@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="Button.ToolbarMenuButton" parent="Widget.Material3.Button.IconButton">
         <item name="iconSize">24dp</item>
         <item name="iconTint">@color/black</item>
@@ -21,6 +22,18 @@
         <item name="iconSize">24dp</item>
         <item name="iconTint">@color/black</item>
         <item name="cornerRadius">@dimen/_10sdp</item>
+    </style>
+
+    <style name="Checkbox" parent="Widget.Material3.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/round_checkbox</item>
+        <item name="buttonTint">@drawable/checkbox_tint</item>
+    </style>
+
+    <style name="Checkbox.Unclickable" parent="Checkbox">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:clickable">false</item>
+        <item name="android:focusable">false</item>
+        <item name="android:focusableInTouchMode">false</item>
     </style>
 
     <style name="TextInputLayout.FormField" parent="Widget.Material3.TextInputLayout.FilledBox">
