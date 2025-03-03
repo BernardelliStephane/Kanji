@@ -30,7 +30,7 @@ import fr.steph.kanji.ui.dialog.SortLexemesDialogFragment
 import fr.steph.kanji.ui.utils.StretchEdgeEffectFactory
 import fr.steph.kanji.ui.utils.autoCleared
 import fr.steph.kanji.ui.utils.recyclerview_selection.LexemeDetailsLookup
-import fr.steph.kanji.ui.utils.recyclerview_selection.LexemeKeyProvider
+import fr.steph.kanji.ui.utils.recyclerview_selection.ItemKeyProvider
 import fr.steph.kanji.ui.utils.viewModelFactory
 import fr.steph.kanji.ui.viewmodel.DictionaryViewModel
 import fr.steph.kanji.ui.viewmodel.LexemeViewModel.ValidationEvent.Failure
@@ -80,13 +80,8 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
         handleBackPressed()
     }
 
-    private fun setupRecyclerView() = binding.recyclerView.apply {
+    private fun setupRecyclerView() = binding.lexemeRecyclerView.apply {
         adapter = lexemeAdapter
-        postponeEnterTransition()
-        viewTreeObserver.addOnPreDrawListener {
-            startPostponedEnterTransition()
-            true
-        }
         itemAnimator = null
         edgeEffectFactory = StretchEdgeEffectFactory()
     }
@@ -153,8 +148,8 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
 
     private fun setupTracker() {
         tracker = SelectionTracker.Builder(
-            "lexeme_selection", binding.recyclerView,
-            LexemeKeyProvider(binding.recyclerView), LexemeDetailsLookup(binding.recyclerView),
+            "lexeme_selection", binding.lexemeRecyclerView,
+            ItemKeyProvider(binding.lexemeRecyclerView), LexemeDetailsLookup(binding.lexemeRecyclerView),
             StorageStrategy.createLongStorage()
         ).withSelectionPredicate(SelectionPredicates.createSelectAnything()
         ).build()
@@ -178,7 +173,7 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
                 lexemes.size,
                 lexemes.size
             )
-            binding.recyclerView.layoutManager?.run {
+            binding.lexemeRecyclerView.layoutManager?.run {
                 val state = onSaveInstanceState()
                 lexemeAdapter.submitList(lexemes) {
                     onRestoreInstanceState(state)
@@ -232,7 +227,7 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
                         deleteLayout.isVisible = isSelectionMode
 
                         lexemeAdapter.isSelectionMode = isSelectionMode
-                        val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                        val layoutManager = lexemeRecyclerView.layoutManager as LinearLayoutManager
                         val first = layoutManager.findFirstVisibleItemPosition()
                         val last = layoutManager.findLastVisibleItemPosition()
 
