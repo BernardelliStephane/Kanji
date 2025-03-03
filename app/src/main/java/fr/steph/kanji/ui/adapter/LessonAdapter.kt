@@ -1,6 +1,5 @@
 package fr.steph.kanji.ui.adapter
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.selection.ItemDetailsLookup
@@ -16,7 +15,7 @@ class LessonAdapter(private val lessonList: List<Lesson>) : RecyclerView.Adapter
         setHasStableIds(true)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int, ): LessonViewHolder =
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LessonViewHolder =
         LessonViewHolder.from(parent)
 
     override fun onBindViewHolder(holder: LessonViewHolder, position: Int) {
@@ -32,22 +31,11 @@ class LessonAdapter(private val lessonList: List<Lesson>) : RecyclerView.Adapter
 
     override fun getItemId(position: Int) = lessonList[position].number
 
-    override fun onViewAttachedToWindow(holder: LessonViewHolder) {
-        val isSelected = tracker?.isSelected(holder.itemId)
-        if(isSelected != null)
-            holder.setSelection(isSelected)
-    }
-
     class LessonViewHolder(private val binding: ItemLessonBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        @SuppressLint("SetTextI18n")
         fun bind(lesson: Lesson, isSelected: Boolean) {
-            binding.lessonLabel.text = "Lesson ${lesson.number} - ${lesson.label}"
-            setSelection(isSelected)
-        }
-
-        fun setSelection(isSelected: Boolean) {
+            binding.lessonLabel.text = lesson.label
             binding.selectionCheckbox.isChecked = isSelected
         }
 
