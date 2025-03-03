@@ -53,19 +53,23 @@ class SortLexemesDialogFragment : DialogFragment(R.layout.dialog_sort_lexemes) {
     }
 
     private fun setupListeners() = with(binding) {
-        dialogCancelButton.setOnClickListener { dismiss() }
-        dialogDoneButton.setOnClickListener {
-            val sortField = when (sortBySelectionRadio.checkedRadioButtonId) {
+        sortBySelectionRadio.setOnCheckedChangeListener { _, checkedId ->
+            sortField = when(checkedId) {
                 R.id.radio_meaning -> SortField.MEANING
                 R.id.radio_romaji -> SortField.ROMAJI
                 else -> SortField.ID
             }
+        }
 
-            val sortOrder = when (directionSelectionRadio.checkedRadioButtonId) {
+        directionSelectionRadio.setOnCheckedChangeListener { _, checkedId ->
+            sortOrder = when(checkedId) {
                 R.id.radio_ascending -> SortOrder.ASCENDING
                 else -> SortOrder.DESCENDING
             }
+        }
 
+        dialogCancelButton.setOnClickListener { dismiss() }
+        dialogDoneButton.setOnClickListener {
             confirmCallback?.invoke(sortField, sortOrder)
             dismiss()
         }
