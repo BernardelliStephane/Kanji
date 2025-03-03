@@ -25,6 +25,8 @@ import fr.steph.kanji.databinding.FragmentDictionaryBinding
 import fr.steph.kanji.ui.adapter.LexemeAdapter
 import fr.steph.kanji.ui.dialog.ConfirmDeletionDialogFragment
 import fr.steph.kanji.ui.dialog.DELETE_DIALOG_TAG
+import fr.steph.kanji.ui.dialog.FILTER_LEXEMES_DIALOG_TAG
+import fr.steph.kanji.ui.dialog.FilterLexemesDialogFragment
 import fr.steph.kanji.ui.dialog.SORT_LEXEMES_DIALOG_TAG
 import fr.steph.kanji.ui.dialog.SortLexemesDialogFragment
 import fr.steph.kanji.ui.utils.StretchEdgeEffectFactory
@@ -103,7 +105,12 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
         }
 
         filterLexemes.setOnClickListener {
-            // TODO display filtering popup
+            FilterLexemesDialogFragment
+                .newInstance(viewModel.getFilter())
+                .setConfirmCallback { filter ->
+                    viewModel.updateFilter(filter)
+                }
+                .show(parentFragmentManager, FILTER_LEXEMES_DIALOG_TAG)
         }
 
         sortLexemes.setOnClickListener {
