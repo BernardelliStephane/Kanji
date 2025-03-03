@@ -4,12 +4,15 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import fr.steph.kanji.data.dao.LessonDao
 import fr.steph.kanji.data.dao.LexemeDao
+import fr.steph.kanji.data.model.Lesson
 import fr.steph.kanji.data.model.Lexeme
 
-@Database(entities = [Lexeme::class], version = 1)
+@Database(entities = [Lexeme::class, Lesson::class], version = 1)
 abstract class LexemeDatabase: RoomDatabase() {
-    abstract fun dao(): LexemeDao
+    abstract fun lexemeDao(): LexemeDao
+    abstract fun lessonDao(): LessonDao
 
     companion object {
         @Volatile
