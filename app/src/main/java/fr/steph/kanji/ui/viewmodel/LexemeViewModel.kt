@@ -70,18 +70,21 @@ abstract class LexemeViewModel(private val repo: LexemeRepository) : ViewModel()
         }
     }
 
-    fun getSortingState() = _filterOptions.value.run { Pair (sortField, sortOrder) }
+    fun getSortingState() = _filterOptions.value.run { Pair(sortField, sortOrder) }
 
-    fun updateSorting(sortField: SortField, sortOrder: SortOrder) {
+    fun updateSorting(sortField: SortField, sortOrder: SortOrder) =
         _filterOptions.update { options ->
             options.copy(sortField = sortField, sortOrder = sortOrder)
         }
+
+    fun getFilter() = _filterOptions.value.filter
+
+    fun updateFilter(filter: ArrayList<Int>) = _filterOptions.update { options ->
+        options.copy(filter = filter)
     }
 
-    fun updateQuery(query: String) {
-        _filterOptions.update { options ->
-            options.copy(searchQuery = query)
-        }
+    fun updateQuery(query: String) = _filterOptions.update { options ->
+        options.copy(searchQuery = query)
     }
 
     sealed class ValidationEvent {
