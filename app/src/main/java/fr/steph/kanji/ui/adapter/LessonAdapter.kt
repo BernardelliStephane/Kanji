@@ -8,7 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import fr.steph.kanji.data.model.Lesson
 import fr.steph.kanji.databinding.ItemLessonBinding
 
-class LessonAdapter(private val lessonList: List<Lesson>) : RecyclerView.Adapter<LessonAdapter.LessonViewHolder>() {
+class LessonAdapter : RecyclerView.Adapter<LessonAdapter.LessonViewHolder>() {
+    private var lessonList: List<Lesson> = emptyList()
     var tracker: SelectionTracker<Long>? = null
 
     init {
@@ -30,6 +31,11 @@ class LessonAdapter(private val lessonList: List<Lesson>) : RecyclerView.Adapter
     override fun getItemCount() = lessonList.size
 
     override fun getItemId(position: Int) = lessonList[position].number
+
+    fun updateLessons(newLessons: List<Lesson>) {
+        lessonList = newLessons
+        notifyItemRangeInserted(0, newLessons.size)
+    }
 
     class LessonViewHolder(private val binding: ItemLessonBinding) :
         RecyclerView.ViewHolder(binding.root) {

@@ -6,22 +6,32 @@ import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.selection.SelectionPredicates
 import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.selection.StorageStrategy
+import fr.steph.kanji.KanjiApplication
 import fr.steph.kanji.R
-import fr.steph.kanji.data.model.Lesson
 import fr.steph.kanji.databinding.DialogFilterLexemesBinding
 import fr.steph.kanji.ui.adapter.LessonAdapter
 import fr.steph.kanji.ui.utils.StretchEdgeEffectFactory
 import fr.steph.kanji.ui.utils.autoCleared
 import fr.steph.kanji.ui.utils.recyclerview_selection.ItemKeyProvider
 import fr.steph.kanji.ui.utils.recyclerview_selection.LessonDetailsLookup
+import fr.steph.kanji.ui.utils.viewModelFactory
+import fr.steph.kanji.ui.viewmodel.FilterLexemesViewModel
 
 const val FILTER_LEXEMES_DIALOG_TAG = "filter_lexemes_dialog"
 
 class FilterLexemesDialogFragment : DialogFragment(R.layout.dialog_filter_lexemes) {
     private var binding: DialogFilterLexemesBinding by autoCleared()
+
+    private val viewModel: FilterLexemesViewModel by viewModels {
+        val app = (activity?.application as KanjiApplication)
+        viewModelFactory {
+            FilterLexemesViewModel(app.lessonRepository)
+        }
+    }
 
     private lateinit var lessonAdapter: LessonAdapter
 
@@ -29,8 +39,7 @@ class FilterLexemesDialogFragment : DialogFragment(R.layout.dialog_filter_lexeme
     private lateinit var tracker: SelectionTracker<Long>
 
     private var confirmCallback: ((List<Long>) -> Unit?)? = null
-
-    private val items = List(100) { Lesson(it + 1L, "Lesson ${it + 1}") }
+    private var lessonCount = 0
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -44,14 +53,14 @@ class FilterLexemesDialogFragment : DialogFragment(R.layout.dialog_filter_lexeme
             decorView.background.alpha = 0
         }
 
+        setupObservers()
         setupUI()
         setupTracker()
         setupListeners()
     }
 
     private fun setupUI() {
-        //TODO Items = viewModel.lessons
-        lessonAdapter = LessonAdapter(items)
+        lessonAdapter = LessonAdapter()
 
         binding.lessonRecyclerView.apply {
             adapter = lessonAdapter
@@ -88,7 +97,7 @@ class FilterLexemesDialogFragment : DialogFragment(R.layout.dialog_filter_lexeme
                 override fun onSelectionChanged() {
                     super.onSelectionChanged()
                     val selectionSize = tracker.selection.size()
-                    binding.selectAllCheckbox.isChecked = selectionSize == 0 || selectionSize == items.size
+                    binding.selectAllCheckbox.isChecked = selectionSize == 0 || selectionSize == lessonCount
                 }
             })
 
@@ -96,6 +105,13 @@ class FilterLexemesDialogFragment : DialogFragment(R.layout.dialog_filter_lexeme
 
         if (initialSelection.isNotEmpty())
             tracker.setItemsSelected(initialSelection.toList(), true)
+    }
+
+    private fun setupObservers() {
+        viewModel.allLessons.observe(viewLifecycleOwner) {
+            lessonAdapter.updateLessons(it)
+            lessonCount = it.size
+        }
     }
 
     fun setConfirmCallback(callback: (List<Long>) -> Unit): FilterLexemesDialogFragment {
