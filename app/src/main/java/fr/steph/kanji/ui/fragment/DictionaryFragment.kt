@@ -180,6 +180,10 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
                 lexemes.size,
                 lexemes.size
             )
+
+            binding.filterLexemes.isVisible = lexemes.isNotEmpty()
+            binding.sortLexemes.isVisible = lexemes.isNotEmpty()
+
             binding.lexemeRecyclerView.layoutManager?.run {
                 val state = onSaveInstanceState()
                 lexemeAdapter.submitList(lexemes) {
