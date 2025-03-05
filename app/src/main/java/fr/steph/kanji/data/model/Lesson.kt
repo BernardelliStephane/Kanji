@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class Lesson(
-    @PrimaryKey(autoGenerate = false)
+    @PrimaryKey
     val number: Long,
     val label: String,
 )

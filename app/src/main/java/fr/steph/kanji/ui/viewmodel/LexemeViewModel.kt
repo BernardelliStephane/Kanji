@@ -28,9 +28,15 @@ abstract class LexemeViewModel(private val repo: LexemeRepository) : ViewModel()
     private val _filterOptions = MutableStateFlow(FilterOptions())
 
     private val _lexemes = _filterOptions.flatMapLatest { options ->
-        if (options.searchQuery.isNotBlank())
-            searchLexemes(options.searchQuery, options.sortField, options.sortOrder)
-        else getAllLexemes(options.sortField, options.sortOrder)
+        when {
+            options.filter.isNotEmpty() ->
+                filterLexemes(options.filter, options.sortField, options.sortOrder)
+
+            options.searchQuery.isNotBlank() ->
+                searchLexemes(options.searchQuery, options.sortField, options.sortOrder)
+
+            else -> getAllLexemes(options.sortField, options.sortOrder)
+        }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
     val lexemes = _lexemes.asLiveData()
@@ -60,6 +66,15 @@ abstract class LexemeViewModel(private val repo: LexemeRepository) : ViewModel()
             SortField.LESSON_NUMBER -> repo.lexemesOrderedByLessonNumber(sortOrder)
             SortField.ROMAJI -> repo.lexemesOrderedByRomaji(sortOrder)
             SortField.ID -> repo.lexemesOrderedById(sortOrder)
+        }
+    }
+
+    private suspend fun filterLexemes(filter: List<Long>, sortField: SortField, sortOrder: SortOrder): Flow<List<Lexeme>> {
+        return when (sortField) {
+            SortField.MEANING -> repo.filterLexemesOrderedByMeaning(filter, sortOrder)
+            SortField.LESSON_NUMBER -> repo.filterLexemesOrderedByLessonNumber(filter, sortOrder)
+            SortField.ROMAJI -> repo.filterLexemesOrderedByRomaji(filter, sortOrder)
+            SortField.ID -> repo.filterLexemesOrderedById(filter, sortOrder)
         }
     }
 
