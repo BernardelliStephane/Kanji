@@ -29,6 +29,9 @@ abstract class LexemeViewModel(private val repo: LexemeRepository) : ViewModel()
 
     private val _lexemes = _filterOptions.flatMapLatest { options ->
         when {
+            options.filter.isNotEmpty() && options.searchQuery.isNotBlank() ->
+                searchInFilteredLexemes(options.searchQuery, options.filter, options.sortField, options.sortOrder)
+
             options.filter.isNotEmpty() ->
                 filterLexemes(options.filter, options.sortField, options.sortOrder)
 
@@ -78,12 +81,21 @@ abstract class LexemeViewModel(private val repo: LexemeRepository) : ViewModel()
         }
     }
 
-    private suspend fun searchLexemes(searchQuery: String, sortField: SortField, sortOrder: SortOrder): Flow<List<Lexeme>> {
+    private suspend fun searchLexemes(query: String, sortField: SortField, sortOrder: SortOrder): Flow<List<Lexeme>> {
         return when (sortField) {
-            SortField.MEANING -> repo.searchLexemesOrderedByMeaning(searchQuery, sortOrder)
-            SortField.LESSON_NUMBER -> repo.searchLexemesOrderedByLessonNumber(searchQuery, sortOrder)
-            SortField.ROMAJI -> repo.searchLexemesOrderedByRomaji(searchQuery, sortOrder)
-            SortField.ID -> repo.searchLexemesOrderedById(searchQuery, sortOrder)
+            SortField.MEANING -> repo.searchLexemesOrderedByMeaning(query, sortOrder)
+            SortField.LESSON_NUMBER -> repo.searchLexemesOrderedByLessonNumber(query, sortOrder)
+            SortField.ROMAJI -> repo.searchLexemesOrderedByRomaji(query, sortOrder)
+            SortField.ID -> repo.searchLexemesOrderedById(query, sortOrder)
+        }
+    }
+
+    private suspend fun searchInFilteredLexemes(query: String, filter: List<Long>, sortField: SortField, sortOrder: SortOrder): Flow<List<Lexeme>> {
+        return when (sortField) {
+            SortField.MEANING -> repo.searchInFilteredLexemesOrderedByMeaning(query, filter, sortOrder)
+            SortField.LESSON_NUMBER -> repo.searchInFilteredLexemesOrderedByLessonNumber(query, filter, sortOrder)
+            SortField.ROMAJI -> repo.searchInFilteredLexemesOrderedByRomaji(query, filter, sortOrder)
+            SortField.ID -> repo.searchInFilteredLexemesOrderedById(query, filter, sortOrder)
         }
     }
 
