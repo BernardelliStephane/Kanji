@@ -3,5 +3,6 @@ package fr.steph.kanji.data.utils.enumeration
 enum class SortField {
     ID,
     ROMAJI,
-    MEANING
+    MEANING,
+    LESSON_NUMBER
 }

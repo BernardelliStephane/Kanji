@@ -181,8 +181,11 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
                 lexemes.size
             )
 
-            binding.filterLexemes.isVisible = lexemes.isNotEmpty()
-            binding.sortLexemes.isVisible = lexemes.isNotEmpty()
+            val filteringAvailable = lexemes.isNotEmpty() || viewModel.isFilteringOngoing()
+
+            binding.filterLexemes.isVisible = filteringAvailable
+            binding.sortLexemes.isVisible = filteringAvailable
+            binding.searchView.isVisible = filteringAvailable
 
             binding.lexemeRecyclerView.layoutManager?.run {
                 val state = onSaveInstanceState()

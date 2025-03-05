@@ -39,7 +39,6 @@ class FilterLexemesDialogFragment : DialogFragment(R.layout.dialog_filter_lexeme
     private lateinit var tracker: SelectionTracker<Long>
 
     private var confirmCallback: ((List<Long>) -> Unit?)? = null
-    private var lessonCount = 0
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -97,7 +96,7 @@ class FilterLexemesDialogFragment : DialogFragment(R.layout.dialog_filter_lexeme
                 override fun onSelectionChanged() {
                     super.onSelectionChanged()
                     val selectionSize = tracker.selection.size()
-                    binding.selectAllCheckbox.isChecked = selectionSize == 0 || selectionSize == lessonCount
+                    binding.selectAllCheckbox.isChecked = selectionSize == 0
                 }
             })
 
@@ -110,7 +109,6 @@ class FilterLexemesDialogFragment : DialogFragment(R.layout.dialog_filter_lexeme
     private fun setupObservers() {
         viewModel.allLessons.observe(viewLifecycleOwner) {
             lessonAdapter.updateLessons(it)
-            lessonCount = it.size
         }
     }
 

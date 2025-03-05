@@ -35,6 +35,13 @@
             android:text="@string/translation" />
 
         <RadioButton
+            android:id="@+id/radio_lesson_number"
+            style="@style/RadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/lesson_number" />
+
+        <RadioButton
             android:id="@+id/radio_romaji"
             style="@style/RadioButton"
             android:layout_width="wrap_content"

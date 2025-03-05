@@ -44,6 +44,7 @@
     <!-- Label -->
     <string name="translation">Translation</string>
     <string name="romaji">Romaji</string>
+    <string name="lesson_number">Lesson number</string>
     <string name="creation_date">Creation date</string>
     <string name="ascending_order">Ascending (A-Z)</string>
     <string name="descending_order">Descending (Z-A)</string>

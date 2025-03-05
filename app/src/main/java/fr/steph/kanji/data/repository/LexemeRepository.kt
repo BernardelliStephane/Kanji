@@ -27,6 +27,11 @@ class LexemeRepository(private val lexemeDao: LexemeDao) {
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
+    suspend fun searchLexemesOrderedByLessonNumber(query: String, sortOrder: SortOrder) =
+        lexemeDao.searchLexemesOrderedByLessonNumber(query, sortOrder.index)
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
     suspend fun searchLexemesOrderedByRomaji(query: String, sortOrder: SortOrder) =
         lexemeDao.searchLexemesOrderedByRomaji(query, sortOrder.index)
 
@@ -41,8 +46,13 @@ class LexemeRepository(private val lexemeDao: LexemeDao) {
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
-    suspend fun lexemesOrderedById(sortOrder: SortOrder) =
-        lexemeDao.lexemesOrderedById(sortOrder.index)
+    suspend fun lexemesOrderedByMeaning(sortOrder: SortOrder) =
+        lexemeDao.lexemesOrderedByMeaning(sortOrder.index)
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun lexemesOrderedByLessonNumber(sortOrder: SortOrder) =
+        lexemeDao.lexemesOrderedByLessonNumber(sortOrder.index)
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
@@ -51,6 +61,6 @@ class LexemeRepository(private val lexemeDao: LexemeDao) {
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
-    suspend fun lexemesOrderedByMeaning(sortOrder: SortOrder) =
-        lexemeDao.lexemesOrderedByMeaning(sortOrder.index)
+    suspend fun lexemesOrderedById(sortOrder: SortOrder) =
+        lexemeDao.lexemesOrderedById(sortOrder.index)
 }

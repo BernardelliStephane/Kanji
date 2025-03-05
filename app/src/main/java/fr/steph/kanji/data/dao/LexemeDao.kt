@@ -35,6 +35,14 @@ interface LexemeDao {
             "lower(meaning) LIKE '%' || :query || '%' OR " +
             "romaji LIKE '%' || :query || '%' OR " +
             "characters LIKE '%' || :query || '%' ORDER BY " +
+            "CASE WHEN :isAsc = 0 THEN lessonNumber END ASC, " +
+            "CASE WHEN :isAsc = 1 THEN lessonNumber END DESC ")
+    fun searchLexemesOrderedByLessonNumber(query: String, isAsc: Int): Flow<List<Lexeme>>
+
+    @Query("SELECT * FROM lexeme WHERE " +
+            "lower(meaning) LIKE '%' || :query || '%' OR " +
+            "romaji LIKE '%' || :query || '%' OR " +
+            "characters LIKE '%' || :query || '%' ORDER BY " +
             "CASE WHEN :isAsc = 0 THEN romaji END ASC, " +
             "CASE WHEN :isAsc = 1 THEN romaji END DESC ")
     fun searchLexemesOrderedByRomaji(query: String, isAsc: Int): Flow<List<Lexeme>>
@@ -55,6 +63,11 @@ interface LexemeDao {
             "CASE WHEN :isAsc = 0 THEN meaning END ASC, " +
             "CASE WHEN :isAsc = 1 THEN meaning END DESC ")
     fun lexemesOrderedByMeaning(isAsc: Int): Flow<List<Lexeme>>
+
+    @Query("SELECT * FROM lexeme ORDER BY " +
+            "CASE WHEN :isAsc = 0 THEN lessonNumber END ASC, " +
+            "CASE WHEN :isAsc = 1 THEN lessonNumber END DESC ")
+    fun lexemesOrderedByLessonNumber(isAsc: Int): Flow<List<Lexeme>>
 
     @Query("SELECT * FROM lexeme ORDER BY " +
             "CASE WHEN :isAsc = 0 THEN romaji END ASC, " +

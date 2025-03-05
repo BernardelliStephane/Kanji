@@ -41,9 +41,10 @@ class SortLexemesDialogFragment : DialogFragment(R.layout.dialog_sort_lexemes) {
 
     private fun setupUI() = with(binding) {
         when (sortField) {
-            SortField.ID -> radioCreationDate.isChecked = true
-            SortField.ROMAJI -> radioRomaji.isChecked = true
             SortField.MEANING -> radioMeaning.isChecked = true
+            SortField.LESSON_NUMBER -> radioLessonNumber.isChecked = true
+            SortField.ROMAJI -> radioRomaji.isChecked = true
+            SortField.ID -> radioCreationDate.isChecked = true
         }
 
         when (sortOrder) {
@@ -57,6 +58,7 @@ class SortLexemesDialogFragment : DialogFragment(R.layout.dialog_sort_lexemes) {
             sortField = when(checkedId) {
                 R.id.radio_meaning -> SortField.MEANING
                 R.id.radio_romaji -> SortField.ROMAJI
+                R.id.radio_lesson_number -> SortField.LESSON_NUMBER
                 else -> SortField.ID
             }
         }

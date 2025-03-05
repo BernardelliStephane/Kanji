@@ -54,20 +54,26 @@ abstract class LexemeViewModel(private val repo: LexemeRepository) : ViewModel()
         }
     }
 
+    private suspend fun getAllLexemes(sortField: SortField, sortOrder: SortOrder): Flow<List<Lexeme>> {
+        return when (sortField) {
+            SortField.MEANING -> repo.lexemesOrderedByMeaning(sortOrder)
+            SortField.LESSON_NUMBER -> repo.lexemesOrderedByLessonNumber(sortOrder)
+            SortField.ROMAJI -> repo.lexemesOrderedByRomaji(sortOrder)
+            SortField.ID -> repo.lexemesOrderedById(sortOrder)
+        }
+    }
+
     private suspend fun searchLexemes(searchQuery: String, sortField: SortField, sortOrder: SortOrder): Flow<List<Lexeme>> {
         return when (sortField) {
             SortField.MEANING -> repo.searchLexemesOrderedByMeaning(searchQuery, sortOrder)
+            SortField.LESSON_NUMBER -> repo.searchLexemesOrderedByLessonNumber(searchQuery, sortOrder)
             SortField.ROMAJI -> repo.searchLexemesOrderedByRomaji(searchQuery, sortOrder)
             SortField.ID -> repo.searchLexemesOrderedById(searchQuery, sortOrder)
         }
     }
 
-    private suspend fun getAllLexemes(sortField: SortField, sortOrder: SortOrder): Flow<List<Lexeme>> {
-        return when (sortField) {
-            SortField.MEANING -> repo.lexemesOrderedByMeaning(sortOrder)
-            SortField.ROMAJI -> repo.lexemesOrderedByRomaji(sortOrder)
-            SortField.ID -> repo.lexemesOrderedById(sortOrder)
-        }
+    fun isFilteringOngoing() = _filterOptions.value.run {
+        filter.isNotEmpty() || searchQuery.isNotBlank()
     }
 
     fun getSortingState() = _filterOptions.value.run { Pair(sortField, sortOrder) }
