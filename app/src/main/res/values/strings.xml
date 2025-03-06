@@ -24,6 +24,8 @@
     <string name="dictionary_title_default">Dictionary</string>
     <string name="dictionary_title_empty_selection">Select items</string>
     <string name="dictionary_title_selection">%d selected</string>
+    <string name="none">None</string>
+    <string name="lesson_display">Lesson %1$d - %2$s</string>
     <string name="sort_by">Sort by</string>
     <string name="sort_order">Sort order</string>
     <string name="warning_prefilled_fields">Below fields have been pre-filled and can\'t be edited</string>

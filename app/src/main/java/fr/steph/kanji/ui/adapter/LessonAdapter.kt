@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.selection.ItemDetailsLookup
 import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.widget.RecyclerView
+import fr.steph.kanji.R
 import fr.steph.kanji.data.model.Lesson
 import fr.steph.kanji.databinding.ItemLessonBinding
 
@@ -41,7 +42,7 @@ class LessonAdapter : RecyclerView.Adapter<LessonAdapter.LessonViewHolder>() {
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(lesson: Lesson, isSelected: Boolean) {
-            binding.lessonLabel.text = lesson.label
+            binding.lessonLabel.text = itemView.context.getString(R.string.lesson_display, lesson.number, lesson.label)
             binding.selectionCheckbox.isChecked = isSelected
         }
 

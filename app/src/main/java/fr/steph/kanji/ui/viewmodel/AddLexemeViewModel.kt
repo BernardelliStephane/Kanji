@@ -29,6 +29,12 @@ class AddLexemeViewModel(
 
     fun onEvent(event: AddLexemeFormEvent) {
         when (event) {
+            is AddLexemeFormEvent.LessonChanged -> {
+                return _uiState.update { currentUiState ->
+                    currentUiState.copy(lessonNumber = event.lessonNumber)
+                }
+            }
+
             is AddLexemeFormEvent.CharactersChanged -> {
                 return _uiState.update { currentUiState ->
                     val charactersFetched = event.characters == currentUiState.lastFetchedKanji

@@ -32,6 +32,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+                <Spinner
+                    android:id="@+id/lesson_spinner"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_width="match_parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_height="wrap_content"/>
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/characters_input_layout"
                     style="@style/TextInputLayout.FormField"
@@ -41,7 +48,7 @@
                     android:hint="@string/characters_hint"
                     app:errorEnabled="@{viewModel.uiState.charactersErrorRes != null}"
                     app:errorRes="@{viewModel.uiState.charactersErrorRes}"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toBottomOf="@id/lesson_spinner">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/characters_input"

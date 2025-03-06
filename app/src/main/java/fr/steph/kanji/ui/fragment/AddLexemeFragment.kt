@@ -2,6 +2,8 @@ package fr.steph.kanji.ui.fragment
 
 import android.os.Bundle
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
@@ -33,6 +35,8 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
         }
     }
 
+    private lateinit var dropdownAdapter: ArrayAdapter<String>
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentAddLexemeBinding.bind(view)
@@ -40,8 +44,19 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
+        setupUI()
         setupListeners()
         setupObservers()
+    }
+
+    private fun setupUI() {
+        dropdownAdapter = ArrayAdapter<String>(
+            requireContext(),
+            android.R.layout.simple_spinner_item,
+            arrayListOf(resources.getString(R.string.none))
+        )
+        dropdownAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.lessonSpinner.adapter = dropdownAdapter
     }
 
     private fun setupListeners() {
@@ -59,6 +74,14 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
 
         binding.meaningInput.doAfterTextChanged {
             viewModel.onEvent(AddLexemeFormEvent.MeaningChanged(it.toString()))
+        }
+
+        binding.lessonSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                viewModel.onEvent(AddLexemeFormEvent.LessonChanged(position.toLong()))
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
     }
 
@@ -81,6 +104,16 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
                     is Failure -> Snackbar.make(requireView(), event.failureMessage, Snackbar.LENGTH_SHORT).show()
                     is Success -> Navigation.findNavController(requireView()).navigateUp()
                 }
+            }
+        }
+
+        viewModel.allLessons.observe(viewLifecycleOwner) { allLessons ->
+            dropdownAdapter.run {
+                clear()
+                add(resources.getString(R.string.none))
+                addAll(allLessons.map { lesson ->
+                    resources.getString(R.string.lesson_display, lesson.number, lesson.label)
+                })
             }
         }
     }

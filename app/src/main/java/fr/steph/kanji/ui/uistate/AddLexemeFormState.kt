@@ -1,6 +1,7 @@
 package fr.steph.kanji.ui.uistate
 
 data class AddLexemeFormState(
+    var lessonNumber: Long = 0,
     var characters: String = "",
     var charactersErrorRes: Int? = null,
     var isCharactersLoneKanji: Boolean = false,
