@@ -19,17 +19,17 @@ import fr.steph.kanji.ui.utils.autoCleared
 import fr.steph.kanji.ui.utils.recyclerview_selection.ItemKeyProvider
 import fr.steph.kanji.ui.utils.recyclerview_selection.LessonDetailsLookup
 import fr.steph.kanji.ui.utils.viewModelFactory
-import fr.steph.kanji.ui.viewmodel.FilterLexemesViewModel
+import fr.steph.kanji.ui.viewmodel.LessonViewModel
 
 const val FILTER_LEXEMES_DIALOG_TAG = "filter_lexemes_dialog"
 
 class FilterLexemesDialogFragment : DialogFragment(R.layout.dialog_filter_lexemes) {
     private var binding: DialogFilterLexemesBinding by autoCleared()
 
-    private val viewModel: FilterLexemesViewModel by viewModels {
+    private val viewModel: LessonViewModel by viewModels {
         val app = (activity?.application as KanjiApplication)
         viewModelFactory {
-            FilterLexemesViewModel(app.lessonRepository)
+            LessonViewModel(app.lessonRepository)
         }
     }
 

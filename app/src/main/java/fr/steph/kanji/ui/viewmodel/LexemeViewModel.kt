@@ -1,10 +1,10 @@
 package fr.steph.kanji.ui.viewmodel
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import fr.steph.kanji.R
 import fr.steph.kanji.data.model.Lexeme
+import fr.steph.kanji.data.repository.LessonRepository
 import fr.steph.kanji.data.repository.LexemeRepository
 import fr.steph.kanji.data.utils.enumeration.SortField
 import fr.steph.kanji.data.utils.enumeration.SortOrder
@@ -23,7 +23,10 @@ import kotlinx.coroutines.launch
 const val FAILURE = -1L
 
 @OptIn(ExperimentalCoroutinesApi::class)
-abstract class LexemeViewModel(private val repo: LexemeRepository) : ViewModel() {
+abstract class LexemeViewModel(
+    lessonRepo: LessonRepository,
+    private val lexemeRepo: LexemeRepository,
+) : LessonViewModel(lessonRepo) {
 
     private val _filterOptions = MutableStateFlow(FilterOptions())
 
@@ -48,7 +51,7 @@ abstract class LexemeViewModel(private val repo: LexemeRepository) : ViewModel()
     val validationEvents = validationEventChannel.receiveAsFlow()
 
     fun upsertLexeme(lexeme: Lexeme) = viewModelScope.launch {
-        repo.upsertLexeme(lexeme).let {
+        lexemeRepo.upsertLexeme(lexeme).let {
             if (it == FAILURE)
                 validationEventChannel.send(ValidationEvent.Failure(R.string.room_insertion_failure))
             else validationEventChannel.send(ValidationEvent.Success)
@@ -56,7 +59,7 @@ abstract class LexemeViewModel(private val repo: LexemeRepository) : ViewModel()
     }
 
     fun deleteLexemesFromSelection(selection: List<Long>) = viewModelScope.launch {
-        repo.deleteLexemesFromSelection(selection).let {
+        lexemeRepo.deleteLexemesFromSelection(selection).let {
             if (it != selection.size)
                 validationEventChannel.send(ValidationEvent.Failure(R.string.room_deletion_failure))
             else validationEventChannel.send(ValidationEvent.Success)
@@ -65,37 +68,37 @@ abstract class LexemeViewModel(private val repo: LexemeRepository) : ViewModel()
 
     private suspend fun getAllLexemes(sortField: SortField, sortOrder: SortOrder): Flow<List<Lexeme>> {
         return when (sortField) {
-            SortField.MEANING -> repo.lexemesOrderedByMeaning(sortOrder)
-            SortField.LESSON_NUMBER -> repo.lexemesOrderedByLessonNumber(sortOrder)
-            SortField.ROMAJI -> repo.lexemesOrderedByRomaji(sortOrder)
-            SortField.ID -> repo.lexemesOrderedById(sortOrder)
+            SortField.MEANING -> lexemeRepo.lexemesOrderedByMeaning(sortOrder)
+            SortField.LESSON_NUMBER -> lexemeRepo.lexemesOrderedByLessonNumber(sortOrder)
+            SortField.ROMAJI -> lexemeRepo.lexemesOrderedByRomaji(sortOrder)
+            SortField.ID -> lexemeRepo.lexemesOrderedById(sortOrder)
         }
     }
 
     private suspend fun filterLexemes(filter: List<Long>, sortField: SortField, sortOrder: SortOrder): Flow<List<Lexeme>> {
         return when (sortField) {
-            SortField.MEANING -> repo.filterLexemesOrderedByMeaning(filter, sortOrder)
-            SortField.LESSON_NUMBER -> repo.filterLexemesOrderedByLessonNumber(filter, sortOrder)
-            SortField.ROMAJI -> repo.filterLexemesOrderedByRomaji(filter, sortOrder)
-            SortField.ID -> repo.filterLexemesOrderedById(filter, sortOrder)
+            SortField.MEANING -> lexemeRepo.filterLexemesOrderedByMeaning(filter, sortOrder)
+            SortField.LESSON_NUMBER -> lexemeRepo.filterLexemesOrderedByLessonNumber(filter, sortOrder)
+            SortField.ROMAJI -> lexemeRepo.filterLexemesOrderedByRomaji(filter, sortOrder)
+            SortField.ID -> lexemeRepo.filterLexemesOrderedById(filter, sortOrder)
         }
     }
 
     private suspend fun searchLexemes(query: String, sortField: SortField, sortOrder: SortOrder): Flow<List<Lexeme>> {
         return when (sortField) {
-            SortField.MEANING -> repo.searchLexemesOrderedByMeaning(query, sortOrder)
-            SortField.LESSON_NUMBER -> repo.searchLexemesOrderedByLessonNumber(query, sortOrder)
-            SortField.ROMAJI -> repo.searchLexemesOrderedByRomaji(query, sortOrder)
-            SortField.ID -> repo.searchLexemesOrderedById(query, sortOrder)
+            SortField.MEANING -> lexemeRepo.searchLexemesOrderedByMeaning(query, sortOrder)
+            SortField.LESSON_NUMBER -> lexemeRepo.searchLexemesOrderedByLessonNumber(query, sortOrder)
+            SortField.ROMAJI -> lexemeRepo.searchLexemesOrderedByRomaji(query, sortOrder)
+            SortField.ID -> lexemeRepo.searchLexemesOrderedById(query, sortOrder)
         }
     }
 
     private suspend fun searchInFilteredLexemes(query: String, filter: List<Long>, sortField: SortField, sortOrder: SortOrder): Flow<List<Lexeme>> {
         return when (sortField) {
-            SortField.MEANING -> repo.searchInFilteredLexemesOrderedByMeaning(query, filter, sortOrder)
-            SortField.LESSON_NUMBER -> repo.searchInFilteredLexemesOrderedByLessonNumber(query, filter, sortOrder)
-            SortField.ROMAJI -> repo.searchInFilteredLexemesOrderedByRomaji(query, filter, sortOrder)
-            SortField.ID -> repo.searchInFilteredLexemesOrderedById(query, filter, sortOrder)
+            SortField.MEANING -> lexemeRepo.searchInFilteredLexemesOrderedByMeaning(query, filter, sortOrder)
+            SortField.LESSON_NUMBER -> lexemeRepo.searchInFilteredLexemesOrderedByLessonNumber(query, filter, sortOrder)
+            SortField.ROMAJI -> lexemeRepo.searchInFilteredLexemesOrderedByRomaji(query, filter, sortOrder)
+            SortField.ID -> lexemeRepo.searchInFilteredLexemesOrderedById(query, filter, sortOrder)
         }
     }
 

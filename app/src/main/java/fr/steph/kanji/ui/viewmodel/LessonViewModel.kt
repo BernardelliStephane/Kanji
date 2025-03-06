@@ -3,12 +3,15 @@ package fr.steph.kanji.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import fr.steph.kanji.data.model.Lesson
 import fr.steph.kanji.data.repository.LessonRepository
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
-class FilterLexemesViewModel(repo: LessonRepository) : ViewModel() {
+open class LessonViewModel(private val repo: LessonRepository): ViewModel() {
     val allLessons: LiveData<List<Lesson>> = repo.allLessons().asLiveData()
+
+    fun upsertLesson(lesson: Lesson) = viewModelScope.launch {
+        repo.upsertLesson(lesson)
+    }
 }

@@ -29,7 +29,7 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
     private val viewModel: AddLexemeViewModel by viewModels {
         val app = (activity?.application as KanjiApplication)
         viewModelFactory {
-            AddLexemeViewModel(app.lexemeRepository, app.apiRepository)
+            AddLexemeViewModel(app.lessonRepository, app.lexemeRepository, app.apiRepository)
         }
     }
 

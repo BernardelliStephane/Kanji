@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import fr.steph.kanji.R
 import fr.steph.kanji.network.model.ApiKanji
 import fr.steph.kanji.data.repository.ApiKanjiRepository
+import fr.steph.kanji.data.repository.LessonRepository
 import fr.steph.kanji.data.repository.LexemeRepository
 import fr.steph.kanji.network.ConnectivityChecker.isNetworkAvailable
 import fr.steph.kanji.utils.extension.log
@@ -15,9 +16,10 @@ import java.io.IOException
 import java.net.SocketTimeoutException
 
 abstract class ApiLexemeViewModel(
-    repo: LexemeRepository,
+    lessonRepo: LessonRepository,
+    lexemeRepo: LexemeRepository,
     private val apiRepo: ApiKanjiRepository,
-) : LexemeViewModel(repo) {
+) : LexemeViewModel(lessonRepo, lexemeRepo) {
 
     private val _lastKanjiFetch: MutableLiveData<Resource?> = MutableLiveData()
     val lastKanjiFetch: LiveData<Resource?> = _lastKanjiFetch

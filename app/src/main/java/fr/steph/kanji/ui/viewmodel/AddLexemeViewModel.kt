@@ -3,6 +3,7 @@ package fr.steph.kanji.ui.viewmodel
 import fr.steph.kanji.R
 import fr.steph.kanji.data.model.Lexeme.Companion.buildLexemeFromFormState
 import fr.steph.kanji.data.repository.ApiKanjiRepository
+import fr.steph.kanji.data.repository.LessonRepository
 import fr.steph.kanji.data.repository.LexemeRepository
 import fr.steph.kanji.ui.uistate.AddLexemeFormEvent
 import fr.steph.kanji.ui.uistate.AddLexemeFormState
@@ -15,9 +16,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 class AddLexemeViewModel(
-    repo: LexemeRepository,
+    lessonRepo: LessonRepository,
+    lexemeRepo: LexemeRepository,
     apiRepo: ApiKanjiRepository,
-) : ApiLexemeViewModel(repo, apiRepo) {
+) : ApiLexemeViewModel(lessonRepo, lexemeRepo, apiRepo) {
 
     private val _uiState = MutableStateFlow(AddLexemeFormState())
     val uiState = _uiState.asStateFlow()
