@@ -9,10 +9,7 @@ import fr.steph.kanji.R
 fun RecyclerView.setMaxVisibleItems(layoutInflater: LayoutInflater, itemCount: Int) {
     val itemView = layoutInflater.inflate(R.layout.item_lesson, this, false)
 
-    itemView.measure(
-        View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY),
-        View.MeasureSpec.UNSPECIFIED
-    )
+    itemView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
 
     val itemHeight = itemView.measuredHeight
     val maxHeight = itemHeight * itemCount
