@@ -20,8 +20,10 @@ import fr.steph.kanji.ui.utils.recyclerview_selection.ItemKeyProvider
 import fr.steph.kanji.ui.utils.recyclerview_selection.LessonDetailsLookup
 import fr.steph.kanji.ui.utils.viewModelFactory
 import fr.steph.kanji.ui.viewmodel.LessonViewModel
+import fr.steph.kanji.utils.extension.setMaxVisibleItems
 
 const val FILTER_LEXEMES_DIALOG_TAG = "filter_lexemes_dialog"
+const val MAX_VISIBLE_ITEMS = 8
 
 class FilterLexemesDialogFragment : DialogFragment(R.layout.dialog_filter_lexemes) {
     private var binding: DialogFilterLexemesBinding by autoCleared()
@@ -108,6 +110,8 @@ class FilterLexemesDialogFragment : DialogFragment(R.layout.dialog_filter_lexeme
 
     private fun setupObservers() {
         viewModel.allLessons.observe(viewLifecycleOwner) {
+            if (it.size > MAX_VISIBLE_ITEMS)
+                binding.lessonRecyclerView.setMaxVisibleItems(layoutInflater, MAX_VISIBLE_ITEMS)
             lessonAdapter.updateLessons(it)
         }
     }
