@@ -5,8 +5,12 @@ import fr.steph.kanji.utils.extension.isOnlyJapaneseCharacters
 import fr.steph.kanji.utils.extension.isOnlyRomanCharacters
 import fr.steph.kanji.utils.extension.isOnlyRomanLetters
 
-class ValidateField {
+class ValidateLexemeField {
     companion object {
+        fun validateLesson(lessonNumber: Long): ValidationResult {
+            return ValidationResult(successful = lessonNumber != -1L)
+        }
+
         fun validateCharacters(characters: String): ValidationResult {
             if (characters.isBlank())
                 return ValidationResult(

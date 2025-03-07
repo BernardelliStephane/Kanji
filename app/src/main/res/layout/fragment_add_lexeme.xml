@@ -7,6 +7,8 @@
 
         <import type="android.text.InputType" />
 
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="fr.steph.kanji.ui.viewmodel.AddLexemeViewModel" />
@@ -32,12 +34,37 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <Spinner
-                    android:id="@+id/lesson_spinner"
+                <FrameLayout
+                    android:id="@+id/spinner_layout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
                     android:layout_marginTop="@dimen/_20sdp"
-                    android:layout_width="match_parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_height="wrap_content"/>
+                    android:background="@drawable/rounded_corners_background"
+                    android:backgroundTint="@color/light_blue"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <Spinner
+                        android:id="@+id/lesson_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_10sdp" />
+
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/spinner_error_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:text="@string/lesson_selection_error"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:visibility="@{viewModel.uiState.lessonError ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintStart_toStartOf="@id/spinner_layout"
+                    app:layout_constraintTop_toBottomOf="@id/spinner_layout"
+                    tools:visibility="gone" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/characters_input_layout"
@@ -48,7 +75,7 @@
                     android:hint="@string/characters_hint"
                     app:errorEnabled="@{viewModel.uiState.charactersErrorRes != null}"
                     app:errorRes="@{viewModel.uiState.charactersErrorRes}"
-                    app:layout_constraintTop_toBottomOf="@id/lesson_spinner">
+                    app:layout_constraintTop_toBottomOf="@id/spinner_error_text">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/characters_input"

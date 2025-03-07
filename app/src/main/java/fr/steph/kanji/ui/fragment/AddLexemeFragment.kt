@@ -2,8 +2,10 @@ package fr.steph.kanji.ui.fragment
 
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
@@ -50,11 +52,22 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
     }
 
     private fun setupUI() {
-        dropdownAdapter = ArrayAdapter<String>(
+        dropdownAdapter = object : ArrayAdapter<String>(
             requireContext(),
             android.R.layout.simple_spinner_item,
-            arrayListOf(resources.getString(R.string.none))
-        )
+            arrayListOf(resources.getString(R.string.select_lesson), resources.getString(R.string.none))
+        ) {
+            override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+                if (position == 0) {
+                    with(TextView(context)) {
+                        height = 0
+                        visibility = View.GONE
+                        return this
+                    }
+                }
+                else return super.getDropDownView(position, null, parent)
+            }
+        }
         dropdownAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.lessonSpinner.adapter = dropdownAdapter
     }
@@ -78,7 +91,7 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
 
         binding.lessonSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                viewModel.onEvent(AddLexemeFormEvent.LessonChanged(position.toLong()))
+                viewModel.onEvent(AddLexemeFormEvent.LessonChanged(position - 1L))
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -86,6 +99,19 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
     }
 
     private fun setupObservers() {
+        viewModel.allLessons.observe(viewLifecycleOwner) { allLessons ->
+            val lessonNames = allLessons.map { lesson ->
+                resources.getString(R.string.lesson_display, lesson.number, lesson.label)
+            }
+
+            dropdownAdapter.run {
+                clear()
+                add(resources.getString(R.string.select_lesson))
+                add(resources.getString(R.string.none))
+                addAll(lessonNames)
+            }
+        }
+
         viewModel.lastKanjiFetch.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is ApiLexemeViewModel.Resource.Success ->
@@ -104,16 +130,6 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
                     is Failure -> Snackbar.make(requireView(), event.failureMessage, Snackbar.LENGTH_SHORT).show()
                     is Success -> Navigation.findNavController(requireView()).navigateUp()
                 }
-            }
-        }
-
-        viewModel.allLessons.observe(viewLifecycleOwner) { allLessons ->
-            dropdownAdapter.run {
-                clear()
-                add(resources.getString(R.string.none))
-                addAll(allLessons.map { lesson ->
-                    resources.getString(R.string.lesson_display, lesson.number, lesson.label)
-                })
             }
         }
     }

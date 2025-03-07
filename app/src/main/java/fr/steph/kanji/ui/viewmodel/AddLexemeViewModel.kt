@@ -7,7 +7,7 @@ import fr.steph.kanji.data.repository.LessonRepository
 import fr.steph.kanji.data.repository.LexemeRepository
 import fr.steph.kanji.ui.uistate.AddLexemeFormEvent
 import fr.steph.kanji.ui.uistate.AddLexemeFormState
-import fr.steph.kanji.ui.utils.form_validation.ValidateField
+import fr.steph.kanji.ui.utils.form_validation.ValidateLexemeField
 import fr.steph.kanji.utils.extension.capitalized
 import fr.steph.kanji.utils.extension.isLoneKanji
 import fr.steph.kanji.utils.extension.kanaToRomaji
@@ -31,7 +31,9 @@ class AddLexemeViewModel(
         when (event) {
             is AddLexemeFormEvent.LessonChanged -> {
                 return _uiState.update { currentUiState ->
-                    currentUiState.copy(lessonNumber = event.lessonNumber)
+                    currentUiState.copy(
+                        lessonNumber = event.lessonNumber,
+                        lessonError = false)
                 }
             }
 
@@ -118,19 +120,21 @@ class AddLexemeViewModel(
         }
 
         if (!isCharactersLoneKanji) {
-            val charactersResult = ValidateField.validateCharacters(uiState.value.characters)
-            val romajiResult = ValidateField.validateRomaji(uiState.value.romaji)
-            val meaningResult = ValidateField.validateMeaning(uiState.value.meaning)
+            val lessonResult = ValidateLexemeField.validateLesson(uiState.value.lessonNumber)
+            val charactersResult = ValidateLexemeField.validateCharacters(uiState.value.characters)
+            val romajiResult = ValidateLexemeField.validateRomaji(uiState.value.romaji)
+            val meaningResult = ValidateLexemeField.validateMeaning(uiState.value.meaning)
 
             _uiState.update { currentUiState ->
                 currentUiState.copy(
+                    lessonError = !lessonResult.successful,
                     charactersErrorRes = charactersResult.errorMessageRes,
                     romajiErrorRes = romajiResult.errorMessageRes,
                     meaningErrorRes = meaningResult.errorMessageRes
                 )
             }
 
-            val hasError = listOf(charactersResult, romajiResult, meaningResult).any { !it.successful }
+            val hasError = listOf(lessonResult, charactersResult, romajiResult, meaningResult).any { !it.successful }
 
             if (hasError)
                 return _uiState.update { currentUiState ->

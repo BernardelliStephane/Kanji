@@ -24,6 +24,7 @@
     <string name="dictionary_title_default">Dictionary</string>
     <string name="dictionary_title_empty_selection">Select items</string>
     <string name="dictionary_title_selection">%d selected</string>
+    <string name="select_lesson">Select a lesson</string>
     <string name="none">None</string>
     <string name="lesson_display">Lesson %1$d - %2$s</string>
     <string name="sort_by">Sort by</string>
@@ -67,6 +68,7 @@
     <string name="use_frequency_indicator">Use frequency indicator</string>
 
     <!-- Form error -->
+    <string name="lesson_selection_error">Please select a lesson</string>
     <string name="mandatory_field_error">Mandatory field</string>
     <string name="kanji_not_fetched_error">Lone kanji must be fetched</string>
     <string name="incorrect_romaji_filling_error">Must contain only roman letters</string>
