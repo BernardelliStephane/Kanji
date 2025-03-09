@@ -58,16 +58,22 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
             arrayListOf(resources.getString(R.string.select_lesson), resources.getString(R.string.none))
         ) {
             override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
-                if (position == 0) {
-                    with(TextView(context)) {
+                when (position) {
+                    0 -> with(TextView(context)) {
                         height = 0
                         visibility = View.GONE
                         return this
                     }
+                    count - 1 -> with(super.getDropDownView(position, null, parent) as TextView) {
+                        setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_add, 0, 0, 0)
+                        compoundDrawablePadding = resources.getDimensionPixelSize(R.dimen.add_lexeme_half_margin)
+                        return this
+                    }
+                    else -> return super.getDropDownView(position, null, parent)
                 }
-                else return super.getDropDownView(position, null, parent)
             }
         }
+
         dropdownAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.lessonSpinner.adapter = dropdownAdapter
     }
@@ -109,6 +115,7 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
                 add(resources.getString(R.string.select_lesson))
                 add(resources.getString(R.string.none))
                 addAll(lessonNames)
+                add(resources.getString(R.string.add_lesson))
             }
         }
 
