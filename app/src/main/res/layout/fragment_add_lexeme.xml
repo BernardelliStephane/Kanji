@@ -50,7 +50,11 @@
                         android:id="@+id/lesson_spinner"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="@dimen/_10sdp" />
+                        android:dropDownVerticalOffset="@dimen/_30sdp"
+                        android:overScrollMode="always"
+                        android:padding="@dimen/_10sdp"
+                        android:popupBackground="@drawable/partially_rounded_corners_background"
+                        android:popupElevation="5dp" />
 
                 </FrameLayout>
 
