@@ -2,16 +2,17 @@ package fr.steph.kanji.data.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Upsert
 import fr.steph.kanji.data.model.Lesson
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface LessonDao {
 
-    @Upsert
-    suspend fun upsertLesson(lesson: Lesson): Long
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    suspend fun insertLesson(lesson: Lesson): Long
 
     @Delete
     suspend fun deleteLesson(lesson: Lesson): Int

@@ -5,8 +5,8 @@ import fr.steph.kanji.data.model.Lesson
 
 class LessonRepository(private val lessonDao: LessonDao) {
 
-    suspend fun upsertLesson(lesson: Lesson) =
-        lessonDao.upsertLesson(lesson)
+    suspend fun insertLesson(lesson: Lesson) =
+        lessonDao.insertLesson(lesson)
 
     suspend fun deleteLesson(lesson: Lesson) =
         lessonDao.deleteLesson(lesson)
