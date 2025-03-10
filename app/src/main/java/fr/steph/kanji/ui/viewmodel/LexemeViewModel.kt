@@ -47,22 +47,22 @@ abstract class LexemeViewModel(
 
     val lexemes = _lexemes.asLiveData()
 
-    private val validationEventChannel = Channel<ValidationEvent>()
-    val validationEvents = validationEventChannel.receiveAsFlow()
+    private val lexemeValidationEventChannel = Channel<ValidationEvent>()
+    val lexemeValidationEvents = lexemeValidationEventChannel.receiveAsFlow()
 
     fun upsertLexeme(lexeme: Lexeme) = viewModelScope.launch {
         lexemeRepo.upsertLexeme(lexeme).let {
             if (it == FAILURE)
-                validationEventChannel.send(ValidationEvent.Failure(R.string.room_insertion_failure))
-            else validationEventChannel.send(ValidationEvent.Success)
+                lexemeValidationEventChannel.send(ValidationEvent.Failure(R.string.room_insertion_failure))
+            else lexemeValidationEventChannel.send(ValidationEvent.Success)
         }
     }
 
     fun deleteLexemesFromSelection(selection: List<Long>) = viewModelScope.launch {
         lexemeRepo.deleteLexemesFromSelection(selection).let {
             if (it != selection.size)
-                validationEventChannel.send(ValidationEvent.Failure(R.string.room_deletion_failure))
-            else validationEventChannel.send(ValidationEvent.Success)
+                lexemeValidationEventChannel.send(ValidationEvent.Failure(R.string.room_deletion_failure))
+            else lexemeValidationEventChannel.send(ValidationEvent.Success)
         }
     }
 

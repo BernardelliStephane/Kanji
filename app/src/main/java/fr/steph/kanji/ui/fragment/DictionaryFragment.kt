@@ -35,8 +35,8 @@ import fr.steph.kanji.ui.utils.recyclerview_selection.LexemeDetailsLookup
 import fr.steph.kanji.ui.utils.recyclerview_selection.ItemKeyProvider
 import fr.steph.kanji.ui.utils.viewModelFactory
 import fr.steph.kanji.ui.viewmodel.DictionaryViewModel
-import fr.steph.kanji.ui.viewmodel.LexemeViewModel.ValidationEvent.Failure
 import fr.steph.kanji.ui.viewmodel.LexemeViewModel.ValidationEvent.Success
+import fr.steph.kanji.ui.viewmodel.LexemeViewModel.ValidationEvent.Failure
 import fr.steph.kanji.utils.extension.safeNavigate
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -196,7 +196,7 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.validationEvents.collectLatest { event ->
+            viewModel.lexemeValidationEvents.collectLatest { event ->
                 when (event) {
                     is Failure -> Snackbar.make(requireView(), event.failureMessage, Snackbar.LENGTH_SHORT).show()
                     is Success -> clearSelection(true)
