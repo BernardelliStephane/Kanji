@@ -15,6 +15,7 @@ import androidx.navigation.Navigation
 import com.google.android.material.snackbar.Snackbar
 import fr.steph.kanji.KanjiApplication
 import fr.steph.kanji.R
+import fr.steph.kanji.data.model.Lesson
 import fr.steph.kanji.databinding.FragmentAddLexemeBinding
 import fr.steph.kanji.ui.dialog.ADD_LESSON_DIALOG_TAG
 import fr.steph.kanji.ui.dialog.AddLessonDialogFragment
@@ -72,6 +73,16 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
                     count - 1 -> with(super.getDropDownView(position, null, parent) as TextView) {
                         setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_add, 0, 0, 0)
                         compoundDrawablePadding = resources.getDimensionPixelSize(R.dimen.add_lexeme_half_margin)
+
+                        val spinner = binding.lessonSpinner
+
+                        setOnClickListener {
+                            AddLessonDialogFragment()
+                                .setFailureCallback { spinner.performClick() }
+                                .setSuccessCallback { addedLesson = it }
+                                .show(parentFragmentManager, ADD_LESSON_DIALOG_TAG)
+                        }
+
                         return this
                     }
 
@@ -126,6 +137,11 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
                 add(resources.getString(R.string.none))
                 addAll(lessonNames)
                 add(resources.getString(R.string.add_lesson))
+            }
+
+            addedLesson?.let {
+                val index = allLessons.indexOf(it)
+                binding.lessonSpinner.setSelection(index + 2)
             }
         }
 

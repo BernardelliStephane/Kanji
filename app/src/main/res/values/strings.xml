@@ -55,6 +55,8 @@
 
     <!-- Hint -->
     <string name="search_translation">Search translation</string>
+    <string name="lesson_number_hint">Lesson number</string>
+    <string name="lesson_label_hint">Lesson label</string>
     <string name="meaning_hint">Meaning(s)</string>
     <string name="romaji_hint">Romaji</string>
     <string name="characters_hint">Characters</string>
@@ -72,6 +74,8 @@
     <string name="lesson_selection_error">Please select a lesson</string>
     <string name="mandatory_field_error">Mandatory field</string>
     <string name="kanji_not_fetched_error">Lone kanji must be fetched</string>
+    <string name="digits_only_filling_error">Must contain only digits</string>
+    <string name="already_existing_number_filling_error">A lesson with this number already exists</string>
     <string name="roman_letters_only_filling_error">Must contain only roman letters</string>
     <string name="japanese_characters_only_filling_error">Must contain only kanjis, hiraganas and katakanas</string>
 

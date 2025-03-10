@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="fr.steph.kanji.ui.viewmodel.AddLessonViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_corners_background"
+        android:maxWidth="@dimen/_360sdp"
+        android:paddingHorizontal="@dimen/_20sdp"
+        android:paddingVertical="@dimen/_10sdp">
+
+        <TextView
+            android:id="@+id/all_lesson_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_lesson"
+            android:textSize="@dimen/default_text_size"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/lesson_number_input_layout"
+            style="@style/TextInputLayout.FormField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/add_lexeme_half_margin"
+            android:hint="@string/lesson_number_hint"
+            app:errorEnabled="@{viewModel.uiState.numberErrorRes != null}"
+            app:errorRes="@{viewModel.uiState.numberErrorRes}"
+            app:layout_constraintTop_toBottomOf="@id/all_lesson_text">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/lesson_number_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:text="@{viewModel.uiState.number}" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/lesson_label_input_layout"
+            style="@style/TextInputLayout.FormField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/add_lexeme_default_margin"
+            android:hint="@string/lesson_label_hint"
+            app:errorEnabled="@{viewModel.uiState.labelErrorRes != null}"
+            app:errorRes="@{viewModel.uiState.labelErrorRes}"
+            app:layout_constraintTop_toBottomOf="@id/lesson_number_input_layout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/lesson_label_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textShortMessage"
+                android:text="@{viewModel.uiState.label}" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/dialog_cancel_button"
+            style="@style/FormActionButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/add_lexeme_half_margin"
+            android:text="@string/cancel"
+            app:layout_constraintEnd_toStartOf="@id/dialog_confirm_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lesson_label_input_layout" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:layout_marginVertical="@dimen/_15sdp"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintBottom_toBottomOf="@id/dialog_cancel_button"
+            app:layout_constraintEnd_toStartOf="@id/dialog_cancel_button"
+            app:layout_constraintStart_toEndOf="@id/dialog_confirm_button"
+            app:layout_constraintTop_toTopOf="@id/dialog_cancel_button" />
+
+        <Button
+            android:id="@+id/dialog_confirm_button"
+            style="@style/FormActionButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/add_lexeme_half_margin"
+            android:text="@string/confirm"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/dialog_cancel_button"
+            app:layout_constraintTop_toBottomOf="@id/lesson_label_input_layout" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
