@@ -16,6 +16,8 @@ import com.google.android.material.snackbar.Snackbar
 import fr.steph.kanji.KanjiApplication
 import fr.steph.kanji.R
 import fr.steph.kanji.databinding.FragmentAddLexemeBinding
+import fr.steph.kanji.ui.dialog.ADD_LESSON_DIALOG_TAG
+import fr.steph.kanji.ui.dialog.AddLessonDialogFragment
 import fr.steph.kanji.ui.uistate.AddLexemeFormEvent
 import fr.steph.kanji.ui.utils.autoCleared
 import fr.steph.kanji.ui.utils.viewModelFactory
@@ -38,6 +40,8 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
     }
 
     private lateinit var dropdownAdapter: ArrayAdapter<String>
+
+    private var addedLesson: Lesson? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -64,13 +68,19 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
                         visibility = View.GONE
                         return this
                     }
+
                     count - 1 -> with(super.getDropDownView(position, null, parent) as TextView) {
                         setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_add, 0, 0, 0)
                         compoundDrawablePadding = resources.getDimensionPixelSize(R.dimen.add_lexeme_half_margin)
                         return this
                     }
+
                     else -> return super.getDropDownView(position, null, parent)
                 }
+            }
+
+            override fun isEnabled(position: Int): Boolean {
+                return position != count - 1
             }
         }
 
