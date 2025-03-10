@@ -107,7 +107,7 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
         filterLexemes.setOnClickListener {
             FilterLexemesDialogFragment
                 .newInstance(viewModel.getFilter().toLongArray())
-                .setConfirmCallback { filter ->
+                .setSuccessCallback { filter ->
                     viewModel.updateFilter(filter)
                 }
                 .show(parentFragmentManager, FILTER_LEXEMES_DIALOG_TAG)
@@ -117,7 +117,7 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
             val (sortField, sortOrder) = viewModel.getSortingState()
             SortLexemesDialogFragment
                 .newInstance(sortField, sortOrder)
-                .setConfirmCallback { field, order ->
+                .setSuccessCallback { field, order ->
                     viewModel.updateSorting(field, order)
                 }
                 .show(parentFragmentManager, SORT_LEXEMES_DIALOG_TAG)
@@ -148,7 +148,7 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
         deleteButton.setOnClickListener {
             val selection = tracker.selection
             ConfirmDeletionDialogFragment.newInstance(selection.size())
-                .setConfirmCallback { viewModel.deleteLexemesFromSelection(selection.toList()) }
+                .setSuccessCallback { viewModel.deleteLexemesFromSelection(selection.toList()) }
                 .show(parentFragmentManager, DELETE_DIALOG_TAG)
         }
     }
@@ -268,7 +268,7 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
             tracker.onRestoreInstanceState(savedInstanceState)
 
             val dialog = parentFragmentManager.findFragmentByTag(DELETE_DIALOG_TAG) as? ConfirmDeletionDialogFragment
-            dialog?.setConfirmCallback { viewModel.deleteLexemesFromSelection(tracker.selection.toList()) }
+            dialog?.setSuccessCallback { viewModel.deleteLexemesFromSelection(tracker.selection.toList()) }
         }
     }
 

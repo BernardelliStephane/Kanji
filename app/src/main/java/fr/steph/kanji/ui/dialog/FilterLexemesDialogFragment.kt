@@ -40,7 +40,7 @@ class FilterLexemesDialogFragment : DialogFragment(R.layout.dialog_filter_lexeme
     private lateinit var initialSelection: LongArray
     private lateinit var tracker: SelectionTracker<Long>
 
-    private var confirmCallback: ((List<Long>) -> Unit?)? = null
+    private var successCallback: ((List<Long>) -> Unit?)? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -80,7 +80,7 @@ class FilterLexemesDialogFragment : DialogFragment(R.layout.dialog_filter_lexeme
 
         dialogCancelButton.setOnClickListener { dismiss() }
         dialogDoneButton.setOnClickListener {
-            confirmCallback?.invoke(tracker.selection.toList())
+            successCallback?.invoke(tracker.selection.toList())
             dismiss()
         }
     }
@@ -116,8 +116,8 @@ class FilterLexemesDialogFragment : DialogFragment(R.layout.dialog_filter_lexeme
         }
     }
 
-    fun setConfirmCallback(callback: (List<Long>) -> Unit): FilterLexemesDialogFragment {
-        confirmCallback = callback
+    fun setSuccessCallback(callback: (List<Long>) -> Unit): FilterLexemesDialogFragment {
+        successCallback = callback
         return this
     }
 

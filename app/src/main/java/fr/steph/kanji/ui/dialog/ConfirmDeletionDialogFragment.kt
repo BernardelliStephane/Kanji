@@ -15,7 +15,7 @@ const val DELETE_DIALOG_TAG = "confirm_deletion_dialog"
 class ConfirmDeletionDialogFragment : DialogFragment(R.layout.dialog_confirm_deletion) {
 
     private var binding: DialogConfirmDeletionBinding by autoCleared()
-    private var confirmCallback: (() -> Unit?)? = null
+    private var successCallback: (() -> Unit?)? = null
     private var selectionSize = 0
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -32,11 +32,11 @@ class ConfirmDeletionDialogFragment : DialogFragment(R.layout.dialog_confirm_del
 
         binding.dialogText.text = resources.getQuantityString(R.plurals.item_deletion_count, selectionSize, selectionSize)
         binding.dialogCancelButton.setOnClickListener { dismiss() }
-        binding.dialogDeleteButton.setOnClickListener { confirmCallback?.invoke(); dismiss() }
+        binding.dialogDeleteButton.setOnClickListener { successCallback?.invoke(); dismiss() }
     }
 
-    fun setConfirmCallback(callback: () -> Unit): ConfirmDeletionDialogFragment {
-        confirmCallback = callback
+    fun setSuccessCallback(callback: () -> Unit): ConfirmDeletionDialogFragment {
+        successCallback = callback
         return this
     }
 

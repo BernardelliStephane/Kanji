@@ -18,7 +18,7 @@ const val SORT_LEXEMES_DIALOG_TAG = "sort_lexemes_dialog"
 class SortLexemesDialogFragment : DialogFragment(R.layout.dialog_sort_lexemes) {
 
     private var binding: DialogSortLexemesBinding by autoCleared()
-    private var confirmCallback: ((SortField, SortOrder) -> Unit?)? = null
+    private var successCallback: ((SortField, SortOrder) -> Unit?)? = null
     private lateinit var sortField: SortField
     private lateinit var sortOrder: SortOrder
 
@@ -72,13 +72,13 @@ class SortLexemesDialogFragment : DialogFragment(R.layout.dialog_sort_lexemes) {
 
         dialogCancelButton.setOnClickListener { dismiss() }
         dialogDoneButton.setOnClickListener {
-            confirmCallback?.invoke(sortField, sortOrder)
+            successCallback?.invoke(sortField, sortOrder)
             dismiss()
         }
     }
 
-    fun setConfirmCallback(callback: (SortField, SortOrder) -> Unit): SortLexemesDialogFragment {
-        confirmCallback = callback
+    fun setSuccessCallback(callback: (SortField, SortOrder) -> Unit): SortLexemesDialogFragment {
+        successCallback = callback
         return this
     }
 
