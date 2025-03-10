@@ -26,6 +26,7 @@ import fr.steph.kanji.ui.viewmodel.AddLexemeViewModel
 import fr.steph.kanji.ui.viewmodel.ApiLexemeViewModel
 import fr.steph.kanji.ui.viewmodel.LexemeViewModel.ValidationEvent.Failure
 import fr.steph.kanji.ui.viewmodel.LexemeViewModel.ValidationEvent.Success
+import fr.steph.kanji.utils.extension.hideSpinnerDropDown
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -77,6 +78,7 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
                         val spinner = binding.lessonSpinner
 
                         setOnClickListener {
+                            spinner.hideSpinnerDropDown()
                             AddLessonDialogFragment()
                                 .setFailureCallback { spinner.performClick() }
                                 .setSuccessCallback { addedLesson = it }
