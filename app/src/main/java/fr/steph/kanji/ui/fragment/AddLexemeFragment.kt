@@ -17,6 +17,7 @@ import fr.steph.kanji.KanjiApplication
 import fr.steph.kanji.R
 import fr.steph.kanji.data.model.Lesson
 import fr.steph.kanji.databinding.FragmentAddLexemeBinding
+import fr.steph.kanji.ui.adapter.SpinnerAdapter
 import fr.steph.kanji.ui.dialog.ADD_LESSON_DIALOG_TAG
 import fr.steph.kanji.ui.dialog.AddLessonDialogFragment
 import fr.steph.kanji.ui.uistate.AddLexemeFormEvent
@@ -41,7 +42,7 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
         }
     }
 
-    private lateinit var dropdownAdapter: ArrayAdapter<String>
+    private lateinit var dropdownAdapter: SpinnerAdapter
 
     private var addedLesson: Lesson? = null
 
@@ -58,46 +59,14 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
     }
 
     private fun setupUI() {
-        dropdownAdapter = object : ArrayAdapter<String>(
-            requireContext(),
-            android.R.layout.simple_spinner_item,
-            arrayListOf(resources.getString(R.string.select_lesson), resources.getString(R.string.none))
-        ) {
-            override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
-                when (position) {
-                    0 -> with(TextView(context)) {
-                        height = 0
-                        visibility = View.GONE
-                        return this
-                    }
-
-                    count - 1 -> with(super.getDropDownView(position, null, parent) as TextView) {
-                        setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_add, 0, 0, 0)
-                        compoundDrawablePadding = resources.getDimensionPixelSize(R.dimen.add_lexeme_half_margin)
-
-                        val spinner = binding.lessonSpinner
-
-                        setOnClickListener {
-                            spinner.hideSpinnerDropDown()
-                            AddLessonDialogFragment()
-                                .setFailureCallback { spinner.performClick() }
-                                .setSuccessCallback { addedLesson = it }
-                                .show(parentFragmentManager, ADD_LESSON_DIALOG_TAG)
-                        }
-
-                        return this
-                    }
-
-                    else -> return super.getDropDownView(position, null, parent)
-                }
-            }
-
-            override fun isEnabled(position: Int): Boolean {
-                return position != count - 1
-            }
+        dropdownAdapter = SpinnerAdapter(requireContext()) {
+            binding.lessonSpinner.hideSpinnerDropDown()
+            AddLessonDialogFragment()
+                .setFailureCallback { binding.lessonSpinner.performClick() }
+                .setSuccessCallback { addedLesson = it }
+                .show(parentFragmentManager, ADD_LESSON_DIALOG_TAG)
         }
 
-        dropdownAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.lessonSpinner.adapter = dropdownAdapter
     }
 
@@ -120,7 +89,7 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
 
         binding.lessonSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                viewModel.onEvent(AddLexemeFormEvent.LessonChanged(position - 1L))
+                viewModel.onEvent(AddLexemeFormEvent.LessonChanged(id))
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -129,17 +98,7 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
 
     private fun setupObservers() {
         viewModel.allLessons.observe(viewLifecycleOwner) { allLessons ->
-            val lessonNames = allLessons.map { lesson ->
-                resources.getString(R.string.lesson_display, lesson.number, lesson.label)
-            }
-
-            dropdownAdapter.run {
-                clear()
-                add(resources.getString(R.string.select_lesson))
-                add(resources.getString(R.string.none))
-                addAll(lessonNames)
-                add(resources.getString(R.string.add_lesson))
-            }
+            dropdownAdapter.updateLessons(allLessons)
 
             addedLesson?.let {
                 val index = allLessons.indexOf(it)

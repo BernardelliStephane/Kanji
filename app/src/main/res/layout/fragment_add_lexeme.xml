@@ -64,7 +64,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_15sdp"
                     android:text="@string/lesson_selection_error"
-                    android:textColor="@android:color/holo_red_dark"
+                    android:textColor="?attr/colorError"
                     android:visibility="@{viewModel.uiState.lessonError ? View.VISIBLE : View.GONE}"
                     app:layout_constraintStart_toStartOf="@id/spinner_layout"
                     app:layout_constraintTop_toBottomOf="@id/spinner_layout"
