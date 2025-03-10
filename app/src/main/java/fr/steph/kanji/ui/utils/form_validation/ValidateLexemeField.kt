@@ -21,7 +21,7 @@ class ValidateLexemeField {
             if (!characters.isOnlyJapaneseCharacters())
                 return ValidationResult(
                     successful = false,
-                    errorMessageRes = R.string.incorrect_characters_filling_error
+                    errorMessageRes = R.string.japanese_characters_only_filling_error
                 )
 
             return ValidationResult(successful = true)
@@ -37,7 +37,7 @@ class ValidateLexemeField {
             if (!romaji.isOnlyRomanLetters())
                 return ValidationResult(
                     successful = false,
-                    errorMessageRes = R.string.incorrect_romaji_filling_error
+                    errorMessageRes = R.string.roman_letters_only_filling_error
                 )
 
             return ValidationResult(successful = true)
@@ -53,12 +53,10 @@ class ValidateLexemeField {
             if (!meaning.isOnlyRomanCharacters())
                 return ValidationResult(
                     successful = false,
-                    errorMessageRes = R.string.incorrect_meaning_filling_error
+                    errorMessageRes = R.string.roman_letters_only_filling_error
                 )
 
             return ValidationResult(successful = true)
         }
     }
-
-    class ValidationResult(val successful: Boolean, val errorMessageRes: Int? = null)
 }

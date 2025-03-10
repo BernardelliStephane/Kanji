@@ -72,9 +72,8 @@
     <string name="lesson_selection_error">Please select a lesson</string>
     <string name="mandatory_field_error">Mandatory field</string>
     <string name="kanji_not_fetched_error">Lone kanji must be fetched</string>
-    <string name="incorrect_romaji_filling_error">Must contain only roman letters</string>
-    <string name="incorrect_characters_filling_error">Must contain only kanjis, hiraganas and katakanas</string>
-    <string name="incorrect_meaning_filling_error">Must contain only roman letters</string>
+    <string name="roman_letters_only_filling_error">Must contain only roman letters</string>
+    <string name="japanese_characters_only_filling_error">Must contain only kanjis, hiraganas and katakanas</string>
 
     <!-- Content description -->
     <string name="filter_translations">Filter translations</string>
