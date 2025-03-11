@@ -15,10 +15,10 @@ data class Lexeme(
     val characters: String,
     val romaji: String,
     val meaning: String,
-    val unicode: String?,
+    val additionDate: Long = System.currentTimeMillis(),
 ) {
     companion object {
-        fun buildLexemeFromFormState(id: Long, uiState: AddLexemeFormState, unicode: String?): Lexeme {
+        fun buildLexemeFromFormState(id: Long, uiState: AddLexemeFormState): Lexeme {
             val lexemeType = when {
                 uiState.isCharactersFetched -> LexemeType.KANJI
                 mojiDetector.hasKanji(uiState.characters) -> LexemeType.COMPOUND
@@ -35,7 +35,6 @@ data class Lexeme(
                 characters = uiState.characters,
                 romaji = romaji,
                 meaning = uiState.meaning,
-                unicode = unicode
             )
         }
     }

@@ -25,7 +25,6 @@ class AddLexemeViewModel(
     val uiState = _uiState.asStateFlow()
 
     private var id = 0L
-    private var unicode: String? = null
 
     fun onEvent(event: AddLexemeFormEvent) {
         when (event) {
@@ -74,7 +73,6 @@ class AddLexemeViewModel(
             }
 
             is AddLexemeFormEvent.KanjiFetched -> {
-                unicode = event.kanji.unicode
                 return _uiState.update { currentUiState ->
                     event.kanji.run {
                         currentUiState.copy(
@@ -142,7 +140,7 @@ class AddLexemeViewModel(
                 }
         }
 
-        val lexeme = buildLexemeFromFormState(id, uiState.value, unicode)
+        val lexeme = buildLexemeFromFormState(id, uiState.value)
         upsertLexeme(lexeme)
     }
 }
