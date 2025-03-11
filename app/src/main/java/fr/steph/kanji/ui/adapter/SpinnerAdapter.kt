@@ -11,9 +11,9 @@ import androidx.core.view.isVisible
 import fr.steph.kanji.R
 import fr.steph.kanji.data.model.Lesson
 
-const val NO_LESSON_ID = 0L
 const val SELECT_LESSON_ID = -1L
-const val ADD_LESSON_ID = -2L
+const val NO_LESSON_ID = -2L
+const val ADD_LESSON_ID = -3L
 
 class SpinnerAdapter(
     context: Context,
