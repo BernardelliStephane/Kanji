@@ -2,10 +2,7 @@ package fr.steph.kanji.ui.fragment
 
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
@@ -28,8 +25,11 @@ import fr.steph.kanji.ui.viewmodel.ApiLexemeViewModel
 import fr.steph.kanji.ui.viewmodel.LexemeViewModel.ValidationEvent.Failure
 import fr.steph.kanji.ui.viewmodel.LexemeViewModel.ValidationEvent.Success
 import fr.steph.kanji.utils.extension.hideSpinnerDropDown
+import fr.steph.kanji.utils.extension.setMaxVisibleItems
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+
+const val SPINNER_DROPDOWN_MAX_VISIBLE_ITEMS = 10
 
 class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
 
@@ -99,6 +99,9 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
     private fun setupObservers() {
         viewModel.allLessons.observe(viewLifecycleOwner) { allLessons ->
             dropdownAdapter.updateLessons(allLessons)
+
+            if (allLessons.size > SPINNER_DROPDOWN_MAX_VISIBLE_ITEMS)
+                binding.lessonSpinner.setMaxVisibleItems(layoutInflater, SPINNER_DROPDOWN_MAX_VISIBLE_ITEMS)
 
             addedLesson?.let {
                 val index = allLessons.indexOf(it)
