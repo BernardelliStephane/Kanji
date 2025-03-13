@@ -92,7 +92,8 @@ class AddLessonDialogFragment : DialogFragment(R.layout.dialog_add_lesson) {
         }
 
         viewModel.lessonNumbers.observe(viewLifecycleOwner) { allLessonNumbers ->
-            val nextLessonNumber = allLessonNumbers.last().plus(1).toString()
+            val nextLessonNumber = if(allLessonNumbers.isEmpty()) "1"
+                else allLessonNumbers.last().plus(1).toString()
             binding.lessonNumberInput.setText(nextLessonNumber)
         }
     }
