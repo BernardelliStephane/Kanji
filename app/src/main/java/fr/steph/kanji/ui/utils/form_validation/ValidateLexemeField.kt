@@ -11,7 +11,10 @@ class ValidateLexemeField {
             return ValidationResult(successful = lessonNumber != -1L)
         }
 
-        fun validateCharacters(characters: String): ValidationResult {
+        fun validateCharacters(characters: String, loneKanji: Boolean, characterFetched: Boolean): ValidationResult {
+            if (loneKanji)
+                return validateLoneKanjiCharacters(characterFetched)
+
             if (characters.isBlank())
                 return ValidationResult(
                     successful = false,
@@ -22,6 +25,16 @@ class ValidateLexemeField {
                 return ValidationResult(
                     successful = false,
                     errorMessageRes = R.string.japanese_characters_only_filling_error
+                )
+
+            return ValidationResult(successful = true)
+        }
+
+        private fun validateLoneKanjiCharacters(characterFetched: Boolean): ValidationResult {
+            if (!characterFetched)
+                return ValidationResult(
+                    successful = false,
+                    errorMessageRes = R.string.kanji_not_fetched_error
                 )
 
             return ValidationResult(successful = true)

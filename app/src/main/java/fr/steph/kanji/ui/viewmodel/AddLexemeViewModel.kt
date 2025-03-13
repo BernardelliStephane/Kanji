@@ -1,6 +1,5 @@
 package fr.steph.kanji.ui.viewmodel
 
-import fr.steph.kanji.R
 import fr.steph.kanji.data.model.Lexeme.Companion.buildLexemeFromFormState
 import fr.steph.kanji.data.repository.ApiKanjiRepository
 import fr.steph.kanji.data.repository.LessonRepository
@@ -105,23 +104,35 @@ class AddLexemeViewModel(
     }
 
     fun submitData() {
-        val isCharactersLoneKanji = uiState.value.isCharactersLoneKanji
-        val isCharactersLoneKanjiNotFetched = isCharactersLoneKanji && !uiState.value.isCharactersFetched
-
-        if (isCharactersLoneKanjiNotFetched)
-            return _uiState.update { currentUiState ->
-                currentUiState.copy(charactersErrorRes = R.string.kanji_not_fetched_error)
-            }
+        val currentState = uiState.value
 
         _uiState.update { currentUiState ->
             currentUiState.copy(isSubmitting = true)
         }
 
-        if (!isCharactersLoneKanji) {
-            val lessonResult = ValidateLexemeField.validateLesson(uiState.value.lessonNumber)
-            val charactersResult = ValidateLexemeField.validateCharacters(uiState.value.characters)
-            val romajiResult = ValidateLexemeField.validateRomaji(uiState.value.romaji)
-            val meaningResult = ValidateLexemeField.validateMeaning(uiState.value.meaning)
+        val hasError: Boolean
+        
+        val lessonResult = ValidateLexemeField.validateLesson(currentState.lessonNumber)
+        val charactersResult = ValidateLexemeField.validateCharacters(
+            currentState.characters,
+            currentState.isCharactersLoneKanji,
+            currentState.isCharactersFetched
+        )
+
+        if (currentState.isCharactersLoneKanji) {
+            _uiState.update { currentUiState ->
+                currentUiState.copy(
+                    lessonError = !lessonResult.successful,
+                    charactersErrorRes = charactersResult.errorMessageRes
+                )
+            }
+
+            hasError = listOf(lessonResult, charactersResult).any { !it.successful }
+        }
+
+        else {
+            val romajiResult = ValidateLexemeField.validateRomaji(currentState.romaji)
+            val meaningResult = ValidateLexemeField.validateMeaning(currentState.meaning)
 
             _uiState.update { currentUiState ->
                 currentUiState.copy(
@@ -132,15 +143,15 @@ class AddLexemeViewModel(
                 )
             }
 
-            val hasError = listOf(lessonResult, charactersResult, romajiResult, meaningResult).any { !it.successful }
-
-            if (hasError)
-                return _uiState.update { currentUiState ->
-                    currentUiState.copy(isSubmitting = false)
-                }
+            hasError = listOf(lessonResult, charactersResult, romajiResult, meaningResult).any { !it.successful }
         }
 
-        val lexeme = buildLexemeFromFormState(id, uiState.value)
+        if (hasError)
+            return _uiState.update { currentUiState ->
+                currentUiState.copy(isSubmitting = false)
+            }
+
+        val lexeme = buildLexemeFromFormState(id, currentState)
         upsertLexeme(lexeme)
     }
 }
