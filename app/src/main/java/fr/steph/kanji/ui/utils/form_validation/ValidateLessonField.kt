@@ -21,7 +21,7 @@ class ValidateLessonField {
             if (number.toLong() in lessonNumbers)
                 return ValidationResult(
                     successful = false,
-                    errorMessageRes = R.string.already_existing_number_filling_error
+                    errorMessageRes = R.string.duplicate_lesson_error
                 )
 
             return ValidationResult(successful = true)

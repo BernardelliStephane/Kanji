@@ -75,6 +75,13 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
             Navigation.findNavController(requireView()).navigateUp()
         }
 
+        binding.buttonConfirm.setOnClickListener {
+            viewModel.submitData { lexeme ->
+                // TODO Display "Update translation" dialog
+                Toast.makeText(requireContext(), resources.getString(R.string.duplicate_characters_error), Toast.LENGTH_SHORT).show()
+            }
+        }
+
         binding.charactersInput.doAfterTextChanged {
             viewModel.onEvent(AddLexemeFormEvent.CharactersChanged(it.toString()))
         }

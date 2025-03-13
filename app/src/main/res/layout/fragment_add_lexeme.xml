@@ -362,7 +362,6 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/add_lexeme_default_margin"
             android:clickable="@{!viewModel.uiState.submitting}"
-            android:onClick="@{() -> viewModel.submitData()}"
             android:text="@string/confirm"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

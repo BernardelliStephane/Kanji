@@ -1,6 +1,8 @@
 package fr.steph.kanji.ui.viewmodel
 
-import fr.steph.kanji.data.model.Lexeme.Companion.buildLexemeFromFormState
+import androidx.lifecycle.asFlow
+import androidx.lifecycle.viewModelScope
+import fr.steph.kanji.data.model.Lexeme
 import fr.steph.kanji.data.repository.ApiKanjiRepository
 import fr.steph.kanji.data.repository.LessonRepository
 import fr.steph.kanji.data.repository.LexemeRepository
@@ -13,6 +15,7 @@ import fr.steph.kanji.utils.extension.kanaToRomaji
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 class AddLexemeViewModel(
     lessonRepo: LessonRepository,
@@ -23,7 +26,17 @@ class AddLexemeViewModel(
     private val _uiState = MutableStateFlow(AddLexemeFormState())
     val uiState = _uiState.asStateFlow()
 
+    private lateinit var lexemeList: List<Lexeme>
+
     private var id = 0L
+
+    init {
+        viewModelScope.launch {
+            lexemes.asFlow().collect { lexemes ->
+                lexemeList = lexemes
+            }
+        }
+    }
 
     fun onEvent(event: AddLexemeFormEvent) {
         when (event) {
@@ -103,8 +116,13 @@ class AddLexemeViewModel(
         else getKanjiInfo(uiState.value.characters)
     }
 
-    fun submitData() {
+    fun submitData(duplicateTranslationCallback: (Lexeme) -> Unit) {
         val currentState = uiState.value
+
+        val lexemeCharacters = lexemeList.map { it.characters }
+        val index = lexemeCharacters.indexOf(currentState.characters)
+        if (index != -1)
+            return duplicateTranslationCallback.invoke(lexemeList[index])
 
         _uiState.update { currentUiState ->
             currentUiState.copy(isSubmitting = true)
@@ -151,7 +169,7 @@ class AddLexemeViewModel(
                 currentUiState.copy(isSubmitting = false)
             }
 
-        val lexeme = buildLexemeFromFormState(id, currentState)
+        val lexeme = currentState.toLexeme(id)
         upsertLexeme(lexeme)
     }
 }
