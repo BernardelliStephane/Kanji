@@ -188,6 +188,12 @@ class AddLexemeViewModel(
         return allLessons.value?.map { it.number }?.indexOf(lexeme.lessonNumber) ?: 0
     }
 
+    fun resetUi() {
+        _uiState.update { AddLexemeFormState() }
+        id = 0
+        additionDate = 0
+    }
+
     fun stopSubmission() {
         _uiState.update { currentUiState ->
             currentUiState.copy(isSubmitting = false)

@@ -74,6 +74,8 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
 
     private fun setupListeners() {
         binding.buttonCancel.setOnClickListener {
+            if (viewModel.uiState.value.isUpdating)
+                return@setOnClickListener viewModel.resetUi()
             Navigation.findNavController(requireView()).navigateUp()
         }
 
