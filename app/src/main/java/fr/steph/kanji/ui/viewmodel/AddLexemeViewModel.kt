@@ -29,6 +29,7 @@ class AddLexemeViewModel(
     private lateinit var lexemeList: List<Lexeme>
 
     private var id = 0L
+    private var additionDate = 0L
 
     init {
         viewModelScope.launch {
@@ -119,10 +120,12 @@ class AddLexemeViewModel(
     fun submitData(duplicateTranslationCallback: (Lexeme) -> Unit) {
         val currentState = uiState.value
 
-        val lexemeCharacters = lexemeList.map { it.characters }
-        val index = lexemeCharacters.indexOf(currentState.characters)
-        if (index != -1)
-            return duplicateTranslationCallback.invoke(lexemeList[index])
+        if (!currentState.isUpdating) {
+            val lexemeCharacters = lexemeList.map { it.characters }
+            val index = lexemeCharacters.indexOf(currentState.characters)
+            if (index != -1)
+                return duplicateTranslationCallback.invoke(lexemeList[index])
+        }
 
         _uiState.update { currentUiState ->
             currentUiState.copy(isSubmitting = true)
@@ -171,6 +174,18 @@ class AddLexemeViewModel(
 
         val lexeme = currentState.toLexeme(id)
         upsertLexeme(lexeme)
+    }
+
+    fun updateUi(lexeme: Lexeme): Int {
+        log("Updating lexeme: $lexeme ")
+        _uiState.update { lexeme.toAddLexemeFormState().copy(isUpdating = true) }
+        if (lexeme.characters.isLoneKanji())
+            getKanjiInfo(lexeme.characters)
+
+        id = lexeme.id
+        additionDate = lexeme.additionDate
+
+        return allLessons.value?.map { it.number }?.indexOf(lexeme.lessonNumber) ?: 0
     }
 
     fun stopSubmission() {

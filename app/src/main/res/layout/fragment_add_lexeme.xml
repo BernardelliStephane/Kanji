@@ -76,16 +76,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/add_lexeme_default_margin"
-                    android:hint="@string/characters_hint"
+                    android:hint="@{viewModel.uiState.updating ? @string/characters_hint_updating : @string/characters_hint}"
                     app:errorEnabled="@{viewModel.uiState.charactersErrorRes != null}"
                     app:errorRes="@{viewModel.uiState.charactersErrorRes}"
-                    app:layout_constraintTop_toBottomOf="@id/spinner_error_text">
+                    app:layout_constraintTop_toBottomOf="@id/spinner_error_text"
+                    tools:hint="@string/characters_hint">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/characters_input"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="textShortMessage"
+                        android:focusable="@{!viewModel.uiState.updating}"
+                        android:inputType="@{viewModel.uiState.updating ? InputType.TYPE_NULL : InputType.TYPE_CLASS_TEXT}"
                         android:text="@={viewModel.uiState.characters}" />
 
                 </com.google.android.material.textfield.TextInputLayout>

@@ -3,9 +3,8 @@ package fr.steph.kanji.data.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import fr.steph.kanji.data.utils.enumeration.LexemeType
-import fr.steph.kanji.network.model.ApiKanji
 import fr.steph.kanji.ui.uistate.AddLexemeFormState
-import fr.steph.kanji.utils.extension.kanaToRomaji
+import fr.steph.kanji.utils.extension.isLoneKanji
 
 @Entity
 data class Lexeme(
@@ -17,4 +16,13 @@ data class Lexeme(
     val romaji: String,
     val meaning: String,
     val additionDate: Long = System.currentTimeMillis(),
-)
+) {
+    fun toAddLexemeFormState(): AddLexemeFormState =
+        AddLexemeFormState(
+            lessonNumber = lessonNumber,
+            characters = characters,
+            isCharactersLoneKanji = characters.isLoneKanji(),
+            romaji = romaji,
+            meaning = meaning
+        )
+}

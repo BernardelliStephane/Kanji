@@ -84,6 +84,8 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
                 binding.meaningInput.clearFocus()
                 ConfirmLexemeUpdateDialogFragment()
                     .setSuccessCallback {
+                        val lessonIndex = viewModel.updateUi(lexeme)
+                        binding.lessonSpinner.setSelection(lessonIndex + 2)
                     }
                     .show(parentFragmentManager, LEXEME_UPDATE_DIALOG_TAG)
             }

@@ -62,6 +62,7 @@
     <string name="meaning_hint">Meaning(s)</string>
     <string name="romaji_hint">Romaji</string>
     <string name="characters_hint">Characters</string>
+    <string name="characters_hint_updating">Characters - Not editable when updating translation</string>
     <string name="onyomi">On\'yomi reading(s)</string>
     <string name="onyomi_romaji">On\'yomi reading(s) romaji</string>
     <string name="kunyomi">Kun\'yomi reading(s)</string>
