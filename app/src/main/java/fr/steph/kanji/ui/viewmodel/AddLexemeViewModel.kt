@@ -172,4 +172,10 @@ class AddLexemeViewModel(
         val lexeme = currentState.toLexeme(id)
         upsertLexeme(lexeme)
     }
+
+    fun stopSubmission() {
+        _uiState.update { currentUiState ->
+            currentUiState.copy(isSubmitting = false)
+        }
+    }
 }

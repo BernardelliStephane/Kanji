@@ -67,7 +67,6 @@ class AddLessonDialogFragment : DialogFragment(R.layout.dialog_add_lesson) {
         }
 
         binding.dialogCancelButton.setOnClickListener {
-            //failureCallback?.invoke()
             dismiss()
         }
 

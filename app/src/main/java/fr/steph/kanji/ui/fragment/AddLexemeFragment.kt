@@ -138,7 +138,10 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.lexemeValidationEvents.collectLatest { event ->
                 when (event) {
-                    is Failure -> Snackbar.make(requireView(), event.failureMessage, Snackbar.LENGTH_SHORT).show()
+                    is Failure -> {
+                        Snackbar.make(requireView(), event.failureMessage, Snackbar.LENGTH_SHORT).show()
+                        viewModel.stopSubmission()
+                    }
                     is Success -> Navigation.findNavController(requireView()).navigateUp()
                 }
             }
