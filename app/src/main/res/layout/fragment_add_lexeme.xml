@@ -98,7 +98,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/add_lexeme_half_margin"
                     android:backgroundTint="?attr/colorPrimaryVariant"
-                    android:onClick="@{() -> viewModel.onSearchClicked()}"
                     android:text="@string/search_kanji"
                     android:visibility="@{viewModel.uiState.charactersLoneKanji &amp;&amp; !viewModel.uiState.charactersFetched}"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -364,10 +363,11 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/add_lexeme_default_margin"
             android:clickable="@{!viewModel.uiState.submitting}"
-            android:text="@string/confirm"
+            android:text="@{viewModel.uiState.updating ? @string/update : @string/confirm}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/button_cancel" />
+            app:layout_constraintStart_toEndOf="@+id/button_cancel"
+            tools:text="@string/confirm"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -19,6 +19,11 @@ class LexemeRepository(private val lexemeDao: LexemeDao) {
     suspend fun deleteLexemesFromSelection(selection: List<Long>) =
         lexemeDao.deleteLexemesFromSelection(selection)
 
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun getLexemeByCharacters(characters: String) =
+        lexemeDao.getLexemeByCharacters(characters)
+
 
     /******************** All lexemes ********************/
 

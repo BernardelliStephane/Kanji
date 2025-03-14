@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import fr.steph.kanji.data.model.Lexeme
+import io.reactivex.rxjava3.core.Maybe
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -23,6 +24,9 @@ interface LexemeDao {
 
     @Query("DELETE FROM lexeme WHERE id in (:selection)")
     suspend fun deleteLexemesFromSelection(selection: List<Long>): Int
+
+    @Query("SELECT * FROM lexeme WHERE characters = :characters")
+    fun getLexemeByCharacters(characters: String): Maybe<Lexeme>
 
 
     /******************** All lexemes ********************/

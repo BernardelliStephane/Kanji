@@ -48,13 +48,13 @@ abstract class LexemeViewModel(
 
     val lexemes = _lexemes.asLiveData()
 
-    private val lexemeValidationEventChannel = Channel<ValidationEvent>()
+    protected val lexemeValidationEventChannel = Channel<ValidationEvent>()
     val lexemeValidationEvents = lexemeValidationEventChannel.receiveAsFlow()
 
     fun insertLexeme(lexeme: Lexeme) = viewModelScope.launch {
         lexemeRepo.insertLexeme(lexeme).let {
             if (it == INSERTION_FAILURE)
-                lexemeValidationEventChannel.send(ValidationEvent.Failure(R.string.room_upsertion_failure))
+                lexemeValidationEventChannel.send(ValidationEvent.Failure(R.string.room_failure))
             else lexemeValidationEventChannel.send(ValidationEvent.Success)
         }
     }
@@ -62,7 +62,7 @@ abstract class LexemeViewModel(
     fun updateLexeme(lexeme: Lexeme) = viewModelScope.launch {
         lexemeRepo.updateLexeme(lexeme).let {
             if (it == UPDATE_FAILURE)
-                lexemeValidationEventChannel.send(ValidationEvent.Failure(R.string.room_upsertion_failure))
+                lexemeValidationEventChannel.send(ValidationEvent.Failure(R.string.room_failure))
             else lexemeValidationEventChannel.send(ValidationEvent.Success)
         }
     }
@@ -74,6 +74,9 @@ abstract class LexemeViewModel(
             else lexemeValidationEventChannel.send(ValidationEvent.Success)
         }
     }
+
+    suspend fun getLexemeByCharacters(characters: String) =
+        lexemeRepo.getLexemeByCharacters(characters)
 
     private suspend fun getAllLexemes(sortField: SortField, sortOrder: SortOrder): Flow<List<Lexeme>> {
         return when (sortField) {

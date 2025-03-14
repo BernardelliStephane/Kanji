@@ -80,17 +80,21 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
         }
 
         binding.buttonConfirm.setOnClickListener {
-            viewModel.submitData { lexeme ->
+            viewModel.onEvent(AddLexemeFormEvent.Submit { duplicateLexeme ->
                 binding.charactersInput.clearFocus()
                 binding.romajiInput.clearFocus()
                 binding.meaningInput.clearFocus()
                 ConfirmLexemeUpdateDialogFragment()
                     .setSuccessCallback {
-                        val lessonIndex = viewModel.updateUi(lexeme)
+                        val lessonIndex = viewModel.updateUi(duplicateLexeme)
                         binding.lessonSpinner.setSelection(lessonIndex + 2)
                     }
                     .show(parentFragmentManager, LEXEME_UPDATE_DIALOG_TAG)
-            }
+            })
+        }
+
+        binding.searchKanji.setOnClickListener {
+            viewModel.onEvent(AddLexemeFormEvent.Search)
         }
 
         binding.charactersInput.doAfterTextChanged {

@@ -19,7 +19,7 @@ open class LessonViewModel(private val repo: LessonRepository) : ViewModel() {
     fun insertLesson(lesson: Lesson) = viewModelScope.launch {
         repo.insertLesson(lesson).let {
             if (it == INSERTION_FAILURE)
-                lessonValidationEventChannel.send(ValidationEvent.Failure(R.string.room_upsertion_failure))
+                lessonValidationEventChannel.send(ValidationEvent.Failure(R.string.room_failure))
             else lessonValidationEventChannel.send(ValidationEvent.Success(lesson))
         }
     }

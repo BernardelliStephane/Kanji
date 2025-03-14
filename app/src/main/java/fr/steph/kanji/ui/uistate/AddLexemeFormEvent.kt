@@ -1,5 +1,6 @@
 package fr.steph.kanji.ui.uistate
 
+import fr.steph.kanji.data.model.Lexeme
 import fr.steph.kanji.network.model.ApiKanji
 
 sealed class AddLexemeFormEvent {
@@ -8,4 +9,6 @@ sealed class AddLexemeFormEvent {
     data class RomajiChanged(val romaji: String) : AddLexemeFormEvent()
     data class MeaningChanged(val meaning: String) : AddLexemeFormEvent()
     data class KanjiFetched(val kanji: ApiKanji) : AddLexemeFormEvent()
+    data class Submit(val duplicateTranslationCallback: (Lexeme) -> Unit) : AddLexemeFormEvent()
+    data object Search : AddLexemeFormEvent()
 }
