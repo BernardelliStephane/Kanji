@@ -7,8 +7,11 @@ import fr.steph.kanji.data.utils.enumeration.SortOrder
 
 class LexemeRepository(private val lexemeDao: LexemeDao) {
 
-    suspend fun upsertLexeme(lexeme: Lexeme) =
-        lexemeDao.upsertLexeme(lexeme)
+    suspend fun insertLexeme(lexeme: Lexeme) =
+        lexemeDao.insertLexeme(lexeme)
+
+    suspend fun updateLexeme(lexeme: Lexeme) =
+        lexemeDao.updateLexeme(lexeme)
 
     suspend fun deleteLexeme(lexeme: Lexeme) =
         lexemeDao.deleteLexeme(lexeme)

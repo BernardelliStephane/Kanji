@@ -2,16 +2,21 @@ package fr.steph.kanji.data.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Upsert
+import androidx.room.Update
 import fr.steph.kanji.data.model.Lexeme
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface LexemeDao {
     
-    @Upsert
-    suspend fun upsertLexeme(lexeme: Lexeme): Long
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    suspend fun insertLexeme(lexeme: Lexeme): Long
+
+    @Update
+    suspend fun updateLexeme(lexeme: Lexeme): Int
 
     @Delete
     suspend fun deleteLexeme(lexeme: Lexeme): Int

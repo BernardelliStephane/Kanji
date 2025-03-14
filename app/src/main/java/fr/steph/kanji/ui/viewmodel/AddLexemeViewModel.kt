@@ -173,11 +173,11 @@ class AddLexemeViewModel(
             }
 
         val lexeme = currentState.toLexeme(id)
-        upsertLexeme(lexeme)
+        if (currentState.isUpdating) updateLexeme(lexeme)
+        else insertLexeme(lexeme)
     }
 
     fun updateUi(lexeme: Lexeme): Int {
-        log("Updating lexeme: $lexeme ")
         _uiState.update { lexeme.toAddLexemeFormState().copy(isUpdating = true) }
         if (lexeme.characters.isLoneKanji())
             getKanjiInfo(lexeme.characters)

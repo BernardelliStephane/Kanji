@@ -20,7 +20,8 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-const val FAILURE = -1L
+const val INSERTION_FAILURE = -1L
+const val UPDATE_FAILURE = 0
 
 @OptIn(ExperimentalCoroutinesApi::class)
 abstract class LexemeViewModel(
@@ -50,10 +51,18 @@ abstract class LexemeViewModel(
     private val lexemeValidationEventChannel = Channel<ValidationEvent>()
     val lexemeValidationEvents = lexemeValidationEventChannel.receiveAsFlow()
 
-    fun upsertLexeme(lexeme: Lexeme) = viewModelScope.launch {
-        lexemeRepo.upsertLexeme(lexeme).let {
-            if (it == FAILURE)
-                lexemeValidationEventChannel.send(ValidationEvent.Failure(R.string.room_insertion_failure))
+    fun insertLexeme(lexeme: Lexeme) = viewModelScope.launch {
+        lexemeRepo.insertLexeme(lexeme).let {
+            if (it == INSERTION_FAILURE)
+                lexemeValidationEventChannel.send(ValidationEvent.Failure(R.string.room_upsertion_failure))
+            else lexemeValidationEventChannel.send(ValidationEvent.Success)
+        }
+    }
+
+    fun updateLexeme(lexeme: Lexeme) = viewModelScope.launch {
+        lexemeRepo.updateLexeme(lexeme).let {
+            if (it == UPDATE_FAILURE)
+                lexemeValidationEventChannel.send(ValidationEvent.Failure(R.string.room_upsertion_failure))
             else lexemeValidationEventChannel.send(ValidationEvent.Success)
         }
     }

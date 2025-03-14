@@ -3,6 +3,7 @@ package fr.steph.kanji.ui.uistate
 import fr.steph.kanji.data.model.Lexeme
 import fr.steph.kanji.data.utils.enumeration.LexemeType
 import fr.steph.kanji.utils.Moji.mojiDetector
+import fr.steph.kanji.utils.extension.capitalized
 
 data class AddLexemeFormState(
     var lessonNumber: Long = 0,
@@ -45,7 +46,7 @@ data class AddLexemeFormState(
             lessonNumber = lessonNumber,
             characters = characters,
             romaji = romaji,
-            meaning = meaning,
+            meaning = meaning.capitalized(),
         )
     }
 }
