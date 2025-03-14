@@ -31,6 +31,7 @@
     <string name="sort_by">Sort by</string>
     <string name="sort_order">Sort order</string>
     <string name="warning_prefilled_fields">Below fields have been pre-filled and can\'t be edited</string>
+    <string name="duplicate_characters_update_confirmation">Would you like to update it?</string>
 
     <!-- Button text-->
     <string name="dictionary">Dictionary</string>
@@ -43,6 +44,7 @@
     <string name="search_kanji">Look for kanji</string>
     <string name="retry">Retry</string>
     <string name="delete">Delete</string>
+    <string name="update">Update</string>
     <string name="select_all">All</string>
 
     <!-- Label -->

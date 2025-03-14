@@ -17,6 +17,8 @@ import fr.steph.kanji.databinding.FragmentAddLexemeBinding
 import fr.steph.kanji.ui.adapter.SpinnerAdapter
 import fr.steph.kanji.ui.dialog.ADD_LESSON_DIALOG_TAG
 import fr.steph.kanji.ui.dialog.AddLessonDialogFragment
+import fr.steph.kanji.ui.dialog.ConfirmLexemeUpdateDialogFragment
+import fr.steph.kanji.ui.dialog.LEXEME_UPDATE_DIALOG_TAG
 import fr.steph.kanji.ui.uistate.AddLexemeFormEvent
 import fr.steph.kanji.ui.utils.autoCleared
 import fr.steph.kanji.ui.utils.viewModelFactory
@@ -77,8 +79,13 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
 
         binding.buttonConfirm.setOnClickListener {
             viewModel.submitData { lexeme ->
-                // TODO Display "Update translation" dialog
-                Toast.makeText(requireContext(), resources.getString(R.string.duplicate_characters_error), Toast.LENGTH_SHORT).show()
+                binding.charactersInput.clearFocus()
+                binding.romajiInput.clearFocus()
+                binding.meaningInput.clearFocus()
+                ConfirmLexemeUpdateDialogFragment()
+                    .setSuccessCallback {
+                    }
+                    .show(parentFragmentManager, LEXEME_UPDATE_DIALOG_TAG)
             }
         }
 
