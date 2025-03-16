@@ -30,21 +30,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <FrameLayout
                     android:id="@+id/spinner_layout"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_20sdp"
                     android:layout_marginTop="@dimen/_20sdp"
                     android:background="@drawable/rounded_corners_background"
-                    android:backgroundTint="@color/light_blue"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:backgroundTint="@color/light_blue">
 
                     <Spinner
                         android:id="@+id/lesson_spinner"
@@ -62,12 +60,10 @@
                     android:id="@+id/spinner_error_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginStart="@dimen/_35sdp"
                     android:text="@string/lesson_selection_error"
                     android:textColor="?attr/colorError"
                     android:visibility="@{viewModel.uiState.lessonError ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintStart_toStartOf="@id/spinner_layout"
-                    app:layout_constraintTop_toBottomOf="@id/spinner_layout"
                     tools:visibility="gone" />
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -79,7 +75,6 @@
                     android:hint="@{viewModel.uiState.updating ? @string/characters_hint_updating : @string/characters_hint}"
                     app:errorEnabled="@{viewModel.uiState.charactersErrorRes != null}"
                     app:errorRes="@{viewModel.uiState.charactersErrorRes}"
-                    app:layout_constraintTop_toBottomOf="@id/spinner_error_text"
                     tools:hint="@string/characters_hint">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -96,13 +91,11 @@
                     android:id="@+id/search_kanji"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/add_lexeme_half_margin"
                     android:backgroundTint="?attr/colorPrimaryVariant"
                     android:text="@string/search_kanji"
-                    android:visibility="@{viewModel.uiState.charactersLoneKanji &amp;&amp; !viewModel.uiState.charactersFetched}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/characters_input_layout" />
+                    android:visibility="@{viewModel.uiState.charactersLoneKanji &amp;&amp; !viewModel.uiState.charactersFetched}" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/romaji_input_layout"
@@ -113,8 +106,7 @@
                     android:hint="@string/romaji_hint"
                     android:visibility="@{!viewModel.uiState.charactersFetched}"
                     app:errorEnabled="@{viewModel.uiState.romajiErrorRes != null}"
-                    app:errorRes="@{viewModel.uiState.romajiErrorRes}"
-                    app:layout_constraintTop_toBottomOf="@id/search_kanji">
+                    app:errorRes="@{viewModel.uiState.romajiErrorRes}">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/romaji_input"
@@ -133,9 +125,7 @@
                     android:layout_marginTop="@dimen/add_lexeme_default_margin"
                     android:text="@string/warning_prefilled_fields"
                     android:textColor="@color/navy_blue"
-                    android:visibility="@{viewModel.uiState.charactersFetched}"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/romaji_input_layout" />
+                    android:visibility="@{viewModel.uiState.charactersFetched}" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/meaning_input_layout"
@@ -146,7 +136,6 @@
                     android:hint="@string/meaning_hint"
                     app:errorEnabled="@{viewModel.uiState.meaningErrorRes != null}"
                     app:errorRes="@{viewModel.uiState.meaningErrorRes}"
-                    app:layout_constraintTop_toBottomOf="@id/prefill_warning"
                     tools:layout_marginTop="@dimen/add_lexeme_half_margin">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -340,7 +329,7 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
 
         </ScrollView>
 
@@ -367,7 +356,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/button_cancel"
-            tools:text="@string/confirm"/>
+            tools:text="@string/confirm" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
