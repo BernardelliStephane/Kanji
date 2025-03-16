@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="fr.steph.kanji.ui.viewmodel.AddLexemeViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="@{viewModel.uiState.charactersFetched}">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/onyomi_layout"
+            style="@style/TextInputLayout.FormField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/onyomi"
+            android:visibility="@{!viewModel.uiState.onyomi.isBlank()}">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/onyomi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:inputType="none"
+                android:text="@={viewModel.uiState.onyomi}" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/onyomi_romaji_layout"
+            style="@style/TextInputLayout.FormField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/add_lexeme_default_margin"
+            android:hint="@string/onyomi_romaji"
+            android:visibility="@{!viewModel.uiState.onyomiRomaji.isBlank()}">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/onyomi_romaji"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:inputType="none"
+                android:text="@={viewModel.uiState.onyomiRomaji}" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/kunyomi_layout"
+            style="@style/TextInputLayout.FormField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/add_lexeme_default_margin"
+            android:hint="@string/kunyomi"
+            android:visibility="@{!viewModel.uiState.kunyomi.isBlank()}">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/kunyomi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:inputType="none"
+                android:text="@={viewModel.uiState.kunyomi}" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/kunyomi_romaji_layout"
+            style="@style/TextInputLayout.FormField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/add_lexeme_default_margin"
+            android:hint="@string/kunyomi_romaji"
+            android:visibility="@{!viewModel.uiState.kunyomiRomaji.isBlank()}">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/kunyomi_romaji"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:inputType="none"
+                android:text="@={viewModel.uiState.kunyomiRomaji}" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/name_readings_layout"
+            style="@style/TextInputLayout.FormField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/add_lexeme_default_margin"
+            android:hint="@string/name_readings"
+            android:visibility="@{!viewModel.uiState.nameReadings.isBlank()}">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/name_readings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:inputType="none"
+                android:text="@={viewModel.uiState.nameReadings}" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/name_readings_romaji_layout"
+            style="@style/TextInputLayout.FormField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/add_lexeme_default_margin"
+            android:hint="@string/name_readings_romaji"
+            android:visibility="@{!viewModel.uiState.nameReadingsRomaji.isBlank()}">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/name_readings_romaji"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:inputType="none"
+                android:text="@={viewModel.uiState.nameReadingsRomaji}" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/grade_taught_layout"
+            style="@style/TextInputLayout.FormField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/add_lexeme_default_margin"
+            android:hint="@string/grade_taught"
+            android:visibility="@{!viewModel.uiState.gradeTaught.isBlank()}">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/grade_taught"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:inputType="none"
+                android:text="@={viewModel.uiState.gradeTaught}" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/jlpt_level_layout"
+            style="@style/TextInputLayout.FormField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/add_lexeme_default_margin"
+            android:hint="@string/jlpt_level"
+            android:visibility="@{!viewModel.uiState.jlptLevel.isBlank()}">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/jlpt_level"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:inputType="none"
+                android:text="@={viewModel.uiState.jlptLevel}" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/use_frequency_layout"
+            style="@style/TextInputLayout.FormField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/add_lexeme_default_margin"
+            android:hint="@string/use_frequency_indicator"
+            android:visibility="@{!viewModel.uiState.useFrequencyIndicator.isBlank()}">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/use_frequency"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:inputType="none"
+                android:text="@={viewModel.uiState.useFrequencyIndicator}" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+
+</layout>

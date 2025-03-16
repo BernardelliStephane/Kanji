@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -14,6 +15,7 @@ import fr.steph.kanji.KanjiApplication
 import fr.steph.kanji.R
 import fr.steph.kanji.data.model.Lesson
 import fr.steph.kanji.databinding.FragmentAddLexemeBinding
+import fr.steph.kanji.databinding.StubAddLexemeBinding
 import fr.steph.kanji.ui.adapter.SpinnerAdapter
 import fr.steph.kanji.ui.dialog.ADD_LESSON_DIALOG_TAG
 import fr.steph.kanji.ui.dialog.AddLessonDialogFragment
@@ -36,6 +38,7 @@ const val SPINNER_DROPDOWN_MAX_VISIBLE_ITEMS = 10
 class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
 
     private var binding: FragmentAddLexemeBinding by autoCleared()
+    private var stubBinding: StubAddLexemeBinding by autoCleared()
 
     private val viewModel: AddLexemeViewModel by viewModels {
         val app = (activity?.application as KanjiApplication)
@@ -73,6 +76,36 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
     }
 
     private fun setupListeners() {
+        binding.lessonSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                viewModel.onEvent(AddLexemeFormEvent.LessonChanged(id))
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+
+        binding.charactersInput.doAfterTextChanged {
+            viewModel.onEvent(AddLexemeFormEvent.CharactersChanged(it.toString()))
+        }
+
+        binding.searchKanji.setOnClickListener {
+            viewModel.onEvent(AddLexemeFormEvent.Search)
+        }
+
+        binding.romajiInput.doAfterTextChanged {
+            viewModel.onEvent(AddLexemeFormEvent.RomajiChanged(it.toString()))
+        }
+
+        binding.meaningInput.doAfterTextChanged {
+            viewModel.onEvent(AddLexemeFormEvent.MeaningChanged(it.toString()))
+        }
+
+        binding.stubKanjiForm.setOnInflateListener { _, inflatedView ->
+            stubBinding = DataBindingUtil.bind(inflatedView)!!
+            stubBinding.viewModel = viewModel
+            stubBinding.lifecycleOwner = viewLifecycleOwner
+        }
+
         binding.buttonCancel.setOnClickListener {
             if (viewModel.uiState.value.isUpdating)
                 return@setOnClickListener viewModel.resetUi()
@@ -92,30 +125,6 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
                     .show(parentFragmentManager, LEXEME_UPDATE_DIALOG_TAG)
             })
         }
-
-        binding.searchKanji.setOnClickListener {
-            viewModel.onEvent(AddLexemeFormEvent.Search)
-        }
-
-        binding.charactersInput.doAfterTextChanged {
-            viewModel.onEvent(AddLexemeFormEvent.CharactersChanged(it.toString()))
-        }
-
-        binding.romajiInput.doAfterTextChanged {
-            viewModel.onEvent(AddLexemeFormEvent.RomajiChanged(it.toString()))
-        }
-
-        binding.meaningInput.doAfterTextChanged {
-            viewModel.onEvent(AddLexemeFormEvent.MeaningChanged(it.toString()))
-        }
-
-        binding.lessonSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                viewModel.onEvent(AddLexemeFormEvent.LessonChanged(id))
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-        }
     }
 
     private fun setupObservers() {
@@ -133,8 +142,10 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
 
         viewModel.lastKanjiFetch.observe(viewLifecycleOwner) { resource ->
             when (resource) {
-                is ApiLexemeViewModel.Resource.Success ->
+                is ApiLexemeViewModel.Resource.Success -> {
+                    binding.stubKanjiForm.viewStub?.inflate()
                     viewModel.onEvent(AddLexemeFormEvent.KanjiFetched(resource.data))
+                }
 
                 is ApiLexemeViewModel.Resource.Error ->
                     Toast.makeText(requireContext(), resource.message, Toast.LENGTH_LONG).show()
