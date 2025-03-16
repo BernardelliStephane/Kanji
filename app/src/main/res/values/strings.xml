@@ -31,7 +31,6 @@
     <string name="sort_by">Sort by</string>
     <string name="sort_order">Sort order</string>
     <string name="warning_prefilled_fields">Below fields have been pre-filled and can\'t be edited</string>
-    <string name="duplicate_characters_update_confirmation">Would you like to update it?</string>
 
     <!-- Button text-->
     <string name="dictionary">Dictionary</string>
@@ -79,7 +78,7 @@
     <string name="kanji_not_fetched_error">Lone kanji must be fetched</string>
     <string name="digits_only_filling_error">Must contain only digits</string>
     <string name="duplicate_lesson_error">A lesson with this number already exists</string>
-    <string name="duplicate_characters_error">A translation with these characters already exists</string>
+    <string name="duplicate_characters_error">A translation with these characters already exists. Would you like to update it?</string>
     <string name="roman_letters_only_filling_error">Must contain only roman letters</string>
     <string name="japanese_characters_only_filling_error">Must contain only kanjis, hiraganas and katakanas</string>
 

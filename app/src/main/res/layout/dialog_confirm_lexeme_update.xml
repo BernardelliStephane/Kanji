@@ -12,20 +12,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
+        android:gravity="center_horizontal"
         android:text="@string/duplicate_characters_error"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/update_confirmation_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:text="@string/duplicate_characters_update_confirmation"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/duplicate_characters_text" />
 
     <Button
         android:id="@+id/dialog_cancel_button"
@@ -36,7 +27,7 @@
         android:text="@string/cancel"
         app:layout_constraintEnd_toStartOf="@id/dialog_delete_button"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/update_confirmation_text" />
+        app:layout_constraintTop_toBottomOf="@id/duplicate_characters_text" />
 
     <View
         android:layout_width="1dp"
@@ -58,6 +49,6 @@
         android:text="@string/update"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/dialog_cancel_button"
-        app:layout_constraintTop_toBottomOf="@id/update_confirmation_text" />
+        app:layout_constraintTop_toBottomOf="@id/duplicate_characters_text" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
