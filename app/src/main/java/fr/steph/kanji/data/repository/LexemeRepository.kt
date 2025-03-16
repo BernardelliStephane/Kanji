@@ -13,9 +13,6 @@ class LexemeRepository(private val lexemeDao: LexemeDao) {
     suspend fun updateLexeme(lexeme: Lexeme) =
         lexemeDao.updateLexeme(lexeme)
 
-    suspend fun deleteLexeme(lexeme: Lexeme) =
-        lexemeDao.deleteLexeme(lexeme)
-
     suspend fun deleteLexemesFromSelection(selection: List<Long>) =
         lexemeDao.deleteLexemesFromSelection(selection)
 

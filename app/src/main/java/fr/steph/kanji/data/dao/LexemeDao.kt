@@ -1,7 +1,6 @@
 package fr.steph.kanji.data.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -18,9 +17,6 @@ interface LexemeDao {
 
     @Update
     suspend fun updateLexeme(lexeme: Lexeme): Int
-
-    @Delete
-    suspend fun deleteLexeme(lexeme: Lexeme): Int
 
     @Query("DELETE FROM lexeme WHERE id in (:selection)")
     suspend fun deleteLexemesFromSelection(selection: List<Long>): Int
