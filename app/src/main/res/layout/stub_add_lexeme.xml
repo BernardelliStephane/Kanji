@@ -5,7 +5,7 @@
 
         <variable
             name="viewModel"
-            type="fr.steph.kanji.ui.viewmodel.AddLexemeViewModel" />
+            type="fr.steph.kanji.ui.feature_dictionary.add_lexeme.viewmodel.AddLexemeViewModel" />
     </data>
 
     <LinearLayout

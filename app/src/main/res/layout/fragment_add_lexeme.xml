@@ -11,14 +11,14 @@
 
         <variable
             name="viewModel"
-            type="fr.steph.kanji.ui.viewmodel.AddLexemeViewModel" />
+            type="fr.steph.kanji.ui.feature_dictionary.add_lexeme.viewmodel.AddLexemeViewModel" />
 
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.fragment.AddLexemeFragment">
+        tools:context=".ui.feature_dictionary.add_lexeme.fragment.AddLexemeFragment">
 
         <ScrollView
             android:layout_width="match_parent"

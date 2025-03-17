@@ -3,8 +3,8 @@ package fr.steph.kanji.domain.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import fr.steph.kanji.domain.enumeration.LexemeType
-import fr.steph.kanji.ui.uistate.AddLexemeFormState
-import fr.steph.kanji.utils.extension.isLoneKanji
+import fr.steph.kanji.ui.feature_dictionary.add_lexeme.uistate.AddLexemeFormState
+import fr.steph.kanji.util.extension.isLoneKanji
 
 @Entity
 data class Lexeme(

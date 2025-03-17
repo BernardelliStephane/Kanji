@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="fr.steph.kanji.ui.viewmodel.AddLessonViewModel" />
+            type="fr.steph.kanji.ui.feature_dictionary.add_lexeme.viewmodel.AddLessonViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
