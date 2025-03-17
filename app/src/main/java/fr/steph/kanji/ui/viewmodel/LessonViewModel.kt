@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import fr.steph.kanji.R
-import fr.steph.kanji.data.model.Lesson
+import fr.steph.kanji.domain.model.Lesson
 import fr.steph.kanji.data.repository.LessonRepository
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow

@@ -6,7 +6,7 @@ import androidx.recyclerview.selection.ItemDetailsLookup
 import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.widget.RecyclerView
 import fr.steph.kanji.R
-import fr.steph.kanji.data.model.Lesson
+import fr.steph.kanji.domain.model.Lesson
 import fr.steph.kanji.databinding.ItemLessonBinding
 
 class LessonAdapter : RecyclerView.Adapter<LessonAdapter.LessonViewHolder>() {

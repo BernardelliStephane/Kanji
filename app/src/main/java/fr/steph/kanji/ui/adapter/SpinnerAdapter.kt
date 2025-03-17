@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.annotation.LayoutRes
 import androidx.core.view.isVisible
 import fr.steph.kanji.R
-import fr.steph.kanji.data.model.Lesson
+import fr.steph.kanji.domain.model.Lesson
 
 const val SELECT_LESSON_ID = -1L
 const val NO_LESSON_ID = -2L

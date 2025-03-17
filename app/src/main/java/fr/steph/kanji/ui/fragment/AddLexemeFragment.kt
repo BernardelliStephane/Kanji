@@ -13,7 +13,7 @@ import androidx.navigation.Navigation
 import com.google.android.material.snackbar.Snackbar
 import fr.steph.kanji.KanjiApplication
 import fr.steph.kanji.R
-import fr.steph.kanji.data.model.Lesson
+import fr.steph.kanji.domain.model.Lesson
 import fr.steph.kanji.databinding.FragmentAddLexemeBinding
 import fr.steph.kanji.databinding.StubAddLexemeBinding
 import fr.steph.kanji.ui.adapter.SpinnerAdapter

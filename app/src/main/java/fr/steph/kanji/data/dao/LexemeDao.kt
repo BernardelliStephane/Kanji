@@ -5,7 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import fr.steph.kanji.data.model.Lexeme
+import fr.steph.kanji.domain.model.Lexeme
 import io.reactivex.rxjava3.core.Maybe
 import kotlinx.coroutines.flow.Flow
 

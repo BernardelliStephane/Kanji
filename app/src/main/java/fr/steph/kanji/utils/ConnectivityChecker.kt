@@ -1,4 +1,4 @@
-package fr.steph.kanji.network
+package fr.steph.kanji.utils
 
 import android.content.Context
 import android.net.ConnectivityManager

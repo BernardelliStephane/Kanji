@@ -2,8 +2,8 @@ package fr.steph.kanji.data.repository
 
 import androidx.annotation.WorkerThread
 import fr.steph.kanji.data.dao.LexemeDao
-import fr.steph.kanji.data.model.Lexeme
-import fr.steph.kanji.data.utils.enumeration.SortOrder
+import fr.steph.kanji.domain.model.Lexeme
+import fr.steph.kanji.domain.enumeration.SortOrder
 
 class LexemeRepository(private val lexemeDao: LexemeDao) {
 

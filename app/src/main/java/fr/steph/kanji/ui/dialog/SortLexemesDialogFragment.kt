@@ -7,8 +7,8 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.fragment.app.DialogFragment
 import fr.steph.kanji.R
-import fr.steph.kanji.data.utils.enumeration.SortField
-import fr.steph.kanji.data.utils.enumeration.SortOrder
+import fr.steph.kanji.domain.enumeration.SortField
+import fr.steph.kanji.domain.enumeration.SortOrder
 import fr.steph.kanji.databinding.DialogSortLexemesBinding
 import fr.steph.kanji.ui.utils.autoCleared
 import fr.steph.kanji.utils.extension.getSerializable

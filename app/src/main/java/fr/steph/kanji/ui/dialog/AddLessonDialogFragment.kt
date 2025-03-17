@@ -12,7 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
 import fr.steph.kanji.KanjiApplication
 import fr.steph.kanji.R
-import fr.steph.kanji.data.model.Lesson
+import fr.steph.kanji.domain.model.Lesson
 import fr.steph.kanji.ui.uistate.AddLessonFormEvent
 import fr.steph.kanji.ui.utils.autoCleared
 import fr.steph.kanji.ui.utils.viewModelFactory

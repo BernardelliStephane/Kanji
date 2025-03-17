@@ -6,8 +6,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import fr.steph.kanji.data.dao.LessonDao
 import fr.steph.kanji.data.dao.LexemeDao
-import fr.steph.kanji.data.model.Lesson
-import fr.steph.kanji.data.model.Lexeme
+import fr.steph.kanji.domain.model.Lesson
+import fr.steph.kanji.domain.model.Lexeme
 
 @Database(entities = [Lexeme::class, Lesson::class], version = 1)
 abstract class LexemeDatabase: RoomDatabase() {

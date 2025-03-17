@@ -2,7 +2,7 @@ package fr.steph.kanji.ui.viewmodel
 
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.Observer
-import fr.steph.kanji.data.model.Lesson
+import fr.steph.kanji.domain.model.Lesson
 import fr.steph.kanji.data.repository.LessonRepository
 import fr.steph.kanji.ui.uistate.AddLessonFormEvent
 import fr.steph.kanji.ui.uistate.AddLessonFormState

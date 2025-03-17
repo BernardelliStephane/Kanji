@@ -1,7 +1,7 @@
 package fr.steph.kanji.ui.uistate
 
-import fr.steph.kanji.data.model.Lexeme
-import fr.steph.kanji.data.utils.enumeration.LexemeType
+import fr.steph.kanji.domain.model.Lexeme
+import fr.steph.kanji.domain.enumeration.LexemeType
 import fr.steph.kanji.utils.Moji.mojiDetector
 import fr.steph.kanji.utils.extension.capitalized
 

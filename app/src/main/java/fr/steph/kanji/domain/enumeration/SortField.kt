@@ -1,4 +1,4 @@
-package fr.steph.kanji.data.utils.enumeration
+package fr.steph.kanji.domain.enumeration
 
 enum class SortField {
     ID,

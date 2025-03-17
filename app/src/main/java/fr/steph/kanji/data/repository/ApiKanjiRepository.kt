@@ -1,6 +1,6 @@
 package fr.steph.kanji.data.repository
 
-import fr.steph.kanji.network.api.RetrofitInstance
+import fr.steph.kanji.data.api.RetrofitInstance
 
 class ApiKanjiRepository {
 

@@ -1,7 +1,7 @@
 package fr.steph.kanji.ui.uistate
 
-import fr.steph.kanji.data.model.Lexeme
-import fr.steph.kanji.network.model.ApiKanji
+import fr.steph.kanji.domain.model.Lexeme
+import fr.steph.kanji.data.model.ApiKanji
 
 sealed class AddLexemeFormEvent {
     data class LessonChanged(val lessonNumber: Long) : AddLexemeFormEvent()

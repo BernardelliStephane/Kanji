@@ -2,7 +2,7 @@ package fr.steph.kanji.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import fr.steph.kanji.R
-import fr.steph.kanji.data.model.Lexeme
+import fr.steph.kanji.domain.model.Lexeme
 import fr.steph.kanji.data.repository.ApiKanjiRepository
 import fr.steph.kanji.data.repository.LessonRepository
 import fr.steph.kanji.data.repository.LexemeRepository

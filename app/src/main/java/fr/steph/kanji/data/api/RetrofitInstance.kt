@@ -1,6 +1,6 @@
-package fr.steph.kanji.network.api
+package fr.steph.kanji.data.api
 
-import fr.steph.kanji.network.api.KanjiAPI.Companion.BASE_URL
+import fr.steph.kanji.data.api.KanjiAPI.Companion.BASE_URL
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

@@ -1,6 +1,6 @@
-package fr.steph.kanji.network.api
+package fr.steph.kanji.data.api
 
-import fr.steph.kanji.network.model.ApiKanji
+import fr.steph.kanji.data.model.ApiKanji
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path

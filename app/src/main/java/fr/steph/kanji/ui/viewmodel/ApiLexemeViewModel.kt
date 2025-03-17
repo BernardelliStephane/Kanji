@@ -4,11 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import fr.steph.kanji.R
-import fr.steph.kanji.network.model.ApiKanji
+import fr.steph.kanji.data.model.ApiKanji
 import fr.steph.kanji.data.repository.ApiKanjiRepository
 import fr.steph.kanji.data.repository.LessonRepository
 import fr.steph.kanji.data.repository.LexemeRepository
-import fr.steph.kanji.network.ConnectivityChecker.isNetworkAvailable
+import fr.steph.kanji.utils.ConnectivityChecker.isNetworkAvailable
 import fr.steph.kanji.utils.extension.log
 import kotlinx.coroutines.launch
 import retrofit2.Response

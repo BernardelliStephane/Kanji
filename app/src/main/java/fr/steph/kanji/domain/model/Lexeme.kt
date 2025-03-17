@@ -1,8 +1,8 @@
-package fr.steph.kanji.data.model
+package fr.steph.kanji.domain.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import fr.steph.kanji.data.utils.enumeration.LexemeType
+import fr.steph.kanji.domain.enumeration.LexemeType
 import fr.steph.kanji.ui.uistate.AddLexemeFormState
 import fr.steph.kanji.utils.extension.isLoneKanji
 

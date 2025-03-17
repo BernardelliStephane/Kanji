@@ -8,7 +8,7 @@ import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import fr.steph.kanji.data.model.Lexeme
+import fr.steph.kanji.domain.model.Lexeme
 import fr.steph.kanji.databinding.ItemLexemeBinding
 
 class LexemeAdapter : ListAdapter<Lexeme, LexemeAdapter.LexemeViewHolder>(LexemeDiffUtil()) {

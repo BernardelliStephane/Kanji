@@ -1,4 +1,4 @@
-package fr.steph.kanji.data.model
+package fr.steph.kanji.domain.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

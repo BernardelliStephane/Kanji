@@ -1,7 +1,7 @@
 package fr.steph.kanji.data.repository
 
 import fr.steph.kanji.data.dao.LessonDao
-import fr.steph.kanji.data.model.Lesson
+import fr.steph.kanji.domain.model.Lesson
 
 class LessonRepository(private val lessonDao: LessonDao) {
 

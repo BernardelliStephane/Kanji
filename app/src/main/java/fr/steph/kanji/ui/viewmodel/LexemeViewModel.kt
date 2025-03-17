@@ -3,11 +3,11 @@ package fr.steph.kanji.ui.viewmodel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import fr.steph.kanji.R
-import fr.steph.kanji.data.model.Lexeme
+import fr.steph.kanji.domain.model.Lexeme
 import fr.steph.kanji.data.repository.LessonRepository
 import fr.steph.kanji.data.repository.LexemeRepository
-import fr.steph.kanji.data.utils.enumeration.SortField
-import fr.steph.kanji.data.utils.enumeration.SortOrder
+import fr.steph.kanji.domain.enumeration.SortField
+import fr.steph.kanji.domain.enumeration.SortOrder
 import fr.steph.kanji.ui.uistate.FilterOptions
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
