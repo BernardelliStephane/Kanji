@@ -16,6 +16,7 @@ import fr.steph.kanji.R
 import fr.steph.kanji.domain.model.Lesson
 import fr.steph.kanji.databinding.FragmentAddLexemeBinding
 import fr.steph.kanji.databinding.StubAddLexemeBinding
+import fr.steph.kanji.ui.core.use_case.GetKanjiInfoUseCase
 import fr.steph.kanji.ui.feature_dictionary.add_lexeme.adapter.SpinnerAdapter
 import fr.steph.kanji.ui.feature_dictionary.add_lexeme.dialog.ADD_LESSON_DIALOG_TAG
 import fr.steph.kanji.ui.feature_dictionary.add_lexeme.dialog.AddLessonDialogFragment
@@ -24,7 +25,6 @@ import fr.steph.kanji.ui.feature_dictionary.add_lexeme.dialog.LEXEME_UPDATE_DIAL
 import fr.steph.kanji.ui.feature_dictionary.add_lexeme.uistate.AddLexemeFormEvent
 import fr.steph.kanji.ui.core.util.autoCleared
 import fr.steph.kanji.ui.core.util.viewModelFactory
-import fr.steph.kanji.ui.core.viewmodel.ApiLexemeViewModel
 import fr.steph.kanji.ui.core.viewmodel.LexemeViewModel.ValidationEvent.Failure
 import fr.steph.kanji.ui.core.viewmodel.LexemeViewModel.ValidationEvent.Success
 import fr.steph.kanji.ui.feature_dictionary.add_lexeme.viewmodel.AddLexemeViewModel
@@ -43,7 +43,7 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
     private val viewModel: AddLexemeViewModel by viewModels {
         val app = (activity?.application as KanjiApplication)
         viewModelFactory {
-            AddLexemeViewModel(app.lessonRepository, app.lexemeRepository, app.apiRepository)
+            AddLexemeViewModel(GetKanjiInfoUseCase(app.apiRepository), app.lessonRepository, app.lexemeRepository)
         }
     }
 
@@ -142,12 +142,12 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
 
         viewModel.lastKanjiFetch.observe(viewLifecycleOwner) { resource ->
             when (resource) {
-                is ApiLexemeViewModel.Resource.Success -> {
+                is AddLexemeViewModel.Resource.Success -> {
                     binding.stubKanjiForm.viewStub?.inflate()
                     viewModel.onEvent(AddLexemeFormEvent.KanjiFetched(resource.data))
                 }
 
-                is ApiLexemeViewModel.Resource.Error ->
+                is AddLexemeViewModel.Resource.Error ->
                     Toast.makeText(requireContext(), resource.message, Toast.LENGTH_LONG).show()
 
                 else -> {}

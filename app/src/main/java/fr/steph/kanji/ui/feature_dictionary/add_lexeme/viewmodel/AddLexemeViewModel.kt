@@ -1,15 +1,18 @@
 package fr.steph.kanji.ui.feature_dictionary.add_lexeme.viewmodel
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import fr.steph.kanji.R
+import fr.steph.kanji.data.model.ApiKanji
 import fr.steph.kanji.domain.model.Lexeme
-import fr.steph.kanji.data.repository.ApiKanjiRepository
 import fr.steph.kanji.data.repository.LessonRepository
 import fr.steph.kanji.data.repository.LexemeRepository
+import fr.steph.kanji.ui.core.use_case.GetKanjiInfoUseCase
 import fr.steph.kanji.ui.feature_dictionary.add_lexeme.uistate.AddLexemeFormEvent
 import fr.steph.kanji.ui.feature_dictionary.add_lexeme.uistate.AddLexemeFormState
 import fr.steph.kanji.ui.feature_dictionary.add_lexeme.util.validation.ValidateLexemeField
-import fr.steph.kanji.ui.core.viewmodel.ApiLexemeViewModel
+import fr.steph.kanji.ui.core.viewmodel.LexemeViewModel
 import fr.steph.kanji.util.extension.capitalized
 import fr.steph.kanji.util.extension.isLoneKanji
 import fr.steph.kanji.util.extension.kanaToRomaji
@@ -21,13 +24,16 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class AddLexemeViewModel(
+    private val getKanjiInfo: GetKanjiInfoUseCase,
     lessonRepo: LessonRepository,
     lexemeRepo: LexemeRepository,
-    apiRepo: ApiKanjiRepository,
-) : ApiLexemeViewModel(lessonRepo, lexemeRepo, apiRepo) {
+) : LexemeViewModel(lessonRepo, lexemeRepo) {
 
     private val _uiState = MutableStateFlow(AddLexemeFormState())
     val uiState = _uiState.asStateFlow()
+
+    private val _lastKanjiFetch: MutableLiveData<Resource?> = MutableLiveData()
+    val lastKanjiFetch: LiveData<Resource?> = _lastKanjiFetch
 
     private var id = 0L
     private var additionDate = 0L
@@ -103,9 +109,11 @@ class AddLexemeViewModel(
                 }
             }
 
-            is AddLexemeFormEvent.Search -> {
-                if (lastKanjiFetch.value is Resource.Loading) return
-                else getKanjiInfo(uiState.value.characters)
+            is AddLexemeFormEvent.Search -> viewModelScope.launch {
+                if (lastKanjiFetch.value is Resource.Loading) return@launch
+
+                val result = getKanjiInfo(uiState.value.characters)
+                _lastKanjiFetch.postValue(result)
             }
 
             is AddLexemeFormEvent.Submit -> {
@@ -190,8 +198,12 @@ class AddLexemeViewModel(
 
     fun updateUi(lexeme: Lexeme): Int {
         _uiState.update { lexeme.toAddLexemeFormState().copy(isUpdating = true) }
-        if (lexeme.characters.isLoneKanji())
-            getKanjiInfo(lexeme.characters)
+        if (lexeme.characters.isLoneKanji()) {
+            viewModelScope.launch {
+                val result = getKanjiInfo(uiState.value.characters)
+                _lastKanjiFetch.postValue(result)
+            }
+        }
 
         id = lexeme.id
         additionDate = lexeme.additionDate
@@ -209,5 +221,11 @@ class AddLexemeViewModel(
         _uiState.update { currentUiState ->
             currentUiState.copy(isSubmitting = false)
         }
+    }
+
+    sealed class Resource {
+        data object Loading : Resource()
+        data class Error(val message: Int) : Resource()
+        data class Success(val data: ApiKanji) : Resource()
     }
 }

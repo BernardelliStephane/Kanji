@@ -13,6 +13,8 @@ import com.google.android.material.snackbar.Snackbar
 import fr.steph.kanji.KanjiApplication
 import fr.steph.kanji.R
 import fr.steph.kanji.domain.model.Lesson
+import fr.steph.kanji.ui.core.use_case.GetLessonNumbersUseCase
+import fr.steph.kanji.ui.core.use_case.InsertLessonUseCase
 import fr.steph.kanji.ui.feature_dictionary.add_lexeme.uistate.AddLessonFormEvent
 import fr.steph.kanji.ui.core.util.autoCleared
 import fr.steph.kanji.ui.core.util.viewModelFactory
