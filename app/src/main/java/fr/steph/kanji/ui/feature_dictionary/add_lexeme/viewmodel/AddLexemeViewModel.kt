@@ -2,15 +2,18 @@ package fr.steph.kanji.ui.feature_dictionary.add_lexeme.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import fr.steph.kanji.R
 import fr.steph.kanji.data.model.ApiKanji
-import fr.steph.kanji.data.repository.LexemeRepository
 import fr.steph.kanji.domain.model.Lexeme
 import fr.steph.kanji.ui.core.use_case.GetKanjiInfoUseCase
 import fr.steph.kanji.ui.core.use_case.GetLessonsUseCase
-import fr.steph.kanji.ui.core.viewmodel.LexemeViewModel
+import fr.steph.kanji.ui.core.use_case.GetLexemeByCharactersUseCase
+import fr.steph.kanji.ui.core.use_case.InsertLexemeUseCase
+import fr.steph.kanji.ui.core.use_case.UpdateLexemeUseCase
+import fr.steph.kanji.ui.core.viewmodel.LexemeViewModel.ValidationEvent
 import fr.steph.kanji.ui.feature_dictionary.add_lexeme.uistate.AddLexemeFormEvent
 import fr.steph.kanji.ui.feature_dictionary.add_lexeme.uistate.AddLexemeFormState
 import fr.steph.kanji.ui.feature_dictionary.add_lexeme.util.validation.ValidateLexemeField
@@ -19,16 +22,20 @@ import fr.steph.kanji.util.extension.isLoneKanji
 import fr.steph.kanji.util.extension.kanaToRomaji
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class AddLexemeViewModel(
     private val getKanjiInfo: GetKanjiInfoUseCase,
+    private val insertLexeme: InsertLexemeUseCase,
+    private val updateLexeme: UpdateLexemeUseCase,
+    private val getLexemeByCharacters: GetLexemeByCharactersUseCase,
     getLessons: GetLessonsUseCase,
-    lexemeRepo: LexemeRepository,
-) : LexemeViewModel(lexemeRepo) {
+) : ViewModel() {
 
     val allLessons = getLessons().asLiveData()
 
@@ -37,6 +44,9 @@ class AddLexemeViewModel(
 
     private val _lastKanjiFetch: MutableLiveData<Resource?> = MutableLiveData()
     val lastKanjiFetch: LiveData<Resource?> = _lastKanjiFetch
+
+    private val lexemeValidationEventChannel = Channel<ValidationEvent>()
+    val lexemeValidationEvents = lexemeValidationEventChannel.receiveAsFlow()
 
     private var id = 0L
     private var additionDate = 0L
@@ -195,8 +205,12 @@ class AddLexemeViewModel(
             }
 
         val lexeme = form.toLexeme(id)
-        if (form.isUpdating) updateLexeme(lexeme)
-        else insertLexeme(lexeme)
+
+        viewModelScope.launch {
+            val result = if (form.isUpdating) updateLexeme(lexeme)
+                else insertLexeme(lexeme)
+            lexemeValidationEventChannel.send(result)
+        }
     }
 
     fun updateUi(lexeme: Lexeme): Int {

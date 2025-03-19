@@ -18,6 +18,9 @@ import fr.steph.kanji.databinding.FragmentAddLexemeBinding
 import fr.steph.kanji.databinding.StubAddLexemeBinding
 import fr.steph.kanji.ui.core.use_case.GetKanjiInfoUseCase
 import fr.steph.kanji.ui.core.use_case.GetLessonsUseCase
+import fr.steph.kanji.ui.core.use_case.GetLexemeByCharactersUseCase
+import fr.steph.kanji.ui.core.use_case.InsertLexemeUseCase
+import fr.steph.kanji.ui.core.use_case.UpdateLexemeUseCase
 import fr.steph.kanji.ui.feature_dictionary.add_lexeme.adapter.SpinnerAdapter
 import fr.steph.kanji.ui.feature_dictionary.add_lexeme.dialog.ADD_LESSON_DIALOG_TAG
 import fr.steph.kanji.ui.feature_dictionary.add_lexeme.dialog.AddLessonDialogFragment
@@ -44,7 +47,13 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
     private val viewModel: AddLexemeViewModel by viewModels {
         val app = (activity?.application as KanjiApplication)
         viewModelFactory {
-            AddLexemeViewModel(GetKanjiInfoUseCase(app.apiRepository), GetLessonsUseCase(app.lessonRepository), app.lexemeRepository)
+            AddLexemeViewModel(
+                GetKanjiInfoUseCase(app.apiRepository),
+                InsertLexemeUseCase(app.lexemeRepository),
+                UpdateLexemeUseCase(app.lexemeRepository),
+                GetLexemeByCharactersUseCase(app.lexemeRepository),
+                GetLessonsUseCase(app.lessonRepository)
+            )
         }
     }
 
