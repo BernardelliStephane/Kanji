@@ -2,17 +2,19 @@ package fr.steph.kanji.ui.feature_dictionary.add_lexeme.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import fr.steph.kanji.R
 import fr.steph.kanji.data.model.ApiKanji
-import fr.steph.kanji.domain.model.Lexeme
 import fr.steph.kanji.data.repository.LessonRepository
 import fr.steph.kanji.data.repository.LexemeRepository
+import fr.steph.kanji.domain.model.Lexeme
 import fr.steph.kanji.ui.core.use_case.GetKanjiInfoUseCase
+import fr.steph.kanji.ui.core.use_case.GetLessonsUseCase
+import fr.steph.kanji.ui.core.viewmodel.LexemeViewModel
 import fr.steph.kanji.ui.feature_dictionary.add_lexeme.uistate.AddLexemeFormEvent
 import fr.steph.kanji.ui.feature_dictionary.add_lexeme.uistate.AddLexemeFormState
 import fr.steph.kanji.ui.feature_dictionary.add_lexeme.util.validation.ValidateLexemeField
-import fr.steph.kanji.ui.core.viewmodel.LexemeViewModel
 import fr.steph.kanji.util.extension.capitalized
 import fr.steph.kanji.util.extension.isLoneKanji
 import fr.steph.kanji.util.extension.kanaToRomaji
@@ -26,8 +28,10 @@ import kotlinx.coroutines.launch
 class AddLexemeViewModel(
     private val getKanjiInfo: GetKanjiInfoUseCase,
     lessonRepo: LessonRepository,
+    getLessons: GetLessonsUseCase,
     lexemeRepo: LexemeRepository,
 ) : LexemeViewModel(lessonRepo, lexemeRepo) {
+    val allLessons = getLessons().asLiveData()
 
     private val _uiState = MutableStateFlow(AddLexemeFormState())
     val uiState = _uiState.asStateFlow()

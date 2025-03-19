@@ -9,8 +9,9 @@ class LessonRepository(private val lessonDao: LessonDao) {
     suspend fun insertLesson(lesson: Lesson) =
         lessonDao.insertLesson(lesson)
 
+    val allLessons: Flow<List<Lesson>>
+        get() = lessonDao.allLessons()
 
-    fun allLessons() = lessonDao.allLessons()
     val lessonNumbers: Flow<List<Long>>
         get() = lessonDao.lessonNumbers()
 }
