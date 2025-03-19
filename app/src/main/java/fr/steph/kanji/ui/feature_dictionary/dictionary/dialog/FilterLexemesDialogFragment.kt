@@ -13,13 +13,14 @@ import androidx.recyclerview.selection.StorageStrategy
 import fr.steph.kanji.KanjiApplication
 import fr.steph.kanji.R
 import fr.steph.kanji.databinding.DialogFilterLexemesBinding
-import fr.steph.kanji.ui.feature_dictionary.add_lexeme.adapter.LessonAdapter
+import fr.steph.kanji.ui.core.use_case.GetLessonsUseCase
+import fr.steph.kanji.ui.core.util.ItemKeyProvider
 import fr.steph.kanji.ui.core.util.StretchEdgeEffectFactory
 import fr.steph.kanji.ui.core.util.autoCleared
-import fr.steph.kanji.ui.core.util.ItemKeyProvider
-import fr.steph.kanji.ui.feature_dictionary.add_lexeme.util.LessonDetailsLookup
 import fr.steph.kanji.ui.core.util.viewModelFactory
-import fr.steph.kanji.ui.core.viewmodel.LessonViewModel
+import fr.steph.kanji.ui.feature_dictionary.dictionary.viewmodel.FilterLexemesViewModel
+import fr.steph.kanji.ui.feature_dictionary.add_lexeme.adapter.LessonAdapter
+import fr.steph.kanji.ui.feature_dictionary.add_lexeme.util.LessonDetailsLookup
 import fr.steph.kanji.util.extension.measureLayoutHeight
 
 const val FILTER_LEXEMES_DIALOG_TAG = "filter_lexemes_dialog"
@@ -28,10 +29,10 @@ const val MAX_VISIBLE_ITEMS = 8
 class FilterLexemesDialogFragment : DialogFragment(R.layout.dialog_filter_lexemes) {
     private var binding: DialogFilterLexemesBinding by autoCleared()
 
-    private val viewModel: LessonViewModel by viewModels {
-        val app = (activity?.application as KanjiApplication)
+    private val viewModel: FilterLexemesViewModel by viewModels {
+        val repo = (activity?.application as KanjiApplication).lessonRepository
         viewModelFactory {
-            LessonViewModel(app.lessonRepository)
+            FilterLexemesViewModel(GetLessonsUseCase(repo))
         }
     }
 

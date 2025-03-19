@@ -1,6 +1,6 @@
 package fr.steph.kanji.ui.core.model
 
-import fr.steph.kanji.ui.core.viewmodel.LessonViewModel.ValidationEvent
+import fr.steph.kanji.ui.feature_dictionary.dictionary.viewmodel.FilterLexemesViewModel.ValidationEvent
 
 data class LessonInsertResult(
     val numberErrorRes: Int? = null,

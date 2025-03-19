@@ -5,10 +5,9 @@ import fr.steph.kanji.data.repository.LessonRepository
 import fr.steph.kanji.domain.model.Lesson
 import fr.steph.kanji.ui.core.model.LessonInsertResult
 import fr.steph.kanji.ui.core.viewmodel.INSERTION_FAILURE
-import fr.steph.kanji.ui.core.viewmodel.LessonViewModel.ValidationEvent
+import fr.steph.kanji.ui.feature_dictionary.dictionary.viewmodel.FilterLexemesViewModel.ValidationEvent
 import fr.steph.kanji.ui.feature_dictionary.add_lexeme.uistate.AddLessonFormState
 import fr.steph.kanji.ui.feature_dictionary.add_lexeme.util.validation.ValidateLessonField
-import kotlinx.coroutines.flow.update
 
 class InsertLessonUseCase(private val repository: LessonRepository) {
 

@@ -1,7 +1,7 @@
 package fr.steph.kanji.ui.core.viewmodel
 
 import androidx.lifecycle.ViewModel
-import fr.steph.kanji.ui.core.viewmodel.LessonViewModel.ValidationEvent
+import fr.steph.kanji.ui.feature_dictionary.dictionary.viewmodel.FilterLexemesViewModel.ValidationEvent
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 

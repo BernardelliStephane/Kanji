@@ -19,7 +19,7 @@ import fr.steph.kanji.ui.feature_dictionary.add_lexeme.uistate.AddLessonFormEven
 import fr.steph.kanji.ui.core.util.autoCleared
 import fr.steph.kanji.ui.core.util.viewModelFactory
 import fr.steph.kanji.ui.feature_dictionary.add_lexeme.viewmodel.AddLessonViewModel
-import fr.steph.kanji.ui.core.viewmodel.LessonViewModel.ValidationEvent
+import fr.steph.kanji.ui.feature_dictionary.dictionary.viewmodel.FilterLexemesViewModel.ValidationEvent
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import fr.steph.kanji.databinding.DialogAddLessonBinding as DialogAddLessonBinding1
