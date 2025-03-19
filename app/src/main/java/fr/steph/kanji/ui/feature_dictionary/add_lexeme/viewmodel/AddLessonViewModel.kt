@@ -28,9 +28,6 @@ class AddLessonViewModel(repo: LessonRepository) : LessonViewModel(repo) {
 
             is AddLessonFormEvent.LabelChanged ->
                 _uiState.update { it.copy(label = event.label) }
-
-            is AddLessonFormEvent.InsertionFailure ->
-                _uiState.update { it.copy(numberErrorRes = event.failureMessageRes) }
         }
     }
 
