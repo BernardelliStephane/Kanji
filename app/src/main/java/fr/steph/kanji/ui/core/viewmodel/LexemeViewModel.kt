@@ -1,13 +1,15 @@
 package fr.steph.kanji.ui.core.viewmodel
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import fr.steph.kanji.R
-import fr.steph.kanji.domain.model.Lexeme
 import fr.steph.kanji.data.repository.LessonRepository
 import fr.steph.kanji.data.repository.LexemeRepository
 import fr.steph.kanji.domain.enumeration.SortField
 import fr.steph.kanji.domain.enumeration.SortOrder
+import fr.steph.kanji.domain.model.Lexeme
+import fr.steph.kanji.ui.core.use_case.GetLessonsUseCase
 import fr.steph.kanji.ui.feature_dictionary.dictionary.uistate.FilterOptions
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
@@ -25,9 +27,8 @@ const val UPDATE_FAILURE = 0
 
 @OptIn(ExperimentalCoroutinesApi::class)
 abstract class LexemeViewModel(
-    lessonRepo: LessonRepository,
     private val lexemeRepo: LexemeRepository,
-) : LessonViewModel(lessonRepo) {
+) : ViewModel() {
 
     private val _filterOptions = MutableStateFlow(FilterOptions())
 

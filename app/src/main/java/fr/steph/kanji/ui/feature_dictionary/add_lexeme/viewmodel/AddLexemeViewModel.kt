@@ -6,7 +6,6 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import fr.steph.kanji.R
 import fr.steph.kanji.data.model.ApiKanji
-import fr.steph.kanji.data.repository.LessonRepository
 import fr.steph.kanji.data.repository.LexemeRepository
 import fr.steph.kanji.domain.model.Lexeme
 import fr.steph.kanji.ui.core.use_case.GetKanjiInfoUseCase
@@ -27,10 +26,10 @@ import kotlinx.coroutines.launch
 
 class AddLexemeViewModel(
     private val getKanjiInfo: GetKanjiInfoUseCase,
-    lessonRepo: LessonRepository,
     getLessons: GetLessonsUseCase,
     lexemeRepo: LexemeRepository,
-) : LexemeViewModel(lessonRepo, lexemeRepo) {
+) : LexemeViewModel(lexemeRepo) {
+
     val allLessons = getLessons().asLiveData()
 
     private val _uiState = MutableStateFlow(AddLexemeFormState())

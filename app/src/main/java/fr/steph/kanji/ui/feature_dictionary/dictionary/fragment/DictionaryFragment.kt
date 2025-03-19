@@ -48,7 +48,7 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
     private val viewModel: DictionaryViewModel by viewModels {
         val app = (activity?.application as KanjiApplication)
         viewModelFactory {
-            DictionaryViewModel(app.lessonRepository, app.lexemeRepository)
+            DictionaryViewModel(app.lexemeRepository)
         }
     }
 
