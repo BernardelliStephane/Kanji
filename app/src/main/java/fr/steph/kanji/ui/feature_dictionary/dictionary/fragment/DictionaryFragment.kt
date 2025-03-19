@@ -22,6 +22,11 @@ import com.google.android.material.snackbar.Snackbar
 import fr.steph.kanji.KanjiApplication
 import fr.steph.kanji.R
 import fr.steph.kanji.databinding.FragmentDictionaryBinding
+import fr.steph.kanji.ui.core.use_case.DeleteLexemesFromSelectionUseCase
+import fr.steph.kanji.ui.core.use_case.FilterLexemesUseCase
+import fr.steph.kanji.ui.core.use_case.GetLexemesUseCase
+import fr.steph.kanji.ui.core.use_case.SearchInFilteredLexemesUseCase
+import fr.steph.kanji.ui.core.use_case.SearchLexemesUseCase
 import fr.steph.kanji.ui.feature_dictionary.dictionary.adapter.LexemeAdapter
 import fr.steph.kanji.ui.feature_dictionary.dictionary.dialog.ConfirmDeletionDialogFragment
 import fr.steph.kanji.ui.feature_dictionary.dictionary.dialog.DELETE_DIALOG_TAG
@@ -46,9 +51,15 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
     private var binding: FragmentDictionaryBinding by autoCleared()
 
     private val viewModel: DictionaryViewModel by viewModels {
-        val app = (activity?.application as KanjiApplication)
+        val repo = (activity?.application as KanjiApplication).lexemeRepository
         viewModelFactory {
-            DictionaryViewModel(app.lexemeRepository)
+            DictionaryViewModel(
+                GetLexemesUseCase(repo),
+                SearchLexemesUseCase(repo),
+                FilterLexemesUseCase(repo),
+                SearchInFilteredLexemesUseCase(repo),
+                DeleteLexemesFromSelectionUseCase(repo)
+            )
         }
     }
 
