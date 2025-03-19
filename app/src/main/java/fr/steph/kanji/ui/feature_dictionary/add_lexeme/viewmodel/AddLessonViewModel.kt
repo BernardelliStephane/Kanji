@@ -1,25 +1,26 @@
 package fr.steph.kanji.ui.feature_dictionary.add_lexeme.viewmodel
 
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.Observer
-import fr.steph.kanji.domain.model.Lesson
-import fr.steph.kanji.data.repository.LessonRepository
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
+import fr.steph.kanji.ui.core.use_case.GetLessonNumbersUseCase
+import fr.steph.kanji.ui.core.use_case.InsertLessonUseCase
+import fr.steph.kanji.ui.core.viewmodel.FormViewModel
 import fr.steph.kanji.ui.feature_dictionary.add_lexeme.uistate.AddLessonFormEvent
 import fr.steph.kanji.ui.feature_dictionary.add_lexeme.uistate.AddLessonFormState
-import fr.steph.kanji.ui.feature_dictionary.add_lexeme.util.validation.ValidateLessonField
-import fr.steph.kanji.ui.core.viewmodel.LessonViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
-class AddLessonViewModel(repo: LessonRepository) : LessonViewModel(repo) {
+class AddLessonViewModel(
+    getLessonNumbers: GetLessonNumbersUseCase,
+    private val insertLesson: InsertLessonUseCase
+) : FormViewModel() {
+
     private val _uiState = MutableStateFlow(AddLessonFormState())
     val uiState = _uiState.asStateFlow()
 
-    val lessonNumbers = MediatorLiveData<List<Long>>().apply{
-        val observer = Observer<List<Lesson>> { value = it.map { lesson -> lesson.number } }
-        addSource(allLessons, observer)
-    }
+    val lessonNumbers = getLessonNumbers().asLiveData()
 
     fun onEvent(event: AddLessonFormEvent) {
         return when(event) {
@@ -31,27 +32,18 @@ class AddLessonViewModel(repo: LessonRepository) : LessonViewModel(repo) {
         }
     }
 
-    fun submitData() {
+    fun submitData() = viewModelScope.launch {
         _uiState.update { it.copy(isSubmitting = true) }
 
-        val lessonNumbers = lessonNumbers.value ?: emptyList()
-        val numberResult = ValidateLessonField.validateNumber(uiState.value.number, lessonNumbers)
-        val labelResult = ValidateLessonField.validateLabel(uiState.value.label)
+        val result = insertLesson(uiState.value, lessonNumbers.value ?: emptyList())
 
-        _uiState.update { currentUiState ->
-            currentUiState.copy(
-                numberErrorRes = numberResult.errorMessageRes,
-                labelErrorRes = labelResult.errorMessageRes
-            )
-        }
+        result.insertionResult?.let {
+            sendValidationEvent(it)
+        } ?: _uiState.update { currentUiState -> currentUiState.copy(
+            numberErrorRes = result.numberErrorRes,
+            labelErrorRes = result.labelErrorRes
+        )}
 
-        val hasError = listOf(numberResult, labelResult).any { !it.successful }
-
-        if (hasError)
-            return _uiState.update { it.copy(isSubmitting = false) }
-
-        val lesson = Lesson(uiState.value.number.toLong(), uiState.value.label)
-
-        insertLesson(lesson)
+        _uiState.update { it.copy(isSubmitting = false) }
     }
 }

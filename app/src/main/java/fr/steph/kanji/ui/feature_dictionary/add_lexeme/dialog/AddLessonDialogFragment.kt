@@ -17,9 +17,7 @@ import fr.steph.kanji.ui.feature_dictionary.add_lexeme.uistate.AddLessonFormEven
 import fr.steph.kanji.ui.core.util.autoCleared
 import fr.steph.kanji.ui.core.util.viewModelFactory
 import fr.steph.kanji.ui.feature_dictionary.add_lexeme.viewmodel.AddLessonViewModel
-import fr.steph.kanji.ui.core.viewmodel.LessonViewModel
-import fr.steph.kanji.ui.core.viewmodel.LessonViewModel.ValidationEvent.Failure
-import fr.steph.kanji.ui.core.viewmodel.LessonViewModel.ValidationEvent.Success
+import fr.steph.kanji.ui.core.viewmodel.LessonViewModel.ValidationEvent
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import fr.steph.kanji.databinding.DialogAddLessonBinding as DialogAddLessonBinding1
@@ -30,16 +28,16 @@ class AddLessonDialogFragment : DialogFragment(R.layout.dialog_add_lesson) {
     private var binding: DialogAddLessonBinding1 by autoCleared()
 
     private val viewModel: AddLessonViewModel by viewModels {
-        val app = (activity?.application as KanjiApplication)
+        val repo = (activity?.application as KanjiApplication).lessonRepository
         viewModelFactory {
-            AddLessonViewModel(app.lessonRepository)
+            AddLessonViewModel(GetLessonNumbersUseCase(repo), InsertLessonUseCase(repo))
         }
     }
 
     private var failureCallback: (() -> Unit?)? = null
     private var successCallback: ((Lesson) -> Unit?)? = null
 
-    private var validationState: LessonViewModel.ValidationEvent? = null
+    private var validationState: ValidationEvent? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -77,12 +75,12 @@ class AddLessonDialogFragment : DialogFragment(R.layout.dialog_add_lesson) {
 
     private fun setupObservers() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.lessonValidationEvents.collectLatest { event ->
+            viewModel.validationEvents.collectLatest { event ->
                 validationState = event
 
                 when (event) {
-                    is Failure -> Snackbar.make(requireView(), event.failureMessage, Snackbar.LENGTH_SHORT).show()
-                    is Success -> {
+                    is ValidationEvent.Failure -> Snackbar.make(requireView(), event.failureMessage, Snackbar.LENGTH_SHORT).show()
+                    is ValidationEvent.Success -> {
                         successCallback?.invoke(event.lesson)
                         dismiss()
                     }
@@ -98,7 +96,7 @@ class AddLessonDialogFragment : DialogFragment(R.layout.dialog_add_lesson) {
     }
 
     override fun onDismiss(dialog: DialogInterface) {
-        if (validationState !is Success)
+        if (validationState !is ValidationEvent.Success)
             failureCallback?.invoke()
         super.onDismiss(dialog)
     }
