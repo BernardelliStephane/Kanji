@@ -1,10 +1,10 @@
 package fr.steph.kanji
 
 import android.app.Application
-import fr.steph.kanji.data.LexemeDatabase
-import fr.steph.kanji.data.repository.ApiKanjiRepository
-import fr.steph.kanji.data.repository.LessonRepository
-import fr.steph.kanji.data.repository.LexemeRepository
+import fr.steph.kanji.core.data.LexemeDatabase
+import fr.steph.kanji.core.data.repository.ApiKanjiRepository
+import fr.steph.kanji.core.data.repository.LessonRepository
+import fr.steph.kanji.core.data.repository.LexemeRepository
 
 class KanjiApplication: Application() {
     private val database by lazy { LexemeDatabase.getDatabase(this) }
