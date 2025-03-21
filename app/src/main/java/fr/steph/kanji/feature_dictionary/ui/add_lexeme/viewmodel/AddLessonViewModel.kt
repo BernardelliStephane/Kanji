@@ -3,12 +3,11 @@ package fr.steph.kanji.feature_dictionary.ui.add_lexeme.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import fr.steph.kanji.core.domain.model.Lesson
+import fr.steph.kanji.core.ui.util.LessonResource
 import fr.steph.kanji.feature_dictionary.domain.use_case.GetLessonNumbersUseCase
 import fr.steph.kanji.feature_dictionary.domain.use_case.InsertLessonUseCase
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate.AddLessonEvent
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate.AddLessonState
-import fr.steph.kanji.core.ui.util.Resource
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -26,7 +25,7 @@ class AddLessonViewModel(
 
     val lessonNumbers = getLessonNumbers().asLiveData()
 
-    private val validationEventChannel = Channel<Resource<Lesson>>()
+    private val validationEventChannel = Channel<LessonResource>()
     val validationEvents = validationEventChannel.receiveAsFlow()
 
     fun onEvent(event: AddLessonEvent) {

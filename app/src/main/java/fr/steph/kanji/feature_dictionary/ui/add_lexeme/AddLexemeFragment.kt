@@ -13,7 +13,14 @@ import com.google.android.material.snackbar.Snackbar
 import fr.steph.kanji.KanjiApplication
 import fr.steph.kanji.R
 import fr.steph.kanji.core.domain.model.Lesson
+import fr.steph.kanji.core.ui.util.Resource
+import fr.steph.kanji.core.ui.util.autoCleared
+import fr.steph.kanji.core.ui.util.viewModelFactory
+import fr.steph.kanji.core.util.ADD_LESSON_DIALOG_TAG
+import fr.steph.kanji.core.util.LEXEME_UPDATE_DIALOG_TAG
+import fr.steph.kanji.core.util.extension.hideSpinnerDropDown
 import fr.steph.kanji.core.util.extension.navigateUp
+import fr.steph.kanji.core.util.extension.setMaxVisibleItems
 import fr.steph.kanji.databinding.FragmentAddLexemeBinding
 import fr.steph.kanji.databinding.StubAddLexemeBinding
 import fr.steph.kanji.feature_dictionary.domain.use_case.GetKanjiInfoUseCase
@@ -25,15 +32,7 @@ import fr.steph.kanji.feature_dictionary.ui.add_lexeme.adapter.SpinnerAdapter
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.dialog.AddLessonDialogFragment
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.dialog.ConfirmLexemeUpdateDialogFragment
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate.AddLexemeEvent
-import fr.steph.kanji.core.ui.util.autoCleared
-import fr.steph.kanji.core.ui.util.viewModelFactory
-import fr.steph.kanji.core.ui.LexemeViewModel.ValidationEvent.Failure
-import fr.steph.kanji.core.ui.LexemeViewModel.ValidationEvent.Success
-import fr.steph.kanji.core.util.ADD_LESSON_DIALOG_TAG
-import fr.steph.kanji.core.util.LEXEME_UPDATE_DIALOG_TAG
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.viewmodel.AddLexemeViewModel
-import fr.steph.kanji.core.util.extension.hideSpinnerDropDown
-import fr.steph.kanji.core.util.extension.setMaxVisibleItems
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -152,12 +151,12 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
 
         viewModel.lastKanjiFetch.observe(viewLifecycleOwner) { resource ->
             when (resource) {
-                is AddLexemeViewModel.Resource.Success -> {
+                is AddLexemeViewModel.ApiResource.Success -> {
                     binding.stubKanjiForm.viewStub?.inflate()
                     viewModel.onEvent(AddLexemeEvent.KanjiFetched(resource.data))
                 }
 
-                is AddLexemeViewModel.Resource.Error ->
+                is AddLexemeViewModel.ApiResource.Error ->
                     Toast.makeText(requireContext(), resource.message, Toast.LENGTH_LONG).show()
 
                 else -> {}
@@ -165,13 +164,13 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.lexemeValidationEvents.collectLatest { event ->
+            viewModel.validationEvents.collectLatest { event ->
                 when (event) {
-                    is Failure -> {
+                    is Resource.Failure -> {
                         Snackbar.make(requireView(), event.failureMessage, Snackbar.LENGTH_SHORT).show()
                         viewModel.stopSubmission()
                     }
-                    is Success -> navigateUp()
+                    is Resource.Success -> navigateUp()
                 }
             }
         }

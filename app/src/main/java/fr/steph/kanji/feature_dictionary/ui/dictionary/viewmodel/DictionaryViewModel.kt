@@ -5,13 +5,13 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import fr.steph.kanji.core.domain.enumeration.SortField
 import fr.steph.kanji.core.domain.enumeration.SortOrder
+import fr.steph.kanji.core.ui.util.LexemeResource
 import fr.steph.kanji.feature_dictionary.domain.use_case.DeleteLexemesFromSelectionUseCase
 import fr.steph.kanji.feature_dictionary.domain.use_case.FilterLexemesUseCase
 import fr.steph.kanji.feature_dictionary.domain.use_case.GetLexemesUseCase
 import fr.steph.kanji.feature_dictionary.domain.use_case.SearchInFilteredLexemesUseCase
 import fr.steph.kanji.feature_dictionary.domain.use_case.SearchLexemesUseCase
 import fr.steph.kanji.feature_dictionary.ui.dictionary.util.FilterOptions
-import fr.steph.kanji.core.ui.LexemeViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -62,12 +62,12 @@ class DictionaryViewModel(
         .map { it == (lexemes.value?.size ?: 0) }
         .stateIn(viewModelScope, SharingStarted.Lazily, false)
 
-    private val lexemeValidationEventChannel = Channel<LexemeViewModel.ValidationEvent>()
-    val lexemeValidationEvents = lexemeValidationEventChannel.receiveAsFlow()
+    private val validationEventChannel = Channel<LexemeResource>()
+    val validationEvents = validationEventChannel.receiveAsFlow()
 
     fun deleteLexemesFromSelection(selection: List<Long>) = viewModelScope.launch {
         val result = deleteLexemeFromSelection(selection)
-        lexemeValidationEventChannel.send(result)
+        validationEventChannel.send(result)
     }
 
     fun onSelectionChanged(selectionSize: Int) {

@@ -21,6 +21,7 @@ import com.google.android.material.snackbar.Snackbar
 import fr.steph.kanji.KanjiApplication
 import fr.steph.kanji.R
 import fr.steph.kanji.core.ui.util.ItemKeyProvider
+import fr.steph.kanji.core.ui.util.Resource
 import fr.steph.kanji.core.ui.util.StretchEdgeEffectFactory
 import fr.steph.kanji.core.ui.util.autoCleared
 import fr.steph.kanji.core.ui.util.viewModelFactory
@@ -41,8 +42,6 @@ import fr.steph.kanji.feature_dictionary.ui.dictionary.dialog.ConfirmDeletionDia
 import fr.steph.kanji.feature_dictionary.ui.dictionary.dialog.FilterLexemesDialogFragment
 import fr.steph.kanji.feature_dictionary.ui.dictionary.dialog.SortLexemesDialogFragment
 import fr.steph.kanji.feature_dictionary.ui.dictionary.viewmodel.DictionaryViewModel
-import fr.steph.kanji.core.ui.LexemeViewModel.ValidationEvent.Success
-import fr.steph.kanji.core.ui.LexemeViewModel.ValidationEvent.Failure
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -207,10 +206,10 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.lexemeValidationEvents.collectLatest { event ->
+            viewModel.validationEvents.collectLatest { event ->
                 when (event) {
-                    is Failure -> Snackbar.make(requireView(), event.failureMessage, Snackbar.LENGTH_SHORT).show()
-                    is Success -> clearSelection(true)
+                    is Resource.Failure -> Snackbar.make(requireView(), event.failureMessage, Snackbar.LENGTH_SHORT).show()
+                    is Resource.Success -> clearSelection(true)
                 }
             }
         }
