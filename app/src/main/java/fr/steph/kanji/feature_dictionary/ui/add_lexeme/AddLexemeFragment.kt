@@ -9,11 +9,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.Navigation
 import com.google.android.material.snackbar.Snackbar
 import fr.steph.kanji.KanjiApplication
 import fr.steph.kanji.R
 import fr.steph.kanji.core.domain.model.Lesson
+import fr.steph.kanji.core.util.extension.navigateUp
 import fr.steph.kanji.databinding.FragmentAddLexemeBinding
 import fr.steph.kanji.databinding.StubAddLexemeBinding
 import fr.steph.kanji.feature_dictionary.domain.use_case.GetKanjiInfoUseCase
@@ -119,7 +119,7 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
         binding.buttonCancel.setOnClickListener {
             if (viewModel.uiState.value.isUpdating)
                 return@setOnClickListener viewModel.resetUi()
-            Navigation.findNavController(requireView()).navigateUp()
+            navigateUp()
         }
 
         binding.buttonConfirm.setOnClickListener {
@@ -171,7 +171,7 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
                         Snackbar.make(requireView(), event.failureMessage, Snackbar.LENGTH_SHORT).show()
                         viewModel.stopSubmission()
                     }
-                    is Success -> Navigation.findNavController(requireView()).navigateUp()
+                    is Success -> navigateUp()
                 }
             }
         }

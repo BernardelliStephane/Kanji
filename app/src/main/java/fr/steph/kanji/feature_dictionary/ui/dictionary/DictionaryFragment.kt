@@ -13,7 +13,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.Navigation
 import androidx.recyclerview.selection.SelectionPredicates
 import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.selection.StorageStrategy
@@ -21,28 +20,29 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import fr.steph.kanji.KanjiApplication
 import fr.steph.kanji.R
+import fr.steph.kanji.core.ui.util.ItemKeyProvider
+import fr.steph.kanji.core.ui.util.StretchEdgeEffectFactory
+import fr.steph.kanji.core.ui.util.autoCleared
+import fr.steph.kanji.core.ui.util.viewModelFactory
+import fr.steph.kanji.core.util.DELETE_DIALOG_TAG
+import fr.steph.kanji.core.util.FILTER_LEXEMES_DIALOG_TAG
+import fr.steph.kanji.core.util.SORT_LEXEMES_DIALOG_TAG
+import fr.steph.kanji.core.util.extension.navigateUp
+import fr.steph.kanji.core.util.extension.safeNavigate
 import fr.steph.kanji.databinding.FragmentDictionaryBinding
 import fr.steph.kanji.feature_dictionary.domain.use_case.DeleteLexemesFromSelectionUseCase
 import fr.steph.kanji.feature_dictionary.domain.use_case.FilterLexemesUseCase
 import fr.steph.kanji.feature_dictionary.domain.use_case.GetLexemesUseCase
 import fr.steph.kanji.feature_dictionary.domain.use_case.SearchInFilteredLexemesUseCase
 import fr.steph.kanji.feature_dictionary.domain.use_case.SearchLexemesUseCase
+import fr.steph.kanji.feature_dictionary.ui.add_lexeme.util.LexemeDetailsLookup
 import fr.steph.kanji.feature_dictionary.ui.dictionary.adapter.LexemeAdapter
 import fr.steph.kanji.feature_dictionary.ui.dictionary.dialog.ConfirmDeletionDialogFragment
 import fr.steph.kanji.feature_dictionary.ui.dictionary.dialog.FilterLexemesDialogFragment
 import fr.steph.kanji.feature_dictionary.ui.dictionary.dialog.SortLexemesDialogFragment
-import fr.steph.kanji.core.ui.util.StretchEdgeEffectFactory
-import fr.steph.kanji.core.ui.util.autoCleared
-import fr.steph.kanji.feature_dictionary.ui.add_lexeme.util.LexemeDetailsLookup
-import fr.steph.kanji.core.ui.util.ItemKeyProvider
-import fr.steph.kanji.core.ui.util.viewModelFactory
 import fr.steph.kanji.feature_dictionary.ui.dictionary.viewmodel.DictionaryViewModel
 import fr.steph.kanji.core.ui.LexemeViewModel.ValidationEvent.Success
 import fr.steph.kanji.core.ui.LexemeViewModel.ValidationEvent.Failure
-import fr.steph.kanji.core.util.DELETE_DIALOG_TAG
-import fr.steph.kanji.core.util.FILTER_LEXEMES_DIALOG_TAG
-import fr.steph.kanji.core.util.SORT_LEXEMES_DIALOG_TAG
-import fr.steph.kanji.core.util.extension.safeNavigate
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -112,7 +112,7 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
         }
 
         dictionaryToolbar.setNavigationOnClickListener {
-            Navigation.findNavController(requireView()).navigateUp()
+            navigateUp()
         }
 
         filterLexemes.setOnClickListener {
