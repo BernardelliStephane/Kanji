@@ -1,26 +1,33 @@
 package fr.steph.kanji.feature_dictionary.ui.add_lexeme.viewmodel
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import fr.steph.kanji.core.domain.model.Lesson
 import fr.steph.kanji.feature_dictionary.domain.use_case.GetLessonNumbersUseCase
 import fr.steph.kanji.feature_dictionary.domain.use_case.InsertLessonUseCase
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate.AddLessonEvent
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate.AddLessonState
-import fr.steph.kanji.core.ui.FormViewModel
+import fr.steph.kanji.core.ui.util.Resource
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class AddLessonViewModel(
     getLessonNumbers: GetLessonNumbersUseCase,
     private val insertLesson: InsertLessonUseCase
-) : FormViewModel() {
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(AddLessonState())
     val uiState = _uiState.asStateFlow()
 
     val lessonNumbers = getLessonNumbers().asLiveData()
+
+    private val validationEventChannel = Channel<Resource<Lesson>>()
+    val validationEvents = validationEventChannel.receiveAsFlow()
 
     fun onEvent(event: AddLessonEvent) {
         return when(event) {
@@ -38,7 +45,7 @@ class AddLessonViewModel(
         val result = insertLesson(uiState.value, lessonNumbers.value ?: emptyList())
 
         result.insertionResult?.let {
-            sendValidationEvent(it)
+            validationEventChannel.send(it)
         } ?: _uiState.update { currentUiState -> currentUiState.copy(
             numberErrorRes = result.numberErrorRes,
             labelErrorRes = result.labelErrorRes

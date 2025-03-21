@@ -5,7 +5,7 @@ import fr.steph.kanji.core.data.repository.LessonRepository
 import fr.steph.kanji.core.domain.model.Lesson
 import fr.steph.kanji.feature_dictionary.domain.model.LessonInsertResult
 import fr.steph.kanji.core.ui.INSERTION_FAILURE
-import fr.steph.kanji.feature_dictionary.ui.dictionary.viewmodel.FilterLexemesViewModel.ValidationEvent
+import fr.steph.kanji.core.ui.util.Resource
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate.AddLessonState
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.util.validation.ValidateLesson
 
@@ -28,8 +28,8 @@ class InsertLessonUseCase(private val repository: LessonRepository) {
 
         repository.insertLesson(lesson).let {
             return if (it == INSERTION_FAILURE)
-                LessonInsertResult(insertionResult = ValidationEvent.Failure(R.string.room_failure))
-            else LessonInsertResult(insertionResult = ValidationEvent.Success(lesson))
+                LessonInsertResult(insertionResult = Resource.Failure(R.string.room_failure))
+            else LessonInsertResult(insertionResult = Resource.Success(lesson))
         }
     }
 }
