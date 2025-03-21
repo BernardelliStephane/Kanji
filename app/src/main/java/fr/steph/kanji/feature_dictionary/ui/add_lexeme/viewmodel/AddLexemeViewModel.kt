@@ -122,11 +122,8 @@ class AddLexemeViewModel(
             }
 
             is AddLexemeEvent.Search -> viewModelScope.launch {
-                //if (lastKanjiFetch.value is ApiResource.Loading) return@launch
-
-                //TODO Set loading state
-                val result = getKanjiInfo(uiState.value.characters)
-                apiResponseChannel.send(result)
+                if (uiState.value.isFetching) return@launch
+                retrieveKanjiInfo(uiState.value.characters)
             }
 
             is AddLexemeEvent.Submit -> {
@@ -138,6 +135,15 @@ class AddLexemeViewModel(
                 checkDuplicateCharacters(currentState, event.duplicateTranslationCallback)
             }
         }
+    }
+
+    private fun retrieveKanjiInfo(characters: String) = viewModelScope.launch {
+        _uiState.update { it.copy(isFetching = true) }
+
+        val result = getKanjiInfo(characters)
+        apiResponseChannel.send(result)
+
+        _uiState.update { it.copy(isFetching = false) }
     }
 
     private fun checkDuplicateCharacters(form: AddLexemeState, duplicateCallback: (Lexeme) -> Unit) = viewModelScope.launch {
@@ -215,12 +221,8 @@ class AddLexemeViewModel(
 
     fun updateUi(lexeme: Lexeme): Int {
         _uiState.update { lexeme.toAddLexemeFormState().copy(isUpdating = true) }
-        if (lexeme.characters.isLoneKanji()) {
-            viewModelScope.launch {
-                val result = getKanjiInfo(uiState.value.characters)
-                apiResponseChannel.send(result)
-            }
-        }
+        if (lexeme.characters.isLoneKanji())
+            retrieveKanjiInfo(uiState.value.characters)
 
         id = lexeme.id
         additionDate = lexeme.additionDate

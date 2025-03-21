@@ -26,6 +26,7 @@ data class AddLexemeState(
     var jlptLevel: String = "",
     var useFrequencyIndicator: String = "",
     var lastFetchedKanji: String? = null,
+    var isFetching: Boolean = false,
     var isCharactersFetched: Boolean = false,
     var isUpdating: Boolean = false,
     var isSubmitting: Boolean = false,
