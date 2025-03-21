@@ -149,17 +149,17 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
             }
         }
 
-        viewModel.lastKanjiFetch.observe(viewLifecycleOwner) { resource ->
-            when (resource) {
-                is AddLexemeViewModel.ApiResource.Success -> {
-                    binding.stubKanjiForm.viewStub?.inflate()
-                    viewModel.onEvent(AddLexemeEvent.KanjiFetched(resource.data))
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.apiResponse.collectLatest { response ->
+                when (response) {
+                    is Resource.Success -> {
+                        binding.stubKanjiForm.viewStub?.inflate()
+                        viewModel.onEvent(AddLexemeEvent.KanjiFetched(response.data!!))
+                    }
+
+                    is Resource.Failure ->
+                        Toast.makeText(requireContext(), response.failureMessage, Toast.LENGTH_LONG).show()
                 }
-
-                is AddLexemeViewModel.ApiResource.Error ->
-                    Toast.makeText(requireContext(), resource.message, Toast.LENGTH_LONG).show()
-
-                else -> {}
             }
         }
 

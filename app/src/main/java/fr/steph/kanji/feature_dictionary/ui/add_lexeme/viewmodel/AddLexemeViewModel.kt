@@ -1,15 +1,16 @@
 package fr.steph.kanji.feature_dictionary.ui.add_lexeme.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import fr.steph.kanji.R
-import fr.steph.kanji.core.data.model.ApiKanji
 import fr.steph.kanji.core.domain.model.Lexeme
+import fr.steph.kanji.core.ui.util.ApiResource
 import fr.steph.kanji.core.ui.util.LexemeResource
 import fr.steph.kanji.core.ui.util.Resource
+import fr.steph.kanji.core.util.extension.capitalized
+import fr.steph.kanji.core.util.extension.isLoneKanji
+import fr.steph.kanji.core.util.extension.kanaToRomaji
 import fr.steph.kanji.feature_dictionary.domain.use_case.GetKanjiInfoUseCase
 import fr.steph.kanji.feature_dictionary.domain.use_case.GetLessonsUseCase
 import fr.steph.kanji.feature_dictionary.domain.use_case.GetLexemeByCharactersUseCase
@@ -18,9 +19,6 @@ import fr.steph.kanji.feature_dictionary.domain.use_case.UpdateLexemeUseCase
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate.AddLexemeEvent
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate.AddLexemeState
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.util.validation.ValidateLexeme
-import fr.steph.kanji.core.util.extension.capitalized
-import fr.steph.kanji.core.util.extension.isLoneKanji
-import fr.steph.kanji.core.util.extension.kanaToRomaji
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.channels.Channel
@@ -43,8 +41,8 @@ class AddLexemeViewModel(
     private val _uiState = MutableStateFlow(AddLexemeState())
     val uiState = _uiState.asStateFlow()
 
-    private val _lastKanjiFetch: MutableLiveData<ApiResource?> = MutableLiveData()
-    val lastKanjiFetch: LiveData<ApiResource?> = _lastKanjiFetch
+    private val apiResponseChannel = Channel<ApiResource>()
+    val apiResponse = apiResponseChannel.receiveAsFlow()
 
     private val validationEventChannel = Channel<LexemeResource>()
     val validationEvents = validationEventChannel.receiveAsFlow()
@@ -124,10 +122,11 @@ class AddLexemeViewModel(
             }
 
             is AddLexemeEvent.Search -> viewModelScope.launch {
-                if (lastKanjiFetch.value is ApiResource.Loading) return@launch
+                //if (lastKanjiFetch.value is ApiResource.Loading) return@launch
 
+                //TODO Set loading state
                 val result = getKanjiInfo(uiState.value.characters)
-                _lastKanjiFetch.postValue(result)
+                apiResponseChannel.send(result)
             }
 
             is AddLexemeEvent.Submit -> {
@@ -219,7 +218,7 @@ class AddLexemeViewModel(
         if (lexeme.characters.isLoneKanji()) {
             viewModelScope.launch {
                 val result = getKanjiInfo(uiState.value.characters)
-                _lastKanjiFetch.postValue(result)
+                apiResponseChannel.send(result)
             }
         }
 
@@ -239,11 +238,5 @@ class AddLexemeViewModel(
         _uiState.update { currentUiState ->
             currentUiState.copy(isSubmitting = false)
         }
-    }
-
-    sealed class ApiResource {
-        data object Loading : ApiResource()
-        data class Error(val message: Int) : ApiResource()
-        data class Success(val data: ApiKanji) : ApiResource()
     }
 }
