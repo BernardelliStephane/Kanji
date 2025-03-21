@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package fr.steph.kanji.core.ui
+package fr.steph.kanji.core.ui.util
 
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.DefaultLifecycleObserver

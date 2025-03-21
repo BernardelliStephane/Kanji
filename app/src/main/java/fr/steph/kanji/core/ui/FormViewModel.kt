@@ -1,4 +1,4 @@
-package fr.steph.kanji.core.ui.viewmodel
+package fr.steph.kanji.core.ui
 
 import androidx.lifecycle.ViewModel
 import fr.steph.kanji.feature_dictionary.ui.dictionary.viewmodel.FilterLexemesViewModel.ValidationEvent

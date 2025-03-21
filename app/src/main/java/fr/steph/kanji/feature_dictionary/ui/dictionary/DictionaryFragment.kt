@@ -1,4 +1,4 @@
-package fr.steph.kanji.feature_dictionary.ui.dictionary.fragment
+package fr.steph.kanji.feature_dictionary.ui.dictionary
 
 import android.os.Bundle
 import android.view.View
@@ -34,14 +34,14 @@ import fr.steph.kanji.feature_dictionary.ui.dictionary.dialog.FILTER_LEXEMES_DIA
 import fr.steph.kanji.feature_dictionary.ui.dictionary.dialog.FilterLexemesDialogFragment
 import fr.steph.kanji.feature_dictionary.ui.dictionary.dialog.SORT_LEXEMES_DIALOG_TAG
 import fr.steph.kanji.feature_dictionary.ui.dictionary.dialog.SortLexemesDialogFragment
-import fr.steph.kanji.core.ui.StretchEdgeEffectFactory
-import fr.steph.kanji.core.ui.autoCleared
+import fr.steph.kanji.core.ui.util.StretchEdgeEffectFactory
+import fr.steph.kanji.core.ui.util.autoCleared
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.util.LexemeDetailsLookup
-import fr.steph.kanji.core.ui.ItemKeyProvider
-import fr.steph.kanji.core.ui.viewModelFactory
+import fr.steph.kanji.core.ui.util.ItemKeyProvider
+import fr.steph.kanji.core.ui.util.viewModelFactory
 import fr.steph.kanji.feature_dictionary.ui.dictionary.viewmodel.DictionaryViewModel
-import fr.steph.kanji.core.ui.viewmodel.LexemeViewModel.ValidationEvent.Success
-import fr.steph.kanji.core.ui.viewmodel.LexemeViewModel.ValidationEvent.Failure
+import fr.steph.kanji.core.ui.LexemeViewModel.ValidationEvent.Success
+import fr.steph.kanji.core.ui.LexemeViewModel.ValidationEvent.Failure
 import fr.steph.kanji.core.util.extension.safeNavigate
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch

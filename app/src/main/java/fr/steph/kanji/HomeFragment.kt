@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import fr.steph.kanji.databinding.FragmentHomeBinding
-import fr.steph.kanji.core.ui.autoCleared
+import fr.steph.kanji.core.ui.util.autoCleared
 import fr.steph.kanji.core.util.extension.safeNavigate
 
 class HomeFragment : Fragment(R.layout.fragment_home) {

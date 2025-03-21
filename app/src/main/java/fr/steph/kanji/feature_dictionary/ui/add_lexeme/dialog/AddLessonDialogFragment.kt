@@ -15,9 +15,9 @@ import fr.steph.kanji.R
 import fr.steph.kanji.core.domain.model.Lesson
 import fr.steph.kanji.feature_dictionary.domain.use_case.GetLessonNumbersUseCase
 import fr.steph.kanji.feature_dictionary.domain.use_case.InsertLessonUseCase
-import fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate.AddLessonFormEvent
-import fr.steph.kanji.core.ui.autoCleared
-import fr.steph.kanji.core.ui.viewModelFactory
+import fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate.AddLessonEvent
+import fr.steph.kanji.core.ui.util.autoCleared
+import fr.steph.kanji.core.ui.util.viewModelFactory
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.viewmodel.AddLessonViewModel
 import fr.steph.kanji.feature_dictionary.ui.dictionary.viewmodel.FilterLexemesViewModel.ValidationEvent
 import kotlinx.coroutines.flow.collectLatest
@@ -59,11 +59,11 @@ class AddLessonDialogFragment : DialogFragment(R.layout.dialog_add_lesson) {
 
     private fun setupListeners() {
         binding.lessonNumberInput.doAfterTextChanged {
-            viewModel.onEvent(AddLessonFormEvent.NumberChanged(it.toString()))
+            viewModel.onEvent(AddLessonEvent.NumberChanged(it.toString()))
         }
 
         binding.lessonLabelInput.doAfterTextChanged {
-            viewModel.onEvent(AddLessonFormEvent.LabelChanged(it.toString()))
+            viewModel.onEvent(AddLessonEvent.LabelChanged(it.toString()))
         }
 
         binding.dialogCancelButton.setOnClickListener {

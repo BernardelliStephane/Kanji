@@ -1,4 +1,4 @@
-package fr.steph.kanji.core.ui
+package fr.steph.kanji.core.ui.util
 
 import androidx.recyclerview.selection.ItemKeyProvider
 import androidx.recyclerview.widget.RecyclerView

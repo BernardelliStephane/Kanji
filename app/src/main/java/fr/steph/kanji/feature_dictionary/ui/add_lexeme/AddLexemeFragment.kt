@@ -1,4 +1,4 @@
-package fr.steph.kanji.feature_dictionary.ui.add_lexeme.fragment
+package fr.steph.kanji.feature_dictionary.ui.add_lexeme
 
 import android.os.Bundle
 import android.view.View
@@ -26,11 +26,11 @@ import fr.steph.kanji.feature_dictionary.ui.add_lexeme.dialog.ADD_LESSON_DIALOG_
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.dialog.AddLessonDialogFragment
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.dialog.ConfirmLexemeUpdateDialogFragment
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.dialog.LEXEME_UPDATE_DIALOG_TAG
-import fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate.AddLexemeFormEvent
-import fr.steph.kanji.core.ui.autoCleared
-import fr.steph.kanji.core.ui.viewModelFactory
-import fr.steph.kanji.core.ui.viewmodel.LexemeViewModel.ValidationEvent.Failure
-import fr.steph.kanji.core.ui.viewmodel.LexemeViewModel.ValidationEvent.Success
+import fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate.AddLexemeEvent
+import fr.steph.kanji.core.ui.util.autoCleared
+import fr.steph.kanji.core.ui.util.viewModelFactory
+import fr.steph.kanji.core.ui.LexemeViewModel.ValidationEvent.Failure
+import fr.steph.kanji.core.ui.LexemeViewModel.ValidationEvent.Success
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.viewmodel.AddLexemeViewModel
 import fr.steph.kanji.core.util.extension.hideSpinnerDropDown
 import fr.steph.kanji.core.util.extension.setMaxVisibleItems
@@ -88,26 +88,26 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
     private fun setupListeners() {
         binding.lessonSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                viewModel.onEvent(AddLexemeFormEvent.LessonChanged(id))
+                viewModel.onEvent(AddLexemeEvent.LessonChanged(id))
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
         binding.charactersInput.doAfterTextChanged {
-            viewModel.onEvent(AddLexemeFormEvent.CharactersChanged(it.toString()))
+            viewModel.onEvent(AddLexemeEvent.CharactersChanged(it.toString()))
         }
 
         binding.searchKanji.setOnClickListener {
-            viewModel.onEvent(AddLexemeFormEvent.Search)
+            viewModel.onEvent(AddLexemeEvent.Search)
         }
 
         binding.romajiInput.doAfterTextChanged {
-            viewModel.onEvent(AddLexemeFormEvent.RomajiChanged(it.toString()))
+            viewModel.onEvent(AddLexemeEvent.RomajiChanged(it.toString()))
         }
 
         binding.meaningInput.doAfterTextChanged {
-            viewModel.onEvent(AddLexemeFormEvent.MeaningChanged(it.toString()))
+            viewModel.onEvent(AddLexemeEvent.MeaningChanged(it.toString()))
         }
 
         binding.stubKanjiForm.setOnInflateListener { _, inflatedView ->
@@ -123,7 +123,7 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
         }
 
         binding.buttonConfirm.setOnClickListener {
-            viewModel.onEvent(AddLexemeFormEvent.Submit { duplicateLexeme ->
+            viewModel.onEvent(AddLexemeEvent.Submit { duplicateLexeme ->
                 binding.charactersInput.clearFocus()
                 binding.romajiInput.clearFocus()
                 binding.meaningInput.clearFocus()
@@ -154,7 +154,7 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
             when (resource) {
                 is AddLexemeViewModel.Resource.Success -> {
                     binding.stubKanjiForm.viewStub?.inflate()
-                    viewModel.onEvent(AddLexemeFormEvent.KanjiFetched(resource.data))
+                    viewModel.onEvent(AddLexemeEvent.KanjiFetched(resource.data))
                 }
 
                 is AddLexemeViewModel.Resource.Error ->

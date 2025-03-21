@@ -1,4 +1,4 @@
-package fr.steph.kanji.core.ui
+package fr.steph.kanji.core.ui.util
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

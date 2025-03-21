@@ -13,10 +13,10 @@ import fr.steph.kanji.feature_dictionary.domain.use_case.GetLessonsUseCase
 import fr.steph.kanji.feature_dictionary.domain.use_case.GetLexemeByCharactersUseCase
 import fr.steph.kanji.feature_dictionary.domain.use_case.InsertLexemeUseCase
 import fr.steph.kanji.feature_dictionary.domain.use_case.UpdateLexemeUseCase
-import fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate.AddLexemeFormEvent
-import fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate.AddLexemeFormState
-import fr.steph.kanji.feature_dictionary.ui.add_lexeme.util.validation.ValidateLexemeField
-import fr.steph.kanji.core.ui.viewmodel.LexemeViewModel
+import fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate.AddLexemeEvent
+import fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate.AddLexemeState
+import fr.steph.kanji.feature_dictionary.ui.add_lexeme.util.validation.ValidateLexeme
+import fr.steph.kanji.core.ui.LexemeViewModel
 import fr.steph.kanji.core.util.extension.capitalized
 import fr.steph.kanji.core.util.extension.isLoneKanji
 import fr.steph.kanji.core.util.extension.kanaToRomaji
@@ -39,7 +39,7 @@ class AddLexemeViewModel(
 
     val allLessons = getLessons().asLiveData()
 
-    private val _uiState = MutableStateFlow(AddLexemeFormState())
+    private val _uiState = MutableStateFlow(AddLexemeState())
     val uiState = _uiState.asStateFlow()
 
     private val _lastKanjiFetch: MutableLiveData<Resource?> = MutableLiveData()
@@ -51,9 +51,9 @@ class AddLexemeViewModel(
     private var id = 0L
     private var additionDate = 0L
 
-    fun onEvent(event: AddLexemeFormEvent) {
+    fun onEvent(event: AddLexemeEvent) {
         when (event) {
-            is AddLexemeFormEvent.LessonChanged -> {
+            is AddLexemeEvent.LessonChanged -> {
                 return _uiState.update { currentUiState ->
                     currentUiState.copy(
                         lessonNumber = event.lessonNumber,
@@ -61,7 +61,7 @@ class AddLexemeViewModel(
                 }
             }
 
-            is AddLexemeFormEvent.CharactersChanged -> {
+            is AddLexemeEvent.CharactersChanged -> {
                 return _uiState.update { currentUiState ->
                     val charactersFetched = event.characters == currentUiState.lastFetchedKanji
                     // Update meaning depending on if the characters were fetched
@@ -79,7 +79,7 @@ class AddLexemeViewModel(
                 }
             }
 
-            is AddLexemeFormEvent.RomajiChanged -> {
+            is AddLexemeEvent.RomajiChanged -> {
                 return _uiState.update { currentUiState ->
                     currentUiState.copy(
                         romaji = event.romaji,
@@ -88,7 +88,7 @@ class AddLexemeViewModel(
                 }
             }
 
-            is AddLexemeFormEvent.MeaningChanged -> {
+            is AddLexemeEvent.MeaningChanged -> {
                 return _uiState.update { currentUiState ->
                     currentUiState.copy(
                         meaning = event.meaning,
@@ -97,7 +97,7 @@ class AddLexemeViewModel(
                 }
             }
 
-            is AddLexemeFormEvent.KanjiFetched -> {
+            is AddLexemeEvent.KanjiFetched -> {
                 return _uiState.update { currentUiState ->
                     event.kanji.run {
                         currentUiState.copy(
@@ -122,14 +122,14 @@ class AddLexemeViewModel(
                 }
             }
 
-            is AddLexemeFormEvent.Search -> viewModelScope.launch {
+            is AddLexemeEvent.Search -> viewModelScope.launch {
                 if (lastKanjiFetch.value is Resource.Loading) return@launch
 
                 val result = getKanjiInfo(uiState.value.characters)
                 _lastKanjiFetch.postValue(result)
             }
 
-            is AddLexemeFormEvent.Submit -> {
+            is AddLexemeEvent.Submit -> {
                 val currentState = uiState.value
 
                 if (currentState.isUpdating)
@@ -140,7 +140,7 @@ class AddLexemeViewModel(
         }
     }
 
-    private fun checkDuplicateCharacters(form: AddLexemeFormState, duplicateCallback: (Lexeme) -> Unit) = viewModelScope.launch {
+    private fun checkDuplicateCharacters(form: AddLexemeState, duplicateCallback: (Lexeme) -> Unit) = viewModelScope.launch {
         getLexemeByCharacters(form.characters)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -158,15 +158,15 @@ class AddLexemeViewModel(
             .subscribe()
     }
 
-    private fun submitData(form: AddLexemeFormState) {
+    private fun submitData(form: AddLexemeState) {
         _uiState.update { currentUiState ->
             currentUiState.copy(isSubmitting = true)
         }
 
         val hasError: Boolean
 
-        val lessonResult = ValidateLexemeField.validateLesson(form.lessonNumber)
-        val charactersResult = ValidateLexemeField.validateCharacters(
+        val lessonResult = ValidateLexeme.validateLesson(form.lessonNumber)
+        val charactersResult = ValidateLexeme.validateCharacters(
             form.characters,
             form.isCharactersLoneKanji,
             form.isCharactersFetched
@@ -184,8 +184,8 @@ class AddLexemeViewModel(
         }
 
         else {
-            val romajiResult = ValidateLexemeField.validateRomaji(form.romaji)
-            val meaningResult = ValidateLexemeField.validateMeaning(form.meaning)
+            val romajiResult = ValidateLexeme.validateRomaji(form.romaji)
+            val meaningResult = ValidateLexeme.validateMeaning(form.meaning)
 
             _uiState.update { currentUiState ->
                 currentUiState.copy(
@@ -229,7 +229,7 @@ class AddLexemeViewModel(
     }
 
     fun resetUi() {
-        _uiState.update { AddLexemeFormState() }
+        _uiState.update { AddLexemeState() }
         id = 0
         additionDate = 0
     }

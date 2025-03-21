@@ -5,7 +5,7 @@ import fr.steph.kanji.core.domain.enumeration.LexemeType
 import fr.steph.kanji.core.util.Moji.mojiDetector
 import fr.steph.kanji.core.util.extension.capitalized
 
-data class AddLexemeFormState(
+data class AddLexemeState(
     var lessonNumber: Long = 0,
     var lessonError: Boolean = false,
     var characters: String = "",

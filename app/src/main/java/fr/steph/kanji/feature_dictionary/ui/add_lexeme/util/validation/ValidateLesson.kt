@@ -2,9 +2,8 @@ package fr.steph.kanji.feature_dictionary.ui.add_lexeme.util.validation
 
 import androidx.core.text.isDigitsOnly
 import fr.steph.kanji.R
-import fr.steph.kanji.core.ui.ValidationResult
 
-class ValidateLessonField {
+class ValidateLesson {
     companion object {
         fun validateNumber(number: String, lessonNumbers: List<Long>): ValidationResult {
             if (number.isBlank())

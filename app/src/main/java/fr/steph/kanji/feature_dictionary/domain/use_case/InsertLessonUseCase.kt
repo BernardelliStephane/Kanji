@@ -4,20 +4,20 @@ import fr.steph.kanji.R
 import fr.steph.kanji.core.data.repository.LessonRepository
 import fr.steph.kanji.core.domain.model.Lesson
 import fr.steph.kanji.feature_dictionary.domain.model.LessonInsertResult
-import fr.steph.kanji.core.ui.viewmodel.INSERTION_FAILURE
+import fr.steph.kanji.core.ui.INSERTION_FAILURE
 import fr.steph.kanji.feature_dictionary.ui.dictionary.viewmodel.FilterLexemesViewModel.ValidationEvent
-import fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate.AddLessonFormState
-import fr.steph.kanji.feature_dictionary.ui.add_lexeme.util.validation.ValidateLessonField
+import fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate.AddLessonState
+import fr.steph.kanji.feature_dictionary.ui.add_lexeme.util.validation.ValidateLesson
 
 class InsertLessonUseCase(private val repository: LessonRepository) {
 
     suspend operator fun invoke(
-        uiState: AddLessonFormState,
+        uiState: AddLessonState,
         lessonNumbers: List<Long>
     ): LessonInsertResult {
 
-        val numberResult = ValidateLessonField.validateNumber(uiState.number, lessonNumbers)
-        val labelResult = ValidateLessonField.validateLabel(uiState.label)
+        val numberResult = ValidateLesson.validateNumber(uiState.number, lessonNumbers)
+        val labelResult = ValidateLesson.validateLabel(uiState.label)
 
         val hasError = listOf(numberResult, labelResult).any { !it.successful }
 

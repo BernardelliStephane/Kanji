@@ -1,4 +1,4 @@
-package fr.steph.kanji.core.ui
+package fr.steph.kanji.core.ui.util
 
 import android.widget.EdgeEffect
 import androidx.recyclerview.widget.RecyclerView

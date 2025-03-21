@@ -3,8 +3,8 @@ package fr.steph.kanji.feature_dictionary.domain.use_case
 import fr.steph.kanji.R
 import fr.steph.kanji.core.data.repository.LexemeRepository
 import fr.steph.kanji.core.domain.model.Lexeme
-import fr.steph.kanji.core.ui.viewmodel.LexemeViewModel.ValidationEvent
-import fr.steph.kanji.core.ui.viewmodel.UPDATE_FAILURE
+import fr.steph.kanji.core.ui.LexemeViewModel.ValidationEvent
+import fr.steph.kanji.core.ui.UPDATE_FAILURE
 
 class UpdateLexemeUseCase(private val repository: LexemeRepository) {
 

@@ -1,12 +1,11 @@
 package fr.steph.kanji.feature_dictionary.ui.add_lexeme.util.validation
 
 import fr.steph.kanji.R
-import fr.steph.kanji.core.ui.ValidationResult
 import fr.steph.kanji.core.util.extension.isOnlyJapaneseCharacters
 import fr.steph.kanji.core.util.extension.isOnlyRomanCharacters
 import fr.steph.kanji.core.util.extension.isOnlyRomanLetters
 
-class ValidateLexemeField {
+class ValidateLexeme {
     companion object {
         fun validateLesson(lessonNumber: Long): ValidationResult {
             return ValidationResult(successful = lessonNumber != -1L)

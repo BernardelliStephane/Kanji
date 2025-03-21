@@ -3,7 +3,7 @@ package fr.steph.kanji.core.domain.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import fr.steph.kanji.core.domain.enumeration.LexemeType
-import fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate.AddLexemeFormState
+import fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate.AddLexemeState
 import fr.steph.kanji.core.util.extension.isLoneKanji
 
 @Entity
@@ -17,8 +17,8 @@ data class Lexeme(
     val meaning: String,
     val additionDate: Long = System.currentTimeMillis(),
 ) {
-    fun toAddLexemeFormState(): AddLexemeFormState =
-        AddLexemeFormState(
+    fun toAddLexemeFormState(): AddLexemeState =
+        AddLexemeState(
             lessonNumber = lessonNumber,
             characters = characters,
             isCharactersLoneKanji = characters.isLoneKanji(),

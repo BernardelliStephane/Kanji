@@ -4,9 +4,9 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import fr.steph.kanji.feature_dictionary.domain.use_case.GetLessonNumbersUseCase
 import fr.steph.kanji.feature_dictionary.domain.use_case.InsertLessonUseCase
-import fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate.AddLessonFormEvent
-import fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate.AddLessonFormState
-import fr.steph.kanji.core.ui.viewmodel.FormViewModel
+import fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate.AddLessonEvent
+import fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate.AddLessonState
+import fr.steph.kanji.core.ui.FormViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -17,17 +17,17 @@ class AddLessonViewModel(
     private val insertLesson: InsertLessonUseCase
 ) : FormViewModel() {
 
-    private val _uiState = MutableStateFlow(AddLessonFormState())
+    private val _uiState = MutableStateFlow(AddLessonState())
     val uiState = _uiState.asStateFlow()
 
     val lessonNumbers = getLessonNumbers().asLiveData()
 
-    fun onEvent(event: AddLessonFormEvent) {
+    fun onEvent(event: AddLessonEvent) {
         return when(event) {
-            is AddLessonFormEvent.NumberChanged ->
+            is AddLessonEvent.NumberChanged ->
                 _uiState.update { it.copy(number = event.number) }
 
-            is AddLessonFormEvent.LabelChanged ->
+            is AddLessonEvent.LabelChanged ->
                 _uiState.update { it.copy(label = event.label) }
         }
     }

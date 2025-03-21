@@ -1,4 +1,4 @@
-package fr.steph.kanji.feature_dictionary.ui.dictionary.uistate
+package fr.steph.kanji.feature_dictionary.ui.dictionary.util
 
 import fr.steph.kanji.core.domain.enumeration.SortField
 import fr.steph.kanji.core.domain.enumeration.SortOrder

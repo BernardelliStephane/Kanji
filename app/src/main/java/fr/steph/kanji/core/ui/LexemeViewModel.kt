@@ -1,4 +1,4 @@
-package fr.steph.kanji.core.ui.viewmodel
+package fr.steph.kanji.core.ui
 
 const val INSERTION_FAILURE = -1L
 const val UPDATE_FAILURE = 0

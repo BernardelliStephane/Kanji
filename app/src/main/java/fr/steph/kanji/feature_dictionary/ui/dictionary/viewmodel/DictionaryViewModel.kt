@@ -10,8 +10,8 @@ import fr.steph.kanji.feature_dictionary.domain.use_case.FilterLexemesUseCase
 import fr.steph.kanji.feature_dictionary.domain.use_case.GetLexemesUseCase
 import fr.steph.kanji.feature_dictionary.domain.use_case.SearchInFilteredLexemesUseCase
 import fr.steph.kanji.feature_dictionary.domain.use_case.SearchLexemesUseCase
-import fr.steph.kanji.feature_dictionary.ui.dictionary.uistate.FilterOptions
-import fr.steph.kanji.core.ui.viewmodel.LexemeViewModel
+import fr.steph.kanji.feature_dictionary.ui.dictionary.util.FilterOptions
+import fr.steph.kanji.core.ui.LexemeViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow

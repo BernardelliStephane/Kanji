@@ -14,10 +14,10 @@ import fr.steph.kanji.KanjiApplication
 import fr.steph.kanji.R
 import fr.steph.kanji.databinding.DialogFilterLexemesBinding
 import fr.steph.kanji.feature_dictionary.domain.use_case.GetLessonsUseCase
-import fr.steph.kanji.core.ui.ItemKeyProvider
-import fr.steph.kanji.core.ui.StretchEdgeEffectFactory
-import fr.steph.kanji.core.ui.autoCleared
-import fr.steph.kanji.core.ui.viewModelFactory
+import fr.steph.kanji.core.ui.util.ItemKeyProvider
+import fr.steph.kanji.core.ui.util.StretchEdgeEffectFactory
+import fr.steph.kanji.core.ui.util.autoCleared
+import fr.steph.kanji.core.ui.util.viewModelFactory
 import fr.steph.kanji.feature_dictionary.ui.dictionary.viewmodel.FilterLexemesViewModel
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.adapter.LessonAdapter
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.util.LessonDetailsLookup

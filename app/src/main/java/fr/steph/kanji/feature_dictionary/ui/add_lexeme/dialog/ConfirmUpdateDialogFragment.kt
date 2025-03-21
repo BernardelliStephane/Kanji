@@ -8,7 +8,7 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.fragment.app.DialogFragment
 import fr.steph.kanji.R
 import fr.steph.kanji.databinding.DialogConfirmLexemeUpdateBinding
-import fr.steph.kanji.core.ui.autoCleared
+import fr.steph.kanji.core.ui.util.autoCleared
 
 const val LEXEME_UPDATE_DIALOG_TAG = "confirm_lexeme_update_dialog"
 

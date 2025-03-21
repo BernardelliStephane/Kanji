@@ -10,7 +10,7 @@ import fr.steph.kanji.R
 import fr.steph.kanji.core.domain.enumeration.SortField
 import fr.steph.kanji.core.domain.enumeration.SortOrder
 import fr.steph.kanji.databinding.DialogSortLexemesBinding
-import fr.steph.kanji.core.ui.autoCleared
+import fr.steph.kanji.core.ui.util.autoCleared
 import fr.steph.kanji.core.util.extension.getSerializable
 
 const val SORT_LEXEMES_DIALOG_TAG = "sort_lexemes_dialog"
