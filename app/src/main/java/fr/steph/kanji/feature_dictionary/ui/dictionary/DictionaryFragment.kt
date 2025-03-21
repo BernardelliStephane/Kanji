@@ -29,10 +29,7 @@ import fr.steph.kanji.feature_dictionary.domain.use_case.SearchInFilteredLexemes
 import fr.steph.kanji.feature_dictionary.domain.use_case.SearchLexemesUseCase
 import fr.steph.kanji.feature_dictionary.ui.dictionary.adapter.LexemeAdapter
 import fr.steph.kanji.feature_dictionary.ui.dictionary.dialog.ConfirmDeletionDialogFragment
-import fr.steph.kanji.feature_dictionary.ui.dictionary.dialog.DELETE_DIALOG_TAG
-import fr.steph.kanji.feature_dictionary.ui.dictionary.dialog.FILTER_LEXEMES_DIALOG_TAG
 import fr.steph.kanji.feature_dictionary.ui.dictionary.dialog.FilterLexemesDialogFragment
-import fr.steph.kanji.feature_dictionary.ui.dictionary.dialog.SORT_LEXEMES_DIALOG_TAG
 import fr.steph.kanji.feature_dictionary.ui.dictionary.dialog.SortLexemesDialogFragment
 import fr.steph.kanji.core.ui.util.StretchEdgeEffectFactory
 import fr.steph.kanji.core.ui.util.autoCleared
@@ -42,6 +39,9 @@ import fr.steph.kanji.core.ui.util.viewModelFactory
 import fr.steph.kanji.feature_dictionary.ui.dictionary.viewmodel.DictionaryViewModel
 import fr.steph.kanji.core.ui.LexemeViewModel.ValidationEvent.Success
 import fr.steph.kanji.core.ui.LexemeViewModel.ValidationEvent.Failure
+import fr.steph.kanji.core.util.DELETE_DIALOG_TAG
+import fr.steph.kanji.core.util.FILTER_LEXEMES_DIALOG_TAG
+import fr.steph.kanji.core.util.SORT_LEXEMES_DIALOG_TAG
 import fr.steph.kanji.core.util.extension.safeNavigate
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch

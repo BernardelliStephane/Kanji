@@ -10,8 +10,6 @@ import fr.steph.kanji.R
 import fr.steph.kanji.databinding.DialogConfirmLexemeUpdateBinding
 import fr.steph.kanji.core.ui.util.autoCleared
 
-const val LEXEME_UPDATE_DIALOG_TAG = "confirm_lexeme_update_dialog"
-
 class ConfirmLexemeUpdateDialogFragment : DialogFragment(R.layout.dialog_confirm_lexeme_update) {
 
     private var binding: DialogConfirmLexemeUpdateBinding by autoCleared()

@@ -22,15 +22,15 @@ import fr.steph.kanji.feature_dictionary.domain.use_case.GetLexemeByCharactersUs
 import fr.steph.kanji.feature_dictionary.domain.use_case.InsertLexemeUseCase
 import fr.steph.kanji.feature_dictionary.domain.use_case.UpdateLexemeUseCase
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.adapter.SpinnerAdapter
-import fr.steph.kanji.feature_dictionary.ui.add_lexeme.dialog.ADD_LESSON_DIALOG_TAG
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.dialog.AddLessonDialogFragment
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.dialog.ConfirmLexemeUpdateDialogFragment
-import fr.steph.kanji.feature_dictionary.ui.add_lexeme.dialog.LEXEME_UPDATE_DIALOG_TAG
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate.AddLexemeEvent
 import fr.steph.kanji.core.ui.util.autoCleared
 import fr.steph.kanji.core.ui.util.viewModelFactory
 import fr.steph.kanji.core.ui.LexemeViewModel.ValidationEvent.Failure
 import fr.steph.kanji.core.ui.LexemeViewModel.ValidationEvent.Success
+import fr.steph.kanji.core.util.ADD_LESSON_DIALOG_TAG
+import fr.steph.kanji.core.util.LEXEME_UPDATE_DIALOG_TAG
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.viewmodel.AddLexemeViewModel
 import fr.steph.kanji.core.util.extension.hideSpinnerDropDown
 import fr.steph.kanji.core.util.extension.setMaxVisibleItems

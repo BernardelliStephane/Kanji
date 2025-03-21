@@ -10,8 +10,6 @@ import fr.steph.kanji.R
 import fr.steph.kanji.databinding.DialogConfirmDeletionBinding
 import fr.steph.kanji.core.ui.util.autoCleared
 
-const val DELETE_DIALOG_TAG = "confirm_deletion_dialog"
-
 class ConfirmDeletionDialogFragment : DialogFragment(R.layout.dialog_confirm_deletion) {
 
     private var binding: DialogConfirmDeletionBinding by autoCleared()

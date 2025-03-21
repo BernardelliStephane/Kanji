@@ -23,7 +23,6 @@ import fr.steph.kanji.feature_dictionary.ui.add_lexeme.adapter.LessonAdapter
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.util.LessonDetailsLookup
 import fr.steph.kanji.core.util.extension.measureLayoutHeight
 
-const val FILTER_LEXEMES_DIALOG_TAG = "filter_lexemes_dialog"
 const val MAX_VISIBLE_ITEMS = 8
 
 class FilterLexemesDialogFragment : DialogFragment(R.layout.dialog_filter_lexemes) {

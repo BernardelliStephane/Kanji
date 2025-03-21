@@ -25,8 +25,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import fr.steph.kanji.databinding.DialogAddLessonBinding as DialogAddLessonBinding1
 
-const val ADD_LESSON_DIALOG_TAG = "add_lesson_dialog"
-
 class AddLessonDialogFragment : DialogFragment(R.layout.dialog_add_lesson) {
     private var binding: DialogAddLessonBinding1 by autoCleared()
 

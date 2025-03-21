@@ -13,8 +13,6 @@ import fr.steph.kanji.databinding.DialogSortLexemesBinding
 import fr.steph.kanji.core.ui.util.autoCleared
 import fr.steph.kanji.core.util.extension.getSerializable
 
-const val SORT_LEXEMES_DIALOG_TAG = "sort_lexemes_dialog"
-
 class SortLexemesDialogFragment : DialogFragment(R.layout.dialog_sort_lexemes) {
 
     private var binding: DialogSortLexemesBinding by autoCleared()
