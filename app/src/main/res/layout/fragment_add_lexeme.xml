@@ -81,6 +81,7 @@
                         android:id="@+id/characters_input"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:focusableInTouchMode="@{!viewModel.uiState.updating}"
                         android:focusable="@{!viewModel.uiState.updating}"
                         android:inputType="@{viewModel.uiState.updating ? InputType.TYPE_NULL : InputType.TYPE_CLASS_TEXT}"
                         android:text="@={viewModel.uiState.characters}" />

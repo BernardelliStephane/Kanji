@@ -116,9 +116,11 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
         }
 
         binding.buttonCancel.setOnClickListener {
-            if (viewModel.uiState.value.isUpdating)
-                return@setOnClickListener viewModel.resetUi()
-            navigateUp()
+            if (!viewModel.uiState.value.isUpdating)
+                return@setOnClickListener navigateUp()
+
+            viewModel.resetUi()
+            binding.lessonSpinner.setSelection(0)
         }
 
         binding.buttonConfirm.setOnClickListener {
