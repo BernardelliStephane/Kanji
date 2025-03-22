@@ -31,7 +31,7 @@ data class AddLexemeState(
     var isUpdating: Boolean = false,
     var isSubmitting: Boolean = false,
 ) {
-    fun toLexeme(id: Long): Lexeme {
+    fun toLexeme(id: Long = 0, creationDate: Long = System.currentTimeMillis()): Lexeme {
         val lexemeType = when {
             isCharactersFetched -> LexemeType.KANJI
             mojiDetector.hasKanji(characters) -> LexemeType.COMPOUND
@@ -48,6 +48,7 @@ data class AddLexemeState(
             characters = characters,
             romaji = romaji,
             meaning = meaning.capitalized(),
+            creationDate = creationDate
         )
     }
 }
