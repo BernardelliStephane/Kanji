@@ -1,8 +1,8 @@
-package fr.steph.kanji.feature_dictionary.ui.add_lexeme.util.validation
+package fr.steph.kanji.feature_dictionary.domain.util
 
 import androidx.annotation.StringRes
 
-class ValidationResult(
+data class ValidationResult(
     val successful: Boolean,
     @StringRes val error: Int? = null
 )

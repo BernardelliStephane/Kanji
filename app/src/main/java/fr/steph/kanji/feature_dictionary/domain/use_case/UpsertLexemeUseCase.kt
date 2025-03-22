@@ -7,8 +7,8 @@ import fr.steph.kanji.core.util.INSERTION_FAILURE
 import fr.steph.kanji.core.util.UPDATE_FAILURE
 import fr.steph.kanji.feature_dictionary.domain.model.LexemeUpsertResult
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate.AddLexemeState
-import fr.steph.kanji.feature_dictionary.ui.add_lexeme.util.validation.ValidateLexeme
-import fr.steph.kanji.feature_dictionary.ui.add_lexeme.util.validation.ValidationResult
+import fr.steph.kanji.feature_dictionary.domain.util.ValidateLexeme
+import fr.steph.kanji.feature_dictionary.domain.util.ValidationResult
 
 class UpsertLexemeUseCase(private val repository: LexemeRepository) {
 

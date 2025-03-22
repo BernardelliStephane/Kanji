@@ -7,7 +7,7 @@ import fr.steph.kanji.core.ui.util.Resource
 import fr.steph.kanji.core.util.INSERTION_FAILURE
 import fr.steph.kanji.feature_dictionary.domain.model.LessonInsertResult
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate.AddLessonState
-import fr.steph.kanji.feature_dictionary.ui.add_lexeme.util.validation.ValidateLesson
+import fr.steph.kanji.feature_dictionary.domain.util.ValidateLesson
 
 class InsertLessonUseCase(private val repository: LessonRepository) {
 
