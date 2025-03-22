@@ -15,7 +15,7 @@ data class Lexeme(
     val characters: String,
     val romaji: String,
     val meaning: String,
-    val additionDate: Long = System.currentTimeMillis(),
+    val creationDate: Long,
 ) {
     fun toAddLexemeFormState(): AddLexemeState =
         AddLexemeState(
