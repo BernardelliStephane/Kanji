@@ -14,11 +14,9 @@ import fr.steph.kanji.core.util.extension.kanaToRomaji
 import fr.steph.kanji.feature_dictionary.domain.use_case.GetKanjiInfoUseCase
 import fr.steph.kanji.feature_dictionary.domain.use_case.GetLessonsUseCase
 import fr.steph.kanji.feature_dictionary.domain.use_case.GetLexemeByCharactersUseCase
-import fr.steph.kanji.feature_dictionary.domain.use_case.InsertLexemeUseCase
-import fr.steph.kanji.feature_dictionary.domain.use_case.UpdateLexemeUseCase
+import fr.steph.kanji.feature_dictionary.domain.use_case.UpsertLexemeUseCase
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate.AddLexemeEvent
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate.AddLexemeState
-import fr.steph.kanji.feature_dictionary.ui.add_lexeme.util.validation.ValidateLexeme
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.channels.Channel
@@ -30,8 +28,7 @@ import kotlinx.coroutines.launch
 
 class AddLexemeViewModel(
     private val getKanjiInfo: GetKanjiInfoUseCase,
-    private val insertLexeme: InsertLexemeUseCase,
-    private val updateLexeme: UpdateLexemeUseCase,
+    private val insertLexeme: UpsertLexemeUseCase,
     private val getLexemeByCharacters: GetLexemeByCharactersUseCase,
     getLessons: GetLessonsUseCase,
 ) : ViewModel() {
@@ -48,7 +45,7 @@ class AddLexemeViewModel(
     val validationEvents = validationEventChannel.receiveAsFlow()
 
     private var id = 0L
-    private var additionDate = 0L
+    private var creationDate: Long = 0
 
     fun onEvent(event: AddLexemeEvent) {
         when (event) {
@@ -123,21 +120,21 @@ class AddLexemeViewModel(
 
             is AddLexemeEvent.Search -> viewModelScope.launch {
                 if (uiState.value.isFetching) return@launch
-                retrieveKanjiInfo(uiState.value.characters)
+                fetchKanji(uiState.value.characters)
             }
 
             is AddLexemeEvent.Submit -> {
                 val currentState = uiState.value
 
                 if (currentState.isUpdating)
-                    return submitData(currentState)
+                    return submitData()
 
                 checkDuplicateCharacters(currentState, event.duplicateTranslationCallback)
             }
         }
     }
 
-    private fun retrieveKanjiInfo(characters: String) = viewModelScope.launch {
+    private fun fetchKanji(characters: String) = viewModelScope.launch {
         _uiState.update { it.copy(isFetching = true) }
 
         val result = getKanjiInfo(characters)
@@ -159,73 +156,38 @@ class AddLexemeViewModel(
                 duplicateCallback.invoke(it)
             }
             .doOnComplete { // No matching lexeme found
-                submitData(form)
+                submitData()
             }
             .subscribe()
     }
 
-    private fun submitData(form: AddLexemeState) {
-        _uiState.update { currentUiState ->
-            currentUiState.copy(isSubmitting = true)
-        }
-
-        val hasError: Boolean
-
-        val lessonResult = ValidateLexeme.validateLesson(form.lessonNumber)
-        val charactersResult = ValidateLexeme.validateCharacters(
-            form.characters,
-            form.isCharactersLoneKanji,
-            form.isCharactersFetched
-        )
-
-        if (form.isCharactersLoneKanji) {
-            _uiState.update { currentUiState ->
-                currentUiState.copy(
-                    lessonError = !lessonResult.successful,
-                    charactersErrorRes = charactersResult.errorMessageRes
-                )
-            }
-
-            hasError = listOf(lessonResult, charactersResult).any { !it.successful }
-        }
-
-        else {
-            val romajiResult = ValidateLexeme.validateRomaji(form.romaji)
-            val meaningResult = ValidateLexeme.validateMeaning(form.meaning)
-
-            _uiState.update { currentUiState ->
-                currentUiState.copy(
-                    lessonError = !lessonResult.successful,
-                    charactersErrorRes = charactersResult.errorMessageRes,
-                    romajiErrorRes = romajiResult.errorMessageRes,
-                    meaningErrorRes = meaningResult.errorMessageRes
-                )
-            }
-
-            hasError = listOf(lessonResult, charactersResult, romajiResult, meaningResult).any { !it.successful }
-        }
-
-        if (hasError)
-            return _uiState.update { currentUiState ->
-                currentUiState.copy(isSubmitting = false)
-            }
-
-        val lexeme = form.toLexeme(id)
-
+    private fun submitData() {
         viewModelScope.launch {
-            val result = if (form.isUpdating) updateLexeme(lexeme)
-                else insertLexeme(lexeme)
-            validationEventChannel.send(result)
+            _uiState.update { it.copy(isSubmitting = true) }
+
+            val result = insertLexeme(uiState.value, id, creationDate)
+            result.upsertionResult?.let {
+                validationEventChannel.send(it)
+            } ?: _uiState.update { currentUiState ->
+                currentUiState.copy(
+                    lessonError = result.lessonError,
+                    charactersErrorRes = result.charactersErrorRes,
+                    romajiErrorRes = result.romajiErrorRes,
+                    meaningErrorRes = result.meaningErrorRes
+                )
+            }
+
+            _uiState.update { it.copy(isSubmitting = false) }
         }
     }
 
     fun updateUi(lexeme: Lexeme): Int {
         _uiState.update { lexeme.toAddLexemeFormState().copy(isUpdating = true) }
         if (lexeme.characters.isLoneKanji())
-            retrieveKanjiInfo(uiState.value.characters)
+            fetchKanji(uiState.value.characters)
 
         id = lexeme.id
-        additionDate = lexeme.additionDate
+        creationDate = lexeme.creationDate
 
         return allLessons.value?.map { it.number }?.indexOf(lexeme.lessonNumber) ?: 0
     }
@@ -233,12 +195,8 @@ class AddLexemeViewModel(
     fun resetUi() {
         _uiState.update { AddLexemeState() }
         id = 0
-        additionDate = 0
+        creationDate = 0
     }
 
-    fun stopSubmission() {
-        _uiState.update { currentUiState ->
-            currentUiState.copy(isSubmitting = false)
-        }
-    }
+    fun stopSubmission() = _uiState.update { it.copy(isSubmitting = false) }
 }
