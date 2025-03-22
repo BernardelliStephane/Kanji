@@ -45,10 +45,12 @@ class AddLessonViewModel(
 
         result.insertionResult?.let {
             validationEventChannel.send(it)
-        } ?: _uiState.update { currentUiState -> currentUiState.copy(
-            numberErrorRes = result.numberErrorRes,
-            labelErrorRes = result.labelErrorRes
-        )}
+        } ?: _uiState.update { currentUiState ->
+            currentUiState.copy(
+                numberErrorRes = result.numberErrorRes,
+                labelErrorRes = result.labelErrorRes
+            )
+        }
 
         _uiState.update { it.copy(isSubmitting = false) }
     }
