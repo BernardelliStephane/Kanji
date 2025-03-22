@@ -22,7 +22,7 @@ class InsertLessonUseCase(private val repository: LessonRepository) {
         val hasError = listOf(numberResult, labelResult).any { !it.successful }
 
         if (hasError)
-            return LessonInsertResult(numberResult.errorMessageRes, labelResult.errorMessageRes)
+            return LessonInsertResult(numberResult.error, labelResult.error)
 
         val lesson = Lesson(uiState.number.toLong(), uiState.label)
 

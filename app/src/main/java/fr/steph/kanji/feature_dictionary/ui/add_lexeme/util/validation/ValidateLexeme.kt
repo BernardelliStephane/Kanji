@@ -18,13 +18,13 @@ class ValidateLexeme {
             if (characters.isBlank())
                 return ValidationResult(
                     successful = false,
-                    errorMessageRes = R.string.mandatory_field_error
+                    error = R.string.mandatory_field_error
                 )
 
             if (!characters.isOnlyJapaneseCharacters())
                 return ValidationResult(
                     successful = false,
-                    errorMessageRes = R.string.japanese_characters_only_filling_error
+                    error = R.string.japanese_characters_only_filling_error
                 )
 
             return ValidationResult(successful = true)
@@ -34,7 +34,7 @@ class ValidateLexeme {
             if (!characterFetched)
                 return ValidationResult(
                     successful = false,
-                    errorMessageRes = R.string.kanji_not_fetched_error
+                    error = R.string.kanji_not_fetched_error
                 )
 
             return ValidationResult(successful = true)
@@ -44,13 +44,13 @@ class ValidateLexeme {
             if (romaji.isBlank())
                 return ValidationResult(
                     successful = false,
-                    errorMessageRes = R.string.mandatory_field_error
+                    error = R.string.mandatory_field_error
                 )
 
             if (!romaji.isOnlyRomanLetters())
                 return ValidationResult(
                     successful = false,
-                    errorMessageRes = R.string.roman_letters_only_filling_error
+                    error = R.string.roman_letters_only_filling_error
                 )
 
             return ValidationResult(successful = true)
@@ -60,13 +60,13 @@ class ValidateLexeme {
             if (meaning.isBlank())
                 return ValidationResult(
                     successful = false,
-                    errorMessageRes = R.string.mandatory_field_error
+                    error = R.string.mandatory_field_error
                 )
 
             if (!meaning.isOnlyRomanCharacters())
                 return ValidationResult(
                     successful = false,
-                    errorMessageRes = R.string.roman_letters_only_filling_error
+                    error = R.string.roman_letters_only_filling_error
                 )
 
             return ValidationResult(successful = true)

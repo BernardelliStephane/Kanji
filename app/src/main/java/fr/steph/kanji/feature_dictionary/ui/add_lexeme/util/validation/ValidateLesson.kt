@@ -9,19 +9,19 @@ class ValidateLesson {
             if (number.isBlank())
                 return ValidationResult(
                     successful = false,
-                    errorMessageRes = R.string.mandatory_field_error
+                    error = R.string.mandatory_field_error
                 )
 
             if (!number.isDigitsOnly())
                 return ValidationResult(
                     successful = false,
-                    errorMessageRes = R.string.digits_only_filling_error
+                    error = R.string.digits_only_filling_error
                 )
 
             if (number.toLong() in lessonNumbers)
                 return ValidationResult(
                     successful = false,
-                    errorMessageRes = R.string.duplicate_lesson_error
+                    error = R.string.duplicate_lesson_error
                 )
 
             return ValidationResult(successful = true)
@@ -31,7 +31,7 @@ class ValidateLesson {
             if (label.isBlank())
                 return ValidationResult(
                     successful = false,
-                    errorMessageRes = R.string.mandatory_field_error
+                    error = R.string.mandatory_field_error
                 )
 
             return ValidationResult(successful = true)
