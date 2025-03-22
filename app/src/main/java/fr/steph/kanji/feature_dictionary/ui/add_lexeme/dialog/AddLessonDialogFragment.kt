@@ -70,7 +70,7 @@ class AddLessonDialogFragment : DialogFragment(R.layout.dialog_add_lesson) {
         }
 
         binding.dialogConfirmButton.setOnClickListener {
-            viewModel.submitData()
+            viewModel.onEvent(AddLessonEvent.Submit)
         }
     }
 
