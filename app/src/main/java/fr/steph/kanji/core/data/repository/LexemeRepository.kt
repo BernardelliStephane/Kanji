@@ -1,6 +1,5 @@
 package fr.steph.kanji.core.data.repository
 
-import androidx.annotation.WorkerThread
 import fr.steph.kanji.core.data.dao.LexemeDao
 import fr.steph.kanji.core.domain.model.Lexeme
 import fr.steph.kanji.core.domain.enumeration.SortOrder
@@ -16,104 +15,70 @@ class LexemeRepository(private val lexemeDao: LexemeDao) {
     suspend fun deleteLexemesFromSelection(selection: List<Long>) =
         lexemeDao.deleteLexemesFromSelection(selection)
 
-    @Suppress("RedundantSuspendModifier")
-    @WorkerThread
-    suspend fun getLexemeByCharacters(characters: String) =
+    fun getLexemeByCharacters(characters: String) =
         lexemeDao.getLexemeByCharacters(characters)
 
 
     /******************** All lexemes ********************/
 
 
-    @Suppress("RedundantSuspendModifier")
-    @WorkerThread
-    suspend fun lexemesOrderedByMeaning(sortOrder: SortOrder) =
+    fun lexemesOrderedByMeaning(sortOrder: SortOrder) =
         lexemeDao.lexemesOrderedByMeaning(sortOrder.index)
 
-    @Suppress("RedundantSuspendModifier")
-    @WorkerThread
-    suspend fun lexemesOrderedByLessonNumber(sortOrder: SortOrder) =
+    fun lexemesOrderedByLessonNumber(sortOrder: SortOrder) =
         lexemeDao.lexemesOrderedByLessonNumber(sortOrder.index)
 
-    @Suppress("RedundantSuspendModifier")
-    @WorkerThread
-    suspend fun lexemesOrderedByRomaji(sortOrder: SortOrder) =
+    fun lexemesOrderedByRomaji(sortOrder: SortOrder) =
         lexemeDao.lexemesOrderedByRomaji(sortOrder.index)
 
-    @Suppress("RedundantSuspendModifier")
-    @WorkerThread
-    suspend fun lexemesOrderedById(sortOrder: SortOrder) =
+    fun lexemesOrderedById(sortOrder: SortOrder) =
         lexemeDao.lexemesOrderedById(sortOrder.index)
 
 
     /***************** Filtered lexemes ******************/
 
 
-    @Suppress("RedundantSuspendModifier")
-    @WorkerThread
-    suspend fun filterLexemesOrderedByMeaning(filter: List<Long>, sortOrder: SortOrder) =
+    fun filterLexemesOrderedByMeaning(filter: List<Long>, sortOrder: SortOrder) =
         lexemeDao.filterLexemesOrderedByMeaning(filter, sortOrder.index)
 
-    @Suppress("RedundantSuspendModifier")
-    @WorkerThread
-    suspend fun filterLexemesOrderedByLessonNumber(filter: List<Long>, sortOrder: SortOrder) =
+    fun filterLexemesOrderedByLessonNumber(filter: List<Long>, sortOrder: SortOrder) =
         lexemeDao.filterLexemesOrderedByLessonNumber(filter, sortOrder.index)
 
-    @Suppress("RedundantSuspendModifier")
-    @WorkerThread
-    suspend fun filterLexemesOrderedByRomaji(filter: List<Long>, sortOrder: SortOrder) =
+    fun filterLexemesOrderedByRomaji(filter: List<Long>, sortOrder: SortOrder) =
         lexemeDao.filterLexemesOrderedByRomaji(filter, sortOrder.index)
 
-    @Suppress("RedundantSuspendModifier")
-    @WorkerThread
-    suspend fun filterLexemesOrderedById(filter: List<Long>, sortOrder: SortOrder) =
+    fun filterLexemesOrderedById(filter: List<Long>, sortOrder: SortOrder) =
         lexemeDao.filterLexemesOrderedById(filter, sortOrder.index)
 
 
     /********** Lexemes matching search query ***********/
 
 
-    @Suppress("RedundantSuspendModifier")
-    @WorkerThread
-    suspend fun searchLexemesOrderedByMeaning(query: String, sortOrder: SortOrder) =
+    fun searchLexemesOrderedByMeaning(query: String, sortOrder: SortOrder) =
         lexemeDao.searchLexemesOrderedByMeaning(query, sortOrder.index)
 
-    @Suppress("RedundantSuspendModifier")
-    @WorkerThread
-    suspend fun searchLexemesOrderedByLessonNumber(query: String, sortOrder: SortOrder) =
+    fun searchLexemesOrderedByLessonNumber(query: String, sortOrder: SortOrder) =
         lexemeDao.searchLexemesOrderedByLessonNumber(query, sortOrder.index)
 
-    @Suppress("RedundantSuspendModifier")
-    @WorkerThread
-    suspend fun searchLexemesOrderedByRomaji(query: String, sortOrder: SortOrder) =
+    fun searchLexemesOrderedByRomaji(query: String, sortOrder: SortOrder) =
         lexemeDao.searchLexemesOrderedByRomaji(query, sortOrder.index)
 
-    @Suppress("RedundantSuspendModifier")
-    @WorkerThread
-    suspend fun searchLexemesOrderedById(query: String, sortOrder: SortOrder) =
+    fun searchLexemesOrderedById(query: String, sortOrder: SortOrder) =
         lexemeDao.searchLexemesOrderedById(query, sortOrder.index)
 
 
     /****** Filtered lexemes matching search query *******/
 
 
-    @Suppress("RedundantSuspendModifier")
-    @WorkerThread
-    suspend fun searchInFilteredLexemesOrderedByMeaning(query: String, filter: List<Long>, sortOrder: SortOrder) =
+    fun searchInFilteredLexemesOrderedByMeaning(query: String, filter: List<Long>, sortOrder: SortOrder) =
         lexemeDao.searchInFilteredLexemesOrderedByMeaning(query, filter, sortOrder.index)
 
-    @Suppress("RedundantSuspendModifier")
-    @WorkerThread
-    suspend fun searchInFilteredLexemesOrderedByLessonNumber(query: String, filter: List<Long>, sortOrder: SortOrder) =
+    fun searchInFilteredLexemesOrderedByLessonNumber(query: String, filter: List<Long>, sortOrder: SortOrder) =
         lexemeDao.searchInFilteredLexemesOrderedByLessonNumber(query, filter, sortOrder.index)
 
-    @Suppress("RedundantSuspendModifier")
-    @WorkerThread
-    suspend fun searchInFilteredLexemesOrderedByRomaji(query: String, filter: List<Long>, sortOrder: SortOrder) =
+    fun searchInFilteredLexemesOrderedByRomaji(query: String, filter: List<Long>, sortOrder: SortOrder) =
         lexemeDao.searchInFilteredLexemesOrderedByRomaji(query, filter, sortOrder.index)
 
-    @Suppress("RedundantSuspendModifier")
-    @WorkerThread
-    suspend fun searchInFilteredLexemesOrderedById(query: String, filter: List<Long>, sortOrder: SortOrder) =
+    fun searchInFilteredLexemesOrderedById(query: String, filter: List<Long>, sortOrder: SortOrder) =
         lexemeDao.searchInFilteredLexemesOrderedById(query, filter, sortOrder.index)
 }

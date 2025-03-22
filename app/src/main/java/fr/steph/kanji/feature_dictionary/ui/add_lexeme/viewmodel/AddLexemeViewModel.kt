@@ -143,7 +143,7 @@ class AddLexemeViewModel(
         _uiState.update { it.copy(isFetching = false) }
     }
 
-    private fun checkDuplicateCharacters(form: AddLexemeState, duplicateCallback: (Lexeme) -> Unit) = viewModelScope.launch {
+    private fun checkDuplicateCharacters(form: AddLexemeState, duplicateCallback: (Lexeme) -> Unit) {
         getLexemeByCharacters(form.characters)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

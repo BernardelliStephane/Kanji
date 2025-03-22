@@ -4,6 +4,6 @@ import fr.steph.kanji.core.data.repository.LexemeRepository
 
 class GetLexemeByCharactersUseCase(private val repository: LexemeRepository) {
 
-    suspend operator fun invoke(characters: String) =
+    operator fun invoke(characters: String) =
         repository.getLexemeByCharacters(characters)
 }

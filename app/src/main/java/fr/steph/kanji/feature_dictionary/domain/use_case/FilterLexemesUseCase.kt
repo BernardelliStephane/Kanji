@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 
 class FilterLexemesUseCase(private val repository: LexemeRepository) {
 
-    suspend operator fun invoke(filter: List<Long>, sortField: SortField, sortOrder: SortOrder): Flow<List<Lexeme>> {
+    operator fun invoke(filter: List<Long>, sortField: SortField, sortOrder: SortOrder): Flow<List<Lexeme>> {
         return when (sortField) {
             SortField.MEANING -> repository.filterLexemesOrderedByMeaning(filter, sortOrder)
             SortField.LESSON_NUMBER -> repository.filterLexemesOrderedByLessonNumber(filter, sortOrder)
