@@ -13,13 +13,12 @@ import java.net.SocketTimeoutException
 class GetKanjiInfoUseCase(private val repository: ApiKanjiRepository) {
 
     suspend operator fun invoke(character: String): ApiResource {
-        try {
-            if (!isNetworkAvailable())
-                return Resource.Failure(R.string.network_unavailable)
+        if (!isNetworkAvailable())
+            return Resource.Failure(R.string.network_unavailable)
 
+        try {
             val response = repository.getKanjiInfo(character)
             return handleResponse(response)
-
         } catch (t: Throwable) {
             return when (t) {
                 is SocketTimeoutException -> Resource.Failure(R.string.connexion_timeout)

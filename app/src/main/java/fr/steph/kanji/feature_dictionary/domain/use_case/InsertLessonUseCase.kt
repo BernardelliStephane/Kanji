@@ -11,17 +11,12 @@ import fr.steph.kanji.feature_dictionary.ui.add_lexeme.util.validation.ValidateL
 
 class InsertLessonUseCase(private val repository: LessonRepository) {
 
-    suspend operator fun invoke(
-        uiState: AddLessonState,
-        lessonNumbers: List<Long>
-    ): LessonInsertResult {
+    suspend operator fun invoke(uiState: AddLessonState, lessonNumbers: List<Long>): LessonInsertResult {
 
         val numberResult = ValidateLesson.validateNumber(uiState.number, lessonNumbers)
         val labelResult = ValidateLesson.validateLabel(uiState.label)
 
-        val hasError = listOf(numberResult, labelResult).any { !it.successful }
-
-        if (hasError)
+        if (!numberResult.successful || !labelResult.successful)
             return LessonInsertResult(numberResult.error, labelResult.error)
 
         val lesson = Lesson(uiState.number.toLong(), uiState.label)
