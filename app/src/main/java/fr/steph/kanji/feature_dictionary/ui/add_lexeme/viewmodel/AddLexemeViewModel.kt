@@ -50,7 +50,7 @@ class AddLexemeViewModel(
     fun onEvent(event: AddLexemeEvent) {
         when (event) {
             is AddLexemeEvent.LessonChanged -> {
-                return _uiState.update { currentUiState ->
+                _uiState.update { currentUiState ->
                     currentUiState.copy(
                         lessonNumber = event.lessonNumber,
                         lessonError = false)
@@ -58,7 +58,7 @@ class AddLexemeViewModel(
             }
 
             is AddLexemeEvent.CharactersChanged -> {
-                return _uiState.update { currentUiState ->
+                _uiState.update { currentUiState ->
                     val charactersFetched = event.characters == currentUiState.lastFetchedKanji
                     // Update meaning depending on if the characters were fetched
                     val meaning = if (charactersFetched) currentUiState.lastFetchedKanjiMeaning
@@ -76,7 +76,7 @@ class AddLexemeViewModel(
             }
 
             is AddLexemeEvent.RomajiChanged -> {
-                return _uiState.update { currentUiState ->
+                _uiState.update { currentUiState ->
                     currentUiState.copy(
                         romaji = event.romaji,
                         romajiErrorRes = null
@@ -85,7 +85,7 @@ class AddLexemeViewModel(
             }
 
             is AddLexemeEvent.MeaningChanged -> {
-                return _uiState.update { currentUiState ->
+                _uiState.update { currentUiState ->
                     currentUiState.copy(
                         meaning = event.meaning,
                         meaningErrorRes = null
@@ -94,7 +94,7 @@ class AddLexemeViewModel(
             }
 
             is AddLexemeEvent.KanjiFetched -> {
-                return _uiState.update { currentUiState ->
+                _uiState.update { currentUiState ->
                     event.kanji.run {
                         currentUiState.copy(
                             charactersErrorRes = null,
@@ -118,7 +118,7 @@ class AddLexemeViewModel(
                 }
             }
 
-            is AddLexemeEvent.Search -> viewModelScope.launch {
+            is AddLexemeEvent.Fetch -> viewModelScope.launch {
                 if (uiState.value.isFetching) return@launch
                 fetchKanji(uiState.value.characters)
             }
@@ -127,9 +127,9 @@ class AddLexemeViewModel(
                 val currentState = uiState.value
 
                 if (currentState.isUpdating)
-                    return submitData()
-
-                checkDuplicateCharacters(currentState, event.duplicateTranslationCallback)
+                    submitData()
+                else
+                    checkDuplicateCharacters(currentState, event.duplicateTranslationCallback)
             }
         }
     }
@@ -161,24 +161,22 @@ class AddLexemeViewModel(
             .subscribe()
     }
 
-    private fun submitData() {
-        viewModelScope.launch {
-            _uiState.update { it.copy(isSubmitting = true) }
+    private fun submitData() = viewModelScope.launch {
+        _uiState.update { it.copy(isSubmitting = true) }
 
-            val result = insertLexeme(uiState.value, id, creationDate)
-            result.upsertionResult?.let {
-                validationEventChannel.send(it)
-            } ?: _uiState.update { currentUiState ->
-                currentUiState.copy(
-                    lessonError = result.lessonError,
-                    charactersErrorRes = result.charactersErrorRes,
-                    romajiErrorRes = result.romajiErrorRes,
-                    meaningErrorRes = result.meaningErrorRes
-                )
-            }
-
-            _uiState.update { it.copy(isSubmitting = false) }
+        val result = insertLexeme(uiState.value, id, creationDate)
+        result.upsertionResult?.let {
+            validationEventChannel.send(it)
+        } ?: _uiState.update { currentUiState ->
+            currentUiState.copy(
+                lessonError = result.lessonError,
+                charactersErrorRes = result.charactersErrorRes,
+                romajiErrorRes = result.romajiErrorRes,
+                meaningErrorRes = result.meaningErrorRes
+            )
         }
+
+        _uiState.update { it.copy(isSubmitting = false) }
     }
 
     fun updateUi(lexeme: Lexeme): Int {

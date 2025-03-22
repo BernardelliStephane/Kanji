@@ -96,7 +96,7 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
         }
 
         binding.searchKanji.setOnClickListener {
-            viewModel.onEvent(AddLexemeEvent.Search)
+            viewModel.onEvent(AddLexemeEvent.Fetch)
         }
 
         binding.romajiInput.doAfterTextChanged {

@@ -29,16 +29,21 @@ class AddLessonViewModel(
     val validationEvents = validationEventChannel.receiveAsFlow()
 
     fun onEvent(event: AddLessonEvent) {
-        return when(event) {
+        when (event) {
             is AddLessonEvent.NumberChanged ->
                 _uiState.update { it.copy(number = event.number) }
 
             is AddLessonEvent.LabelChanged ->
                 _uiState.update { it.copy(label = event.label) }
+
+            AddLessonEvent.Submit -> {
+                if (uiState.value.isSubmitting) return
+                submitData()
+            }
         }
     }
 
-    fun submitData() = viewModelScope.launch {
+    private fun submitData() = viewModelScope.launch {
         _uiState.update { it.copy(isSubmitting = true) }
 
         val result = insertLesson(uiState.value, lessonNumbers.value ?: emptyList())

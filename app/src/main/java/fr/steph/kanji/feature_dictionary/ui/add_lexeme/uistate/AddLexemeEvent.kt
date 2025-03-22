@@ -10,5 +10,5 @@ sealed class AddLexemeEvent {
     data class MeaningChanged(val meaning: String) : AddLexemeEvent()
     data class KanjiFetched(val kanji: ApiKanji) : AddLexemeEvent()
     data class Submit(val duplicateTranslationCallback: (Lexeme) -> Unit) : AddLexemeEvent()
-    data object Search : AddLexemeEvent()
+    data object Fetch : AddLexemeEvent()
 }
