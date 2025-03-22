@@ -5,7 +5,7 @@ import fr.steph.kanji.core.data.model.ApiKanji
 import fr.steph.kanji.core.data.repository.ApiKanjiRepository
 import fr.steph.kanji.core.ui.util.ApiResource
 import fr.steph.kanji.core.ui.util.Resource
-import fr.steph.kanji.core.util.ConnectivityChecker.isNetworkAvailable
+import fr.steph.kanji.core.data.util.ConnectivityChecker.isNetworkAvailable
 import retrofit2.Response
 import java.io.IOException
 import java.net.SocketTimeoutException

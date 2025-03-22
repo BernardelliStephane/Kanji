@@ -1,4 +1,4 @@
-package fr.steph.kanji.core.util
+package fr.steph.kanji.core.ui.util
 
 import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
