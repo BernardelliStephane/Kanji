@@ -140,8 +140,7 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
             if (!selectAllCheckbox.isChecked)
                 return@setOnClickListener clearSelection()
 
-
-            val items = viewModel.lexemes.value!!.map { it.id }
+            val items = lexemeAdapter.currentList.map { it.id }
             tracker.setItemsSelected(items, true)
         }
 
