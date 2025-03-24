@@ -1,17 +1,15 @@
 package fr.steph.kanji.feature_dictionary.ui.dictionary.dialog
 
 import android.os.Bundle
-import android.view.Gravity
 import android.view.View
-import android.view.ViewGroup.LayoutParams.MATCH_PARENT
-import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.fragment.app.DialogFragment
 import fr.steph.kanji.R
 import fr.steph.kanji.core.domain.enumeration.SortField
 import fr.steph.kanji.core.domain.enumeration.SortOrder
-import fr.steph.kanji.databinding.DialogSortLexemesBinding
 import fr.steph.kanji.core.ui.util.autoCleared
 import fr.steph.kanji.core.util.extension.getSerializable
+import fr.steph.kanji.core.util.extension.setupDialogWindow
+import fr.steph.kanji.databinding.DialogSortLexemesBinding
 
 class SortLexemesDialogFragment : DialogFragment(R.layout.dialog_sort_lexemes) {
 
@@ -27,12 +25,7 @@ class SortLexemesDialogFragment : DialogFragment(R.layout.dialog_sort_lexemes) {
         sortField = requireArguments().getSerializable<SortField>(ARG_INITIAL_FIELD)!!
         sortOrder = requireArguments().getSerializable<SortOrder>(ARG_INITIAL_ORDER)!!
 
-        dialog?.window?.apply {
-            setLayout(MATCH_PARENT, WRAP_CONTENT)
-            setGravity(Gravity.BOTTOM)
-            decorView.background.alpha = 0
-        }
-
+        setupDialogWindow()
         setupUI()
         setupListeners()
     }

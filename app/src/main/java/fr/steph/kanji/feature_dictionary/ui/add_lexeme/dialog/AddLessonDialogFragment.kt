@@ -3,8 +3,6 @@ package fr.steph.kanji.feature_dictionary.ui.add_lexeme.dialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup.LayoutParams.MATCH_PARENT
-import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
@@ -17,6 +15,7 @@ import fr.steph.kanji.core.ui.util.LessonResource
 import fr.steph.kanji.core.ui.util.Resource
 import fr.steph.kanji.core.ui.util.autoCleared
 import fr.steph.kanji.core.ui.util.viewModelFactory
+import fr.steph.kanji.core.util.extension.setupDialogWindow
 import fr.steph.kanji.databinding.DialogAddLessonBinding
 import fr.steph.kanji.feature_dictionary.domain.use_case.GetLessonNumbersUseCase
 import fr.steph.kanji.feature_dictionary.domain.use_case.InsertLessonUseCase
@@ -47,11 +46,7 @@ class AddLessonDialogFragment : DialogFragment(R.layout.dialog_add_lesson) {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-        dialog?.window?.apply {
-            setLayout(MATCH_PARENT, WRAP_CONTENT)
-            decorView.background.alpha = 0
-        }
-
+        setupDialogWindow(alignBottom = false)
         setupListeners()
         setupObservers()
     }

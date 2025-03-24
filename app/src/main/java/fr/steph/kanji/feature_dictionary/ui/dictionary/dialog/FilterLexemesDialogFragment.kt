@@ -1,10 +1,7 @@
 package fr.steph.kanji.feature_dictionary.ui.dictionary.dialog
 
 import android.os.Bundle
-import android.view.Gravity
 import android.view.View
-import android.view.ViewGroup.LayoutParams.MATCH_PARENT
-import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.selection.SelectionPredicates
@@ -12,16 +9,17 @@ import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.selection.StorageStrategy
 import fr.steph.kanji.KanjiApplication
 import fr.steph.kanji.R
-import fr.steph.kanji.databinding.DialogFilterLexemesBinding
-import fr.steph.kanji.feature_dictionary.domain.use_case.GetLessonsUseCase
 import fr.steph.kanji.core.ui.util.ItemKeyProvider
 import fr.steph.kanji.core.ui.util.StretchEdgeEffectFactory
 import fr.steph.kanji.core.ui.util.autoCleared
 import fr.steph.kanji.core.ui.util.viewModelFactory
-import fr.steph.kanji.feature_dictionary.ui.dictionary.viewmodel.FilterLexemesViewModel
+import fr.steph.kanji.core.util.extension.measureLayoutHeight
+import fr.steph.kanji.core.util.extension.setupDialogWindow
+import fr.steph.kanji.databinding.DialogFilterLexemesBinding
+import fr.steph.kanji.feature_dictionary.domain.use_case.GetLessonsUseCase
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.adapter.LessonAdapter
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.util.LessonDetailsLookup
-import fr.steph.kanji.core.util.extension.measureLayoutHeight
+import fr.steph.kanji.feature_dictionary.ui.dictionary.viewmodel.FilterLexemesViewModel
 
 const val MAX_VISIBLE_ITEMS = 8
 
@@ -48,12 +46,7 @@ class FilterLexemesDialogFragment : DialogFragment(R.layout.dialog_filter_lexeme
 
         initialSelection = requireArguments().getLongArray(ARG_INITIAL_SELECTION)!!
 
-        dialog?.window?.apply {
-            setLayout(MATCH_PARENT, WRAP_CONTENT)
-            setGravity(Gravity.BOTTOM)
-            decorView.background.alpha = 0
-        }
-
+        setupDialogWindow()
         setupObservers()
         setupUI()
         setupTracker()

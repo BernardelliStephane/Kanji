@@ -1,14 +1,12 @@
 package fr.steph.kanji.feature_dictionary.ui.dictionary.dialog
 
 import android.os.Bundle
-import android.view.Gravity
 import android.view.View
-import android.view.ViewGroup.LayoutParams.MATCH_PARENT
-import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.fragment.app.DialogFragment
 import fr.steph.kanji.R
 import fr.steph.kanji.databinding.DialogConfirmDeletionBinding
 import fr.steph.kanji.core.ui.util.autoCleared
+import fr.steph.kanji.core.util.extension.setupDialogWindow
 
 class ConfirmDeletionDialogFragment : DialogFragment(R.layout.dialog_confirm_deletion) {
 
@@ -22,15 +20,14 @@ class ConfirmDeletionDialogFragment : DialogFragment(R.layout.dialog_confirm_del
 
         selectionSize = requireArguments().getInt(ARG_SELECTION_SIZE, 0)
 
-        dialog?.window?.apply {
-            setLayout(MATCH_PARENT, WRAP_CONTENT)
-            setGravity(Gravity.BOTTOM)
-            decorView.background.alpha = 0
-        }
+        setupDialogWindow()
+        setupListeners()
+    }
 
-        binding.dialogText.text = resources.getQuantityString(R.plurals.item_deletion_count, selectionSize, selectionSize)
-        binding.dialogCancelButton.setOnClickListener { dismiss() }
-        binding.dialogDeleteButton.setOnClickListener { successCallback?.invoke(); dismiss() }
+    private fun setupListeners() = with(binding) {
+        dialogText.text = resources.getQuantityString(R.plurals.item_deletion_count, selectionSize, selectionSize)
+        dialogCancelButton.setOnClickListener { dismiss() }
+        dialogDeleteButton.setOnClickListener { successCallback?.invoke(); dismiss() }
     }
 
     fun setSuccessCallback(callback: () -> Unit): ConfirmDeletionDialogFragment {
