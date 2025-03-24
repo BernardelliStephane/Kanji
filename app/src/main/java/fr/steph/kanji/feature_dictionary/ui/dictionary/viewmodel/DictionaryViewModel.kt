@@ -6,11 +6,7 @@ import androidx.lifecycle.viewModelScope
 import fr.steph.kanji.core.domain.enumeration.SortField
 import fr.steph.kanji.core.domain.enumeration.SortOrder
 import fr.steph.kanji.core.ui.util.LexemeResource
-import fr.steph.kanji.feature_dictionary.domain.use_case.DeleteLexemesFromSelectionUseCase
-import fr.steph.kanji.feature_dictionary.domain.use_case.FilterLexemesUseCase
-import fr.steph.kanji.feature_dictionary.domain.use_case.GetLexemesUseCase
-import fr.steph.kanji.feature_dictionary.domain.use_case.SearchInFilteredLexemesUseCase
-import fr.steph.kanji.feature_dictionary.domain.use_case.SearchLexemesUseCase
+import fr.steph.kanji.feature_dictionary.domain.use_case.DictionaryUseCases
 import fr.steph.kanji.feature_dictionary.ui.dictionary.util.FilterOptions
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
@@ -25,28 +21,24 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class DictionaryViewModel(
-    getLexemes: GetLexemesUseCase,
-    searchLexemes: SearchLexemesUseCase,
-    filterLexemes: FilterLexemesUseCase,
-    searchInFilteredLexemes: SearchInFilteredLexemesUseCase,
-    private val deleteLexemeFromSelection: DeleteLexemesFromSelectionUseCase,
-) : ViewModel() {
+class DictionaryViewModel(private val dictionaryUseCases: DictionaryUseCases) : ViewModel() {
 
     private val _filterOptions = MutableStateFlow(FilterOptions())
 
     private val _lexemes = _filterOptions.flatMapLatest { options ->
         when {
             options.filter.isNotEmpty() && options.searchQuery.isNotBlank() ->
-                searchInFilteredLexemes(options.searchQuery, options.filter, options.sortField, options.sortOrder)
+                dictionaryUseCases.searchInFilteredLexemes(
+                    options.searchQuery, options.filter, options.sortField, options.sortOrder
+                )
 
             options.filter.isNotEmpty() ->
-                filterLexemes(options.filter, options.sortField, options.sortOrder)
+                dictionaryUseCases.filterLexemes(options.filter, options.sortField, options.sortOrder)
 
             options.searchQuery.isNotBlank() ->
-                searchLexemes(options.searchQuery, options.sortField, options.sortOrder)
+                dictionaryUseCases.searchLexemes(options.searchQuery, options.sortField, options.sortOrder)
 
-            else -> getLexemes(options.sortField, options.sortOrder)
+            else -> dictionaryUseCases.getLexemes(options.sortField, options.sortOrder)
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
@@ -66,7 +58,7 @@ class DictionaryViewModel(
     val validationEvents = validationEventChannel.receiveAsFlow()
 
     fun deleteLexemesFromSelection(selection: List<Long>) = viewModelScope.launch {
-        val result = deleteLexemeFromSelection(selection)
+        val result = dictionaryUseCases.deleteLexemesFromSelection(selection)
         validationEventChannel.send(result)
     }
 

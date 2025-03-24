@@ -31,11 +31,6 @@ import fr.steph.kanji.core.util.SORT_LEXEMES_DIALOG_TAG
 import fr.steph.kanji.core.util.extension.navigateUp
 import fr.steph.kanji.core.util.extension.safeNavigate
 import fr.steph.kanji.databinding.FragmentDictionaryBinding
-import fr.steph.kanji.feature_dictionary.domain.use_case.DeleteLexemesFromSelectionUseCase
-import fr.steph.kanji.feature_dictionary.domain.use_case.FilterLexemesUseCase
-import fr.steph.kanji.feature_dictionary.domain.use_case.GetLexemesUseCase
-import fr.steph.kanji.feature_dictionary.domain.use_case.SearchInFilteredLexemesUseCase
-import fr.steph.kanji.feature_dictionary.domain.use_case.SearchLexemesUseCase
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.util.LexemeDetailsLookup
 import fr.steph.kanji.feature_dictionary.ui.dictionary.adapter.LexemeAdapter
 import fr.steph.kanji.feature_dictionary.ui.dictionary.dialog.ConfirmDeletionDialogFragment
@@ -50,15 +45,9 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
     private var binding: FragmentDictionaryBinding by autoCleared()
 
     private val viewModel: DictionaryViewModel by viewModels {
-        val repo = (activity?.application as KanjiApplication).lexemeRepository
+        val app = (activity?.application as KanjiApplication)
         viewModelFactory {
-            DictionaryViewModel(
-                GetLexemesUseCase(repo),
-                SearchLexemesUseCase(repo),
-                FilterLexemesUseCase(repo),
-                SearchInFilteredLexemesUseCase(repo),
-                DeleteLexemesFromSelectionUseCase(repo)
-            )
+            DictionaryViewModel(app.dictionaryUseCases)
         }
     }
 
