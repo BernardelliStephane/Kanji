@@ -166,6 +166,8 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
                     super.onSelectionChanged()
                     val selectionSize = tracker.selection.size()
                     viewModel.onSelectionChanged(selectionSize)
+
+                    binding.selectAllCheckbox.isChecked = selectionSize == lexemeAdapter.itemCount
                 }
             })
 
@@ -223,14 +225,6 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
                 viewModel.isSelectionMode.collect { isSelectionMode ->
                     if (isSelectionMode == isSelectionActive) return@collect
                     applySelectionMode(isSelectionMode)
-                }
-            }
-        }
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.allSelected.collect { allSelected ->
-                    binding.selectAllCheckbox.isChecked = allSelected
                 }
             }
         }

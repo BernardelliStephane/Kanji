@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -51,10 +50,6 @@ class DictionaryViewModel(private val dictionaryUseCases: DictionaryUseCases) : 
 
     private val _isSelectionMode = MutableStateFlow(false)
     val isSelectionMode = _isSelectionMode.asStateFlow()
-
-    val allSelected = _selectionSize
-        .map { it == (lexemes.value?.size ?: 0) }
-        .stateIn(viewModelScope, SharingStarted.Lazily, false)
 
     private val validationEventChannel = Channel<LexemeResource>()
     val validationEvents = validationEventChannel.receiveAsFlow()
