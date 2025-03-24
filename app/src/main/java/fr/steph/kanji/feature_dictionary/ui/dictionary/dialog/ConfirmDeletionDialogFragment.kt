@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.DialogFragment
 import fr.steph.kanji.R
-import fr.steph.kanji.databinding.DialogConfirmDeletionBinding
 import fr.steph.kanji.core.ui.util.autoCleared
 import fr.steph.kanji.core.util.extension.setupDialogWindow
+import fr.steph.kanji.databinding.DialogConfirmDeletionBinding
 
 class ConfirmDeletionDialogFragment : DialogFragment(R.layout.dialog_confirm_deletion) {
 

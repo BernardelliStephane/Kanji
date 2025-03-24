@@ -69,9 +69,7 @@ class DictionaryViewModel(private val dictionaryUseCases: DictionaryUseCases) : 
         _selectionSize.update { selectionSize }
     }
 
-    fun disableSelectionMode() {
-        _isSelectionMode.update { false }
-    }
+    fun disableSelectionMode() = _isSelectionMode.update { false }
 
     fun isFilteringOngoing() = _filterOptions.value.run {
         filter.isNotEmpty() || searchQuery.isNotBlank()
@@ -80,17 +78,11 @@ class DictionaryViewModel(private val dictionaryUseCases: DictionaryUseCases) : 
     fun getSortingState() = _filterOptions.value.run { Pair(sortField, sortOrder) }
 
     fun updateSorting(sortField: SortField, sortOrder: SortOrder) =
-        _filterOptions.update { options ->
-            options.copy(sortField = sortField, sortOrder = sortOrder)
-        }
+        _filterOptions.update { it.copy(sortField = sortField, sortOrder = sortOrder) }
 
     fun getFilter() = _filterOptions.value.filter
 
-    fun updateFilter(filter: List<Long>) = _filterOptions.update { options ->
-        options.copy(filter = filter)
-    }
+    fun updateFilter(filter: List<Long>) = _filterOptions.update { it.copy(filter = filter) }
 
-    fun updateQuery(query: String) = _filterOptions.update { options ->
-        options.copy(searchQuery = query)
-    }
+    fun updateQuery(query: String) = _filterOptions.update { it.copy(searchQuery = query) }
 }

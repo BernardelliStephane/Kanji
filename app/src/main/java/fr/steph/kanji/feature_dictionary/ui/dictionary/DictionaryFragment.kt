@@ -137,11 +137,12 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
         })
 
         selectAllCheckbox.setOnClickListener {
-            if (!selectAllCheckbox.isChecked) clearSelection()
-            else {
-                val items = viewModel.lexemes.value!!.map { it.id }
-                tracker.setItemsSelected(items, true)
-            }
+            if (!selectAllCheckbox.isChecked)
+                return@setOnClickListener clearSelection()
+
+
+            val items = viewModel.lexemes.value!!.map { it.id }
+            tracker.setItemsSelected(items, true)
         }
 
         deleteButton.setOnClickListener {
@@ -174,22 +175,24 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
 
     private fun setupObservers() {
         viewModel.lexemes.observe(viewLifecycleOwner) { lexemes ->
-            binding.translationCount.text = resources.getQuantityString(
-                R.plurals.translation_count,
-                lexemes.size,
-                lexemes.size
-            )
-
             val filteringAvailable = lexemes.isNotEmpty() || viewModel.isFilteringOngoing()
 
-            binding.filterLexemes.isVisible = filteringAvailable
-            binding.sortLexemes.isVisible = filteringAvailable
-            binding.searchView.isVisible = filteringAvailable
+            with(binding) {
+                translationCount.text = resources.getQuantityString(
+                    R.plurals.translation_count,
+                    lexemes.size,
+                    lexemes.size
+                )
 
-            binding.lexemeRecyclerView.layoutManager?.run {
-                val state = onSaveInstanceState()
-                lexemeAdapter.submitList(lexemes) {
-                    onRestoreInstanceState(state)
+                filterLexemes.isVisible = filteringAvailable
+                sortLexemes.isVisible = filteringAvailable
+                searchView.isVisible = filteringAvailable
+
+                lexemeRecyclerView.layoutManager?.run {
+                    val state = onSaveInstanceState()
+                    lexemeAdapter.submitList(lexemes) {
+                        onRestoreInstanceState(state)
+                    }
                 }
             }
         }
@@ -220,35 +223,7 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.isSelectionMode.collect { isSelectionMode ->
                     if (isSelectionMode == isSelectionActive) return@collect
-                    isSelectionActive = isSelectionMode
-
-                    binding.run {
-                        if (!isSelectionMode) {
-                            expandedTitle.text = resources.getString(R.string.dictionary_title_default)
-                            collapsedTitle.text = resources.getString(R.string.dictionary_title_default)
-                        }
-
-                        dictionaryToolbar.navigationIcon =
-                            if (isSelectionMode) null
-                            else ResourcesCompat.getDrawable(resources, R.drawable.ic_back, null)
-
-                        translationCount.isVisible = !isSelectionMode
-                        selectAllLayout.isVisible = isSelectionMode
-                        addLexeme.isVisible = !isSelectionMode
-                        sortLexemes.isVisible = !isSelectionMode
-                        filterLexemes.isVisible = !isSelectionMode
-                        deleteLayout.isVisible = isSelectionMode
-
-                        lexemeAdapter.isSelectionMode = isSelectionMode
-                        val layoutManager = lexemeRecyclerView.layoutManager as LinearLayoutManager
-                        val first = layoutManager.findFirstVisibleItemPosition()
-                        val last = layoutManager.findLastVisibleItemPosition()
-
-                        for (index in first..last) {
-                            val view = layoutManager.findViewByPosition(index)
-                            view?.findViewById<CheckBox>(R.id.selection_checkbox)?.isVisible = isSelectionMode
-                        }
-                    }
+                    applySelectionMode(isSelectionMode)
                 }
             }
         }
@@ -258,6 +233,37 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
                 viewModel.allSelected.collect { allSelected ->
                     binding.selectAllCheckbox.isChecked = allSelected
                 }
+            }
+        }
+    }
+
+    private fun applySelectionMode(isSelectionMode: Boolean) {
+        isSelectionActive = isSelectionMode
+        with(binding) {
+            if (!isSelectionMode) {
+                expandedTitle.text = resources.getString(R.string.dictionary_title_default)
+                collapsedTitle.text = resources.getString(R.string.dictionary_title_default)
+            }
+
+            dictionaryToolbar.navigationIcon =
+                if (isSelectionMode) null
+                else ResourcesCompat.getDrawable(resources, R.drawable.ic_back, null)
+
+            translationCount.isVisible = !isSelectionMode
+            selectAllLayout.isVisible = isSelectionMode
+            addLexeme.isVisible = !isSelectionMode
+            sortLexemes.isVisible = !isSelectionMode
+            filterLexemes.isVisible = !isSelectionMode
+            deleteLayout.isVisible = isSelectionMode
+
+            lexemeAdapter.isSelectionMode = isSelectionMode
+            val layoutManager = lexemeRecyclerView.layoutManager as LinearLayoutManager
+            val first = layoutManager.findFirstVisibleItemPosition()
+            val last = layoutManager.findLastVisibleItemPosition()
+
+            for (index in first..last) {
+                val view = layoutManager.findViewByPosition(index)
+                view?.findViewById<CheckBox>(R.id.selection_checkbox)?.isVisible = isSelectionMode
             }
         }
     }

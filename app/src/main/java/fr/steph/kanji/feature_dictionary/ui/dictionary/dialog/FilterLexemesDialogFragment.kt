@@ -47,10 +47,10 @@ class FilterLexemesDialogFragment : DialogFragment(R.layout.dialog_filter_lexeme
         initialSelection = requireArguments().getLongArray(ARG_INITIAL_SELECTION)!!
 
         setupDialogWindow()
-        setupObservers()
         setupUI()
         setupTracker()
         setupListeners()
+        setupObservers()
     }
 
     private fun setupUI() {
