@@ -26,19 +26,21 @@ class DictionaryViewModel(private val dictionaryUseCases: DictionaryUseCases) : 
     private val _filterOptions = MutableStateFlow(FilterOptions())
 
     private val _lexemes = _filterOptions.flatMapLatest { options ->
-        when {
-            options.filter.isNotEmpty() && options.searchQuery.isNotBlank() ->
-                dictionaryUseCases.searchInFilteredLexemes(
-                    options.searchQuery, options.filter, options.sortField, options.sortOrder
-                )
+        with(options) {
+            when {
+                filter.isNotEmpty() && searchQuery.isNotBlank() ->
+                    dictionaryUseCases.searchInFilteredLexemes(
+                        searchQuery, filter, sortField, sortOrder
+                    )
 
-            options.filter.isNotEmpty() ->
-                dictionaryUseCases.filterLexemes(options.filter, options.sortField, options.sortOrder)
+                filter.isNotEmpty() ->
+                    dictionaryUseCases.filterLexemes(filter, sortField, sortOrder)
 
-            options.searchQuery.isNotBlank() ->
-                dictionaryUseCases.searchLexemes(options.searchQuery, options.sortField, options.sortOrder)
+                searchQuery.isNotBlank() ->
+                    dictionaryUseCases.searchLexemes(searchQuery, sortField, sortOrder)
 
-            else -> dictionaryUseCases.getLexemes(options.sortField, options.sortOrder)
+                else -> dictionaryUseCases.getLexemes(sortField, sortOrder)
+            }
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
