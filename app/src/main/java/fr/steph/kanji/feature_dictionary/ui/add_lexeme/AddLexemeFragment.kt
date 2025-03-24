@@ -114,11 +114,9 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
 
         binding.buttonConfirm.setOnClickListener {
             viewModel.onEvent(AddLexemeEvent.Submit { duplicateLexeme ->
-                binding.charactersInput.clearFocus()
-                binding.romajiInput.clearFocus()
-                binding.meaningInput.clearFocus()
                 ConfirmLexemeUpdateDialogFragment()
                     .setSuccessCallback {
+                        activity?.currentFocus?.clearFocus()
                         val lessonIndex = viewModel.updateUi(duplicateLexeme)
                         binding.lessonSpinner.setSelection(lessonIndex + 2)
                     }
