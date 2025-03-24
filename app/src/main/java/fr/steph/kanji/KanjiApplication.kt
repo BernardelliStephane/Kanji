@@ -5,10 +5,26 @@ import fr.steph.kanji.core.data.LexemeDatabase
 import fr.steph.kanji.core.data.repository.ApiKanjiRepository
 import fr.steph.kanji.core.data.repository.LessonRepository
 import fr.steph.kanji.core.data.repository.LexemeRepository
+import fr.steph.kanji.feature_dictionary.domain.use_case.AddLexemeUseCases
+import fr.steph.kanji.feature_dictionary.domain.use_case.GetKanjiInfoUseCase
+import fr.steph.kanji.feature_dictionary.domain.use_case.GetLessonsUseCase
+import fr.steph.kanji.feature_dictionary.domain.use_case.GetLexemeByCharactersUseCase
+import fr.steph.kanji.feature_dictionary.domain.use_case.InsertLessonUseCase
+import fr.steph.kanji.feature_dictionary.domain.use_case.UpsertLexemeUseCase
 
 class KanjiApplication: Application() {
     private val database by lazy { LexemeDatabase.getDatabase(this) }
+    private val apiRepository by lazy { ApiKanjiRepository() }
     val lexemeRepository by lazy { LexemeRepository(database.lexemeDao()) }
     val lessonRepository by lazy { LessonRepository(database.lessonDao()) }
-    val apiRepository by lazy { ApiKanjiRepository() }
+
+    val addLexemeUseCases by lazy {
+        AddLexemeUseCases(
+            GetKanjiInfoUseCase(apiRepository),
+            UpsertLexemeUseCase(lexemeRepository),
+            GetLexemeByCharactersUseCase(lexemeRepository),
+            GetLessonsUseCase(lessonRepository),
+            InsertLessonUseCase(lessonRepository)
+        )
+    }
 }

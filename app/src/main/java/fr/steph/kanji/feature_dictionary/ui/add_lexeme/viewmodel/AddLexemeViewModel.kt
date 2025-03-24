@@ -11,10 +11,7 @@ import fr.steph.kanji.core.ui.util.Resource
 import fr.steph.kanji.core.util.extension.capitalized
 import fr.steph.kanji.core.util.extension.isLoneKanji
 import fr.steph.kanji.core.util.extension.kanaToRomaji
-import fr.steph.kanji.feature_dictionary.domain.use_case.GetKanjiInfoUseCase
-import fr.steph.kanji.feature_dictionary.domain.use_case.GetLessonsUseCase
-import fr.steph.kanji.feature_dictionary.domain.use_case.GetLexemeByCharactersUseCase
-import fr.steph.kanji.feature_dictionary.domain.use_case.UpsertLexemeUseCase
+import fr.steph.kanji.feature_dictionary.domain.use_case.AddLexemeUseCases
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate.AddLexemeEvent
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate.AddLexemeState
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -26,14 +23,9 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class AddLexemeViewModel(
-    private val getKanjiInfo: GetKanjiInfoUseCase,
-    private val insertLexeme: UpsertLexemeUseCase,
-    private val getLexemeByCharacters: GetLexemeByCharactersUseCase,
-    getLessons: GetLessonsUseCase,
-) : ViewModel() {
+class AddLexemeViewModel(private val addLexemeUseCases: AddLexemeUseCases) : ViewModel() {
 
-    val allLessons = getLessons().asLiveData()
+    val allLessons = addLexemeUseCases.getLessons().asLiveData()
 
     private val _uiState = MutableStateFlow(AddLexemeState())
     val uiState = _uiState.asStateFlow()
@@ -138,14 +130,14 @@ class AddLexemeViewModel(
     private fun fetchKanji(characters: String) = viewModelScope.launch {
         _uiState.update { it.copy(isFetching = true) }
 
-        val result = getKanjiInfo(characters)
+        val result = addLexemeUseCases.getKanjiInfo(characters)
         apiResponseChannel.send(result)
 
         _uiState.update { it.copy(isFetching = false) }
     }
 
-    private fun checkDuplicateCharacters(form: AddLexemeState, duplicateCallback: (Lexeme) -> Unit) {
-        getLexemeByCharacters(form.characters)
+    private fun checkDuplicateCharacters(uiState: AddLexemeState, duplicateCallback: (Lexeme) -> Unit) {
+        addLexemeUseCases.getLexemeByCharacters(uiState.characters)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnError { // Database error
@@ -165,7 +157,7 @@ class AddLexemeViewModel(
     private fun submitData() = viewModelScope.launch {
         _uiState.update { it.copy(isSubmitting = true) }
 
-        val result = insertLexeme(uiState.value, id, creationDate)
+        val result = addLexemeUseCases.upsertLexeme(uiState.value, id, creationDate)
         result.upsertionResult?.let {
             validationEventChannel.send(it)
         } ?: _uiState.update { currentUiState ->
