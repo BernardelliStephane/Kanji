@@ -7,8 +7,8 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.fragment.app.DialogFragment
 import fr.steph.kanji.R
-import fr.steph.kanji.databinding.DialogConfirmLexemeUpdateBinding
 import fr.steph.kanji.core.ui.util.autoCleared
+import fr.steph.kanji.databinding.DialogConfirmLexemeUpdateBinding
 
 class ConfirmLexemeUpdateDialogFragment : DialogFragment(R.layout.dialog_confirm_lexeme_update) {
 

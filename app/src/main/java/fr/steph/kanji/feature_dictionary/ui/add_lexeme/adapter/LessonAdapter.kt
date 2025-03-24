@@ -38,8 +38,7 @@ class LessonAdapter : RecyclerView.Adapter<LessonAdapter.LessonViewHolder>() {
         notifyItemRangeInserted(0, newLessons.size)
     }
 
-    class LessonViewHolder(private val binding: ItemLessonBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    class LessonViewHolder(private val binding: ItemLessonBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(lesson: Lesson, isSelected: Boolean) {
             binding.lessonLabel.text = itemView.context.getString(R.string.lesson_display, lesson.number, lesson.label)

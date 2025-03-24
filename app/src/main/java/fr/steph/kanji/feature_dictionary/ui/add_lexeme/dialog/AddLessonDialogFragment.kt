@@ -15,18 +15,18 @@ import fr.steph.kanji.R
 import fr.steph.kanji.core.domain.model.Lesson
 import fr.steph.kanji.core.ui.util.LessonResource
 import fr.steph.kanji.core.ui.util.Resource
+import fr.steph.kanji.core.ui.util.autoCleared
+import fr.steph.kanji.core.ui.util.viewModelFactory
+import fr.steph.kanji.databinding.DialogAddLessonBinding
 import fr.steph.kanji.feature_dictionary.domain.use_case.GetLessonNumbersUseCase
 import fr.steph.kanji.feature_dictionary.domain.use_case.InsertLessonUseCase
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate.AddLessonEvent
-import fr.steph.kanji.core.ui.util.autoCleared
-import fr.steph.kanji.core.ui.util.viewModelFactory
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.viewmodel.AddLessonViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import fr.steph.kanji.databinding.DialogAddLessonBinding as DialogAddLessonBinding1
 
 class AddLessonDialogFragment : DialogFragment(R.layout.dialog_add_lesson) {
-    private var binding: DialogAddLessonBinding1 by autoCleared()
+    private var binding: DialogAddLessonBinding by autoCleared()
 
     private val viewModel: AddLessonViewModel by viewModels {
         val repo = (activity?.application as KanjiApplication).lessonRepository
@@ -42,7 +42,7 @@ class AddLessonDialogFragment : DialogFragment(R.layout.dialog_add_lesson) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = DialogAddLessonBinding1.bind(view)
+        binding = DialogAddLessonBinding.bind(view)
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this

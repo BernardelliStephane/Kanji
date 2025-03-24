@@ -53,7 +53,8 @@ class AddLexemeViewModel(
                 _uiState.update { currentUiState ->
                     currentUiState.copy(
                         lessonNumber = event.lessonNumber,
-                        lessonError = false)
+                        lessonError = false
+                    )
                 }
             }
 
@@ -126,10 +127,10 @@ class AddLexemeViewModel(
             is AddLexemeEvent.Submit -> {
                 val currentState = uiState.value
 
-                if (currentState.isUpdating)
-                    submitData()
-                else
+                if (!currentState.isUpdating)
                     checkDuplicateCharacters(currentState, event.duplicateTranslationCallback)
+
+                submitData()
             }
         }
     }
@@ -195,6 +196,4 @@ class AddLexemeViewModel(
         id = 0
         creationDate = 0
     }
-
-    fun stopSubmission() = _uiState.update { it.copy(isSubmitting = false) }
 }

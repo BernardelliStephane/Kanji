@@ -15,6 +15,15 @@ const val SELECT_LESSON_ID = -1L
 const val NO_LESSON_ID = -2L
 const val ADD_LESSON_ID = -3L
 
+/**
+ * Custom [ArrayAdapter] for displaying a list of [Lesson] items in a spinner.
+ *
+ * This adapter includes special entries for selecting no lesson, adding a new lesson,
+ * and a default selection prompt.
+ *
+ * @param context The context used to inflate layouts and access resources.
+ * @param onAddLessonClicked A callback invoked when the "Add Lesson" option is selected.
+ */
 class SpinnerAdapter(
     context: Context,
     private val onAddLessonClicked: (() -> Unit) = {}
@@ -27,16 +36,16 @@ class SpinnerAdapter(
         setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
     }
 
-    fun updateLessons(lessons: List<Lesson>) {
-        resetList(lessons)
+    fun updateLessons(newLessons: List<Lesson>) {
+        resetList(newLessons)
     }
 
-    private fun resetList(lessons: List<Lesson> = emptyList()) {
-        this.lessons.clear()
-        this.lessons.add(Lesson(SELECT_LESSON_ID, context.getString(R.string.select_lesson)))
-        this.lessons.add(Lesson(NO_LESSON_ID, context.getString(R.string.none)))
-        this.lessons.addAll(lessons)
-        this.lessons.add(Lesson(ADD_LESSON_ID, context.getString(R.string.add_lesson)))
+    private fun resetList(newLessons: List<Lesson> = emptyList()) {
+        lessons.clear()
+        lessons.add(Lesson(SELECT_LESSON_ID, context.getString(R.string.select_lesson)))
+        lessons.add(Lesson(NO_LESSON_ID, context.getString(R.string.none)))
+        lessons.addAll(newLessons)
+        lessons.add(Lesson(ADD_LESSON_ID, context.getString(R.string.add_lesson)))
         notifyDataSetChanged()
     }
 
