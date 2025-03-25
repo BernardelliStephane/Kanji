@@ -165,9 +165,17 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
                 override fun onSelectionChanged() {
                     super.onSelectionChanged()
                     val selectionSize = tracker.selection.size()
-                    viewModel.onSelectionChanged(selectionSize)
+
+                    val isSelectionMode = viewModel.onSelectionChanged(selectionSize)
+                    if (!isSelectionMode) return
 
                     binding.selectAllCheckbox.isChecked = selectionSize == lexemeAdapter.itemCount
+
+                    val title =
+                        if (selectionSize == 0) resources.getString(R.string.dictionary_title_selection_empty)
+                        else resources.getString(R.string.dictionary_title_selection, selectionSize)
+                    binding.expandedTitle.text = title
+                    binding.collapsedTitle.text = title
                 }
             })
 
@@ -203,19 +211,6 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
                 when (event) {
                     is Resource.Failure -> Snackbar.make(requireView(), event.failureMessage, Snackbar.LENGTH_SHORT).show()
                     is Resource.Success -> clearSelection(true)
-                }
-            }
-        }
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.selectionSize.collect { selectionSize ->
-                    if (!viewModel.isSelectionMode.value) return@collect
-                    val title =
-                        if (selectionSize == 0) resources.getString(R.string.dictionary_title_empty_selection)
-                        else resources.getString(R.string.dictionary_title_selection, selectionSize)
-                    binding.expandedTitle.text = title
-                    binding.collapsedTitle.text = title
                 }
             }
         }

@@ -45,9 +45,6 @@ class DictionaryViewModel(private val dictionaryUseCases: DictionaryUseCases) : 
 
     val lexemes = _lexemes.asLiveData()
 
-    private val _selectionSize = MutableStateFlow(0)
-    val selectionSize = _selectionSize.asStateFlow()
-
     private val _isSelectionMode = MutableStateFlow(false)
     val isSelectionMode = _isSelectionMode.asStateFlow()
 
@@ -59,9 +56,9 @@ class DictionaryViewModel(private val dictionaryUseCases: DictionaryUseCases) : 
         validationEventChannel.send(result)
     }
 
-    fun onSelectionChanged(selectionSize: Int) {
+    fun onSelectionChanged(selectionSize: Int): Boolean {
         _isSelectionMode.update { it || selectionSize > 0 }
-        _selectionSize.update { selectionSize }
+        return isSelectionMode.value
     }
 
     fun disableSelectionMode() = _isSelectionMode.update { false }
