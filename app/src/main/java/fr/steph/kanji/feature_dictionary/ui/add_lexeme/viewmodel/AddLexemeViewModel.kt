@@ -180,7 +180,7 @@ class AddLexemeViewModel(private val addLexemeUseCases: AddLexemeUseCases) : Vie
         id = lexeme.id
         creationDate = lexeme.creationDate
 
-        return allLessons.value?.map { it.number }?.indexOf(lexeme.lessonNumber) ?: 0
+        return allLessons.value?.map { it.number }?.indexOf(lexeme.lessonNumber) ?: -1
     }
 
     fun resetUi() {

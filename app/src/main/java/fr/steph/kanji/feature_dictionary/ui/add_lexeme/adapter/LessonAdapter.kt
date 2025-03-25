@@ -43,8 +43,7 @@ class LessonAdapter : RecyclerView.Adapter<LessonAdapter.LessonViewHolder>() {
 
         fun bind(lesson: Lesson, isSelected: Boolean) {
             val label =
-                if (lesson.number == LESSON_NONE_ID)
-                    itemView.context.getString(R.string.none)
+                if (lesson.number == LESSON_NONE_ID) itemView.context.getString(R.string.none)
                 else itemView.context.getString(R.string.lesson_display, lesson.number, lesson.label)
             binding.lessonLabel.text = label
             binding.selectionCheckbox.isChecked = isSelected
