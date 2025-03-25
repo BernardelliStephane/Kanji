@@ -227,8 +227,9 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
 
     private fun applySelectionMode(isSelectionMode: Boolean) = with(binding) {
         if (!isSelectionMode) {
-            expandedTitle.text = resources.getString(R.string.dictionary_title_default)
-            collapsedTitle.text = resources.getString(R.string.dictionary_title_default)
+            val title = resources.getString(R.string.dictionary_title_default)
+            expandedTitle.text = title
+            collapsedTitle.text = title
         }
 
         dictionaryToolbar.navigationIcon =
