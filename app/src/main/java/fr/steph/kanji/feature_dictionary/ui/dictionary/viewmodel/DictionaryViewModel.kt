@@ -56,10 +56,11 @@ class DictionaryViewModel(private val dictionaryUseCases: DictionaryUseCases) : 
         validationEventChannel.send(result)
     }
 
-    fun onSelectionChanged(selectionSize: Int): Boolean {
+    fun onSelectionChanged(selectionSize: Int) {
         _isSelectionMode.update { it || selectionSize > 0 }
-        return isSelectionMode.value
     }
+
+    fun isSelectionActive() = isSelectionMode.value
 
     fun disableSelectionMode() = _isSelectionMode.update { false }
 
