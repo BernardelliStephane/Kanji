@@ -43,7 +43,6 @@ class SpinnerAdapter(
     private fun resetList(newLessons: List<Lesson> = emptyList()) {
         lessons.clear()
         lessons.add(Lesson(DEFAULT_LESSON_ID, context.getString(R.string.select_lesson)))
-        lessons.add(Lesson(LESSON_NONE_ID, context.getString(R.string.select_lesson)))
         lessons.addAll(newLessons)
         lessons.add(Lesson(ADD_LESSON_ID, context.getString(R.string.add_lesson)))
         notifyDataSetChanged()

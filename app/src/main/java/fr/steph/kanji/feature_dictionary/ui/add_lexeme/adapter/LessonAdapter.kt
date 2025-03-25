@@ -7,6 +7,7 @@ import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.widget.RecyclerView
 import fr.steph.kanji.R
 import fr.steph.kanji.core.domain.model.Lesson
+import fr.steph.kanji.core.util.LESSON_NONE_ID
 import fr.steph.kanji.databinding.ItemLessonBinding
 
 class LessonAdapter : RecyclerView.Adapter<LessonAdapter.LessonViewHolder>() {
@@ -41,7 +42,11 @@ class LessonAdapter : RecyclerView.Adapter<LessonAdapter.LessonViewHolder>() {
     class LessonViewHolder(private val binding: ItemLessonBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(lesson: Lesson, isSelected: Boolean) {
-            binding.lessonLabel.text = itemView.context.getString(R.string.lesson_display, lesson.number, lesson.label)
+            val label =
+                if (lesson.number == LESSON_NONE_ID)
+                    itemView.context.getString(R.string.none)
+                else itemView.context.getString(R.string.lesson_display, lesson.number, lesson.label)
+            binding.lessonLabel.text = label
             binding.selectionCheckbox.isChecked = isSelected
         }
 
