@@ -134,7 +134,7 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
 
             addedLesson?.let {
                 val index = allLessons.indexOf(it)
-                binding.lessonSpinner.setSelection(index + 2)
+                binding.lessonSpinner.setSelection(index + 1)
             }
         }
 

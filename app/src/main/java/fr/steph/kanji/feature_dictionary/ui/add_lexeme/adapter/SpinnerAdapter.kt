@@ -10,9 +10,9 @@ import androidx.annotation.LayoutRes
 import androidx.core.view.isVisible
 import fr.steph.kanji.R
 import fr.steph.kanji.core.domain.model.Lesson
+import fr.steph.kanji.core.util.DEFAULT_LESSON_ID
+import fr.steph.kanji.core.util.LESSON_NONE_ID
 
-const val SELECT_LESSON_ID = -1L
-const val NO_LESSON_ID = -2L
 const val ADD_LESSON_ID = -3L
 
 /**
@@ -42,8 +42,8 @@ class SpinnerAdapter(
 
     private fun resetList(newLessons: List<Lesson> = emptyList()) {
         lessons.clear()
-        lessons.add(Lesson(SELECT_LESSON_ID, context.getString(R.string.select_lesson)))
-        lessons.add(Lesson(NO_LESSON_ID, context.getString(R.string.none)))
+        lessons.add(Lesson(DEFAULT_LESSON_ID, context.getString(R.string.select_lesson)))
+        lessons.add(Lesson(LESSON_NONE_ID, context.getString(R.string.select_lesson)))
         lessons.addAll(newLessons)
         lessons.add(Lesson(ADD_LESSON_ID, context.getString(R.string.add_lesson)))
         notifyDataSetChanged()
@@ -64,7 +64,7 @@ class SpinnerAdapter(
         val dropdownLayout = android.R.layout.simple_spinner_dropdown_item
 
         return when (getItemId(position)) {
-            SELECT_LESSON_ID -> TextView(context).apply {
+            DEFAULT_LESSON_ID -> TextView(context).apply {
                 height = 0
                 isVisible = false
             }
@@ -87,7 +87,7 @@ class SpinnerAdapter(
         val lesson = lessons[position]
 
         textView.text = when(lesson.number) {
-           SELECT_LESSON_ID, NO_LESSON_ID, ADD_LESSON_ID -> lesson.label
+           DEFAULT_LESSON_ID, LESSON_NONE_ID, ADD_LESSON_ID -> lesson.label
             else -> context.getString(R.string.lesson_display, lesson.number, lesson.label)
         }
 
