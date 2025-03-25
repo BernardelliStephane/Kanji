@@ -32,3 +32,18 @@ fun Fragment.safeNavigate(direction: NavDirections, extras: FragmentNavigator.Ex
         }
     }
 }
+
+/**
+ * Returns a quantity-based string resource, with a specific resource for the zero case.
+ *
+ * @param resId The resource ID of the plurals string for non-zero quantities.
+ * @param zeroResId The resource ID of the string used when the quantity is zero.
+ * @param quantity The quantity to determine which string to use.
+ * @return The appropriate string based on the quantity.
+ */
+fun Fragment.getQuantityStringZero(resId: Int, zeroResId: Int, quantity: Int): String {
+    return if (quantity == 0)
+        resources.getString(zeroResId)
+    else
+        resources.getQuantityString(resId, quantity, quantity)
+}

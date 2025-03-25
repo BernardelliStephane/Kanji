@@ -28,6 +28,7 @@ import fr.steph.kanji.core.ui.util.viewModelFactory
 import fr.steph.kanji.core.util.DELETE_DIALOG_TAG
 import fr.steph.kanji.core.util.FILTER_LEXEMES_DIALOG_TAG
 import fr.steph.kanji.core.util.SORT_LEXEMES_DIALOG_TAG
+import fr.steph.kanji.core.util.extension.getQuantityStringZero
 import fr.steph.kanji.core.util.extension.navigateUp
 import fr.steph.kanji.core.util.extension.safeNavigate
 import fr.steph.kanji.databinding.FragmentDictionaryBinding
@@ -171,9 +172,11 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
 
                     binding.selectAllCheckbox.isChecked = selectionSize == lexemeAdapter.itemCount
 
-                    val title =
-                        if (selectionSize == 0) resources.getString(R.string.dictionary_title_selection_empty)
-                        else resources.getString(R.string.dictionary_title_selection, selectionSize)
+                    val title = getQuantityStringZero(
+                        resId = R.plurals.dictionary_title_selection,
+                        zeroResId = R.string.dictionary_title_selection_empty,
+                        quantity = selectionSize
+                    )
                     binding.expandedTitle.text = title
                     binding.collapsedTitle.text = title
                 }
@@ -218,6 +221,7 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.isSelectionMode.collect { isSelectionMode ->
+                    //TODO Check if there is a way to know if the value was changed
                     if (isSelectionMode == isSelectionActive) return@collect
                     applySelectionMode(isSelectionMode)
                 }
