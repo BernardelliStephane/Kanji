@@ -120,7 +120,7 @@ class AddLexemeViewModel(private val addLexemeUseCases: AddLexemeUseCases) : Vie
                 val currentState = uiState.value
 
                 if (!currentState.isUpdating)
-                    checkDuplicateCharacters(currentState, event.duplicateTranslationCallback)
+                    return checkDuplicateCharacters(currentState, event.duplicateTranslationCallback)
 
                 submitData()
             }
