@@ -5,8 +5,9 @@
     <string name="home_kanji">家</string>
 
     <!-- User messages -->
-    <string name="room_failure">An issue occurred with the database…Please try again.</string>
-    <string name="room_deletion_failure">An issue occurred, and some items couldn\'t be deleted…Please try again.</string>
+    <string name="room_failure">An issue occurred with the database.\nPlease try again.</string>
+    <string name="foreign_key_exception">The selected lesson could not be found.\nPlease try again.</string>
+    <string name="room_deletion_failure">An issue occurred, and some items couldn\'t be deleted.\nPlease try again.</string>
     <string name="network_unavailable">Network is currently unavailable.</string>
     <string name="connexion_timeout">Connexion timeout</string>
     <string name="network_failure">A network failure occurred.</string>

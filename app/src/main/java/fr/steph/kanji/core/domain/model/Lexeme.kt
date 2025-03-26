@@ -1,12 +1,21 @@
 package fr.steph.kanji.core.domain.model
 
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import fr.steph.kanji.core.domain.enumeration.LexemeType
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate.AddLexemeState
 import fr.steph.kanji.core.util.extension.isLoneKanji
 
-@Entity
+@Entity(
+    foreignKeys = [
+        ForeignKey(
+            entity = Lesson::class,
+            parentColumns = arrayOf("number"),
+            childColumns = arrayOf("lessonNumber")
+        )
+    ]
+)
 data class Lexeme(
     @PrimaryKey(autoGenerate = true)
     val id: Long,

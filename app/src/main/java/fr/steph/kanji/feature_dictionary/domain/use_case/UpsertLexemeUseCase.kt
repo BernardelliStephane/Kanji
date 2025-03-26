@@ -1,5 +1,6 @@
 package fr.steph.kanji.feature_dictionary.domain.use_case
 
+import android.database.sqlite.SQLiteConstraintException
 import fr.steph.kanji.R
 import fr.steph.kanji.core.data.repository.LexemeRepository
 import fr.steph.kanji.core.ui.util.Resource
@@ -30,9 +31,12 @@ class UpsertLexemeUseCase(private val repository: LexemeRepository) {
             false -> uiState.toLexeme() to INSERTION_FAILURE
         }
 
-        val result =
+        val result = try {
             if (uiState.isUpdating) repository.updateLexeme(lexeme)
             else repository.insertLexeme(lexeme)
+        } catch (e: SQLiteConstraintException) {
+            return LexemeUpsertResult(upsertionResult = Resource.Failure(R.string.foreign_key_exception))
+        }
 
         return if (result == failureValue)
             LexemeUpsertResult(upsertionResult = Resource.Failure(R.string.room_failure))
