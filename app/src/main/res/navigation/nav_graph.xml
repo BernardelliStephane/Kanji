@@ -26,6 +26,9 @@
         <action
             android:id="@+id/action_dictionaryFragment_to_addLexemeFragment"
             app:destination="@id/addLexemeFragment" />
+        <action
+            android:id="@+id/action_dictionaryFragment_to_lexemeDetailsFragment"
+            app:destination="@id/lexemeDetailsFragment" />
 
     </fragment>
 
@@ -34,5 +37,17 @@
         android:name="fr.steph.kanji.feature_dictionary.ui.add_lexeme.AddLexemeFragment"
         android:label="AddLexemeFragment"
         tools:layout="@layout/fragment_add_lexeme" />
+
+    <fragment
+        android:id="@+id/lexemeDetailsFragment"
+        android:name="fr.steph.kanji.feature_dictionary.ui.lexeme_details.LexemeDetailsFragment"
+        android:label="LexemeDetailsFragment"
+        tools:layout="@layout/fragment_lexeme_details">
+
+        <argument
+            android:name="lexeme"
+            app:argType="fr.steph.kanji.core.domain.model.Lexeme" />
+
+    </fragment>
 
 </navigation>

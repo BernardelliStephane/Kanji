@@ -3,7 +3,6 @@ package fr.steph.kanji.feature_dictionary.ui.dictionary
 import android.os.Bundle
 import android.view.View
 import android.widget.CheckBox
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.res.ResourcesCompat
@@ -76,8 +75,8 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
                 if (viewModel.isSelectionActive())
                     tracker?.select(lexeme.id)
                 else {
-                    //TODO Display details fragment
-                    Toast.makeText(requireContext(), "Details fragment should open", Toast.LENGTH_SHORT).show()
+                    val action = DictionaryFragmentDirections.actionDictionaryFragmentToLexemeDetailsFragment(lexeme)
+                    safeNavigate(action)
                 }
             }
         }
