@@ -12,7 +12,6 @@ import fr.steph.kanji.core.ui.util.Resource
 import fr.steph.kanji.core.util.extension.capitalized
 import fr.steph.kanji.core.util.extension.isLoneKanji
 import fr.steph.kanji.core.util.extension.kanaToRomaji
-import fr.steph.kanji.core.util.extension.log
 import fr.steph.kanji.feature_dictionary.domain.use_case.AddLexemeUseCases
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate.AddLexemeEvent
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate.AddLexemeState
@@ -40,9 +39,12 @@ class AddLexemeViewModel(private val addLexemeUseCases: AddLexemeUseCases) : Vie
 
     private var id = 0L
     private var creationDate: Long = 0
+    private var addedLesson: Lesson? = null
 
     fun onEvent(event: AddLexemeEvent) {
         when (event) {
+            is AddLexemeEvent.LessonAdded -> addedLesson = event.lesson
+
             is AddLexemeEvent.LessonChanged -> {
                 _uiState.update { currentUiState ->
                     currentUiState.copy(
@@ -191,5 +193,11 @@ class AddLexemeViewModel(private val addLexemeUseCases: AddLexemeUseCases) : Vie
         _uiState.update { AddLexemeState() }
         id = 0
         creationDate = 0
+    }
+
+    fun getAddedLesson() = addedLesson
+
+    fun resetAddedLesson() {
+        addedLesson = null
     }
 }

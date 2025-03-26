@@ -12,7 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
 import fr.steph.kanji.KanjiApplication
 import fr.steph.kanji.R
-import fr.steph.kanji.core.domain.model.Lesson
+import fr.steph.kanji.core.domain.model.LexemeWithLesson
 import fr.steph.kanji.core.ui.util.Resource
 import fr.steph.kanji.core.ui.util.autoCleared
 import fr.steph.kanji.core.ui.util.viewModelFactory
@@ -47,8 +47,6 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
 
     private lateinit var dropdownAdapter: SpinnerAdapter
 
-    private var addedLesson: Lesson? = null
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentAddLexemeBinding.bind(view)
@@ -65,8 +63,12 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
         dropdownAdapter = SpinnerAdapter(requireContext()) {
             binding.lessonSpinner.hideSpinnerDropDown()
             AddLessonDialogFragment()
-                .setFailureCallback { binding.lessonSpinner.performClick() }
-                .setSuccessCallback { addedLesson = it }
+                .setFailureCallback {
+                    binding.lessonSpinner.performClick()
+                }
+                .setSuccessCallback {
+                    viewModel.onEvent(AddLexemeEvent.LessonAdded(it))
+                }
                 .show(parentFragmentManager, ADD_LESSON_DIALOG_TAG)
         }
 
@@ -113,18 +115,22 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
         }
 
         binding.buttonConfirm.setOnClickListener {
-            viewModel.onEvent(AddLexemeEvent.Submit { duplicateLexeme ->
-                ConfirmLexemeUpdateDialogFragment()
-                    .setSuccessCallback {
-                        activity?.currentFocus?.clearFocus()
-
-                        val lesson = viewModel.updateUi(duplicateLexeme)
-                        val position = dropdownAdapter.getPosition(lesson)
-                        binding.lessonSpinner.setSelection(position)
-                    }
-                    .show(parentFragmentManager, LEXEME_UPDATE_DIALOG_TAG)
+            viewModel.onEvent(AddLexemeEvent.Submit {
+                handleDuplicateCharacters(it)
             })
         }
+    }
+
+    private fun handleDuplicateCharacters(duplicateLexeme: LexemeWithLesson) {
+        ConfirmLexemeUpdateDialogFragment()
+            .setSuccessCallback {
+                activity?.currentFocus?.clearFocus()
+
+                val lesson = viewModel.updateUi(duplicateLexeme)
+                val position = dropdownAdapter.getPosition(lesson)
+                binding.lessonSpinner.setSelection(position)
+            }
+            .show(parentFragmentManager, LEXEME_UPDATE_DIALOG_TAG)
     }
 
     private fun setupObservers() {
@@ -134,9 +140,10 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
             if (allLessons.size > SPINNER_DROPDOWN_MAX_VISIBLE_ITEMS)
                 binding.lessonSpinner.setMaxVisibleItems(layoutInflater, SPINNER_DROPDOWN_MAX_VISIBLE_ITEMS)
 
-            addedLesson?.let {
-                val index = allLessons.indexOf(it)
-                binding.lessonSpinner.setSelection(index + 1)
+            viewModel.getAddedLesson()?.let {
+                val position = dropdownAdapter.getPosition(it)
+                binding.lessonSpinner.setSelection(position)
+                viewModel.resetAddedLesson()
             }
         }
 
