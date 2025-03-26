@@ -54,6 +54,9 @@ class SpinnerAdapter(
 
     override fun getItemId(position: Int): Long = lessons[position].number
 
+    override fun getPosition(lesson: Lesson?): Int =
+        lessons.indexOf(lesson).takeIf { it != -1 } ?: 0
+
     override fun isEnabled(position: Int): Boolean = getItemId(position) != ADD_LESSON_ID
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup) =
