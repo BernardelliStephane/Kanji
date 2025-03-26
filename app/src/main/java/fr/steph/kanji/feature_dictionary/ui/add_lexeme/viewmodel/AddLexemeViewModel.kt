@@ -4,13 +4,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import fr.steph.kanji.R
-import fr.steph.kanji.core.domain.model.Lexeme
+import fr.steph.kanji.core.domain.model.Lesson
+import fr.steph.kanji.core.domain.model.LexemeWithLesson
 import fr.steph.kanji.core.ui.util.ApiResource
 import fr.steph.kanji.core.ui.util.LexemeResource
 import fr.steph.kanji.core.ui.util.Resource
 import fr.steph.kanji.core.util.extension.capitalized
 import fr.steph.kanji.core.util.extension.isLoneKanji
 import fr.steph.kanji.core.util.extension.kanaToRomaji
+import fr.steph.kanji.core.util.extension.log
 import fr.steph.kanji.feature_dictionary.domain.use_case.AddLexemeUseCases
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate.AddLexemeEvent
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate.AddLexemeState
@@ -136,7 +138,7 @@ class AddLexemeViewModel(private val addLexemeUseCases: AddLexemeUseCases) : Vie
         _uiState.update { it.copy(isFetching = false) }
     }
 
-    private fun checkDuplicateCharacters(uiState: AddLexemeState, duplicateCallback: (Lexeme) -> Unit) {
+    private fun checkDuplicateCharacters(uiState: AddLexemeState, duplicateCallback: (LexemeWithLesson) -> Unit) {
         addLexemeUseCases.getLexemeByCharacters(uiState.characters)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -172,7 +174,9 @@ class AddLexemeViewModel(private val addLexemeUseCases: AddLexemeUseCases) : Vie
         _uiState.update { it.copy(isSubmitting = false) }
     }
 
-    fun updateUi(lexeme: Lexeme): Int {
+    fun updateUi(lexemeWithLesson: LexemeWithLesson): Lesson {
+        val lexeme = lexemeWithLesson.lexeme
+
         _uiState.update { lexeme.toAddLexemeFormState().copy(isUpdating = true) }
         if (lexeme.characters.isLoneKanji())
             fetchKanji(uiState.value.characters)
@@ -180,7 +184,7 @@ class AddLexemeViewModel(private val addLexemeUseCases: AddLexemeUseCases) : Vie
         id = lexeme.id
         creationDate = lexeme.creationDate
 
-        return allLessons.value?.map { it.number }?.indexOf(lexeme.lessonNumber) ?: -1
+        return lexemeWithLesson.lesson
     }
 
     fun resetUi() {
