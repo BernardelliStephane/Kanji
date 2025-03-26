@@ -176,7 +176,7 @@ class AddLexemeViewModel(private val addLexemeUseCases: AddLexemeUseCases) : Vie
         _uiState.update { it.copy(isSubmitting = false) }
     }
 
-    fun updateUi(lexemeWithLesson: LexemeWithLesson): Lesson {
+    fun updateUiFromLexeme(lexemeWithLesson: LexemeWithLesson): Lesson {
         val lexeme = lexemeWithLesson.lexeme
 
         _uiState.update { lexeme.toAddLexemeFormState().copy(isUpdating = true) }

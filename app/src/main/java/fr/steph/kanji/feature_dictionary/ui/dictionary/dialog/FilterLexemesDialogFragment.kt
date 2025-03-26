@@ -67,7 +67,7 @@ class FilterLexemesDialogFragment : DialogFragment(R.layout.dialog_filter_lexeme
 
     private fun setupListeners() = with(binding) {
         selectAllLayout.setOnClickListener {
-            if (tracker.selection.size() != 0)
+            if (!tracker.selection.isEmpty)
                 tracker.clearSelection()
         }
 
@@ -90,8 +90,7 @@ class FilterLexemesDialogFragment : DialogFragment(R.layout.dialog_filter_lexeme
             object : SelectionTracker.SelectionObserver<Long>() {
                 override fun onSelectionChanged() {
                     super.onSelectionChanged()
-                    val selectionSize = tracker.selection.size()
-                    binding.selectAllCheckbox.isChecked = selectionSize == 0
+                    binding.selectAllCheckbox.isChecked = tracker.selection.isEmpty
                 }
             })
 

@@ -126,7 +126,7 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
             .setSuccessCallback {
                 activity?.currentFocus?.clearFocus()
 
-                val lesson = viewModel.updateUi(duplicateLexeme)
+                val lesson = viewModel.updateUiFromLexeme(duplicateLexeme)
                 val position = dropdownAdapter.getPosition(lesson)
                 binding.lessonSpinner.setSelection(position)
             }

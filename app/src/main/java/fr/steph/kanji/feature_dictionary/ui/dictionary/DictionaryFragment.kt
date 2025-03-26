@@ -52,17 +52,7 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
         }
     }
 
-    private var lexemeAdapter = LexemeAdapter().apply {
-        itemClickedCallback = { lexeme ->
-            if (viewModel.isSelectionActive())
-                tracker?.select(lexeme.id)
-            else {
-                //TODO Display details fragment
-                Toast.makeText(requireContext(), "Details fragment should open", Toast.LENGTH_SHORT)
-                    .show()
-            }
-        }
-    }
+    private lateinit var lexemeAdapter: LexemeAdapter
 
     private lateinit var tracker: SelectionTracker<Long>
 
@@ -70,9 +60,9 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentDictionaryBinding.bind(view)
 
-        setupRecyclerView()
-        setupListeners()
+        setupUI()
         setupTracker()
+        setupListeners()
         setupObservers()
 
         restoreInstanceState(savedInstanceState)
@@ -80,10 +70,54 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
         handleBackPressed()
     }
 
-    private fun setupRecyclerView() = binding.lexemeRecyclerView.apply {
-        adapter = lexemeAdapter
-        itemAnimator = null
-        edgeEffectFactory = StretchEdgeEffectFactory()
+    private fun setupUI() {
+        lexemeAdapter = LexemeAdapter().apply {
+            itemClickedCallback = { lexeme ->
+                if (viewModel.isSelectionActive())
+                    tracker?.select(lexeme.id)
+                else {
+                    //TODO Display details fragment
+                    Toast.makeText(requireContext(), "Details fragment should open", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+        binding.lexemeRecyclerView.apply {
+            adapter = lexemeAdapter
+            itemAnimator = null
+            edgeEffectFactory = StretchEdgeEffectFactory()
+        }
+    }
+
+    private fun setupTracker() {
+        tracker = SelectionTracker.Builder(
+            "lexeme_selection", binding.lexemeRecyclerView,
+            ItemKeyProvider(binding.lexemeRecyclerView), LexemeDetailsLookup(binding.lexemeRecyclerView),
+            StorageStrategy.createLongStorage()
+        ).withSelectionPredicate(SelectionPredicates.createSelectAnything()
+        ).build()
+
+        tracker.addObserver(
+            object : SelectionTracker.SelectionObserver<Long>() {
+                override fun onSelectionChanged() {
+                    super.onSelectionChanged()
+                    val selectionSize = tracker.selection.size()
+
+                    viewModel.onSelectionChanged(selectionSize)
+                    if (!viewModel.isSelectionActive()) return
+
+                    binding.selectAllCheckbox.isChecked = selectionSize == lexemeAdapter.itemCount
+
+                    val title = getQuantityStringZero(
+                        resId = R.plurals.dictionary_title_selection,
+                        zeroResId = R.string.dictionary_title_selection_empty,
+                        quantity = selectionSize
+                    )
+                    binding.expandedTitle.text = title
+                    binding.collapsedTitle.text = title
+                }
+            })
+
+        lexemeAdapter.tracker = tracker
     }
 
     private fun setupListeners() = with(binding) {
@@ -151,38 +185,6 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
         }
     }
 
-    private fun setupTracker() {
-        tracker = SelectionTracker.Builder(
-            "lexeme_selection", binding.lexemeRecyclerView,
-            ItemKeyProvider(binding.lexemeRecyclerView), LexemeDetailsLookup(binding.lexemeRecyclerView),
-            StorageStrategy.createLongStorage()
-        ).withSelectionPredicate(SelectionPredicates.createSelectAnything()
-        ).build()
-
-        tracker.addObserver(
-            object : SelectionTracker.SelectionObserver<Long>() {
-                override fun onSelectionChanged() {
-                    super.onSelectionChanged()
-                    val selectionSize = tracker.selection.size()
-
-                    viewModel.onSelectionChanged(selectionSize)
-                    if (!viewModel.isSelectionActive()) return
-
-                    binding.selectAllCheckbox.isChecked = selectionSize == lexemeAdapter.itemCount
-
-                    val title = getQuantityStringZero(
-                        resId = R.plurals.dictionary_title_selection,
-                        zeroResId = R.string.dictionary_title_selection_empty,
-                        quantity = selectionSize
-                    )
-                    binding.expandedTitle.text = title
-                    binding.collapsedTitle.text = title
-                }
-            })
-
-        lexemeAdapter.tracker = tracker
-    }
-
     private fun setupObservers() {
         viewModel.lexemes.observe(viewLifecycleOwner) { lexemes ->
             val filteringAvailable = lexemes.isNotEmpty() || viewModel.isFilteringOngoing()
@@ -208,18 +210,18 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.validationEvents.collectLatest { event ->
-                when (event) {
-                    is Resource.Failure -> Snackbar.make(requireView(), event.failureMessage, Snackbar.LENGTH_SHORT).show()
-                    is Resource.Success -> clearSelection(true)
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.isSelectionMode.collect { isSelectionMode ->
+                    applySelectionMode(isSelectionMode)
                 }
             }
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.isSelectionMode.collect { isSelectionMode ->
-                    applySelectionMode(isSelectionMode)
+            viewModel.validationEvents.collectLatest { event ->
+                when (event) {
+                    is Resource.Failure -> Snackbar.make(requireView(), event.failureMessage, Snackbar.LENGTH_SHORT).show()
+                    is Resource.Success -> clearSelection(true)
                 }
             }
         }
@@ -254,15 +256,6 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
         }
     }
 
-    private fun restoreInstanceState(savedInstanceState: Bundle?) {
-        savedInstanceState?.run {
-            tracker.onRestoreInstanceState(savedInstanceState)
-
-            val dialog = parentFragmentManager.findFragmentByTag(DELETE_DIALOG_TAG) as? ConfirmDeletionDialogFragment
-            dialog?.setSuccessCallback { viewModel.deleteLexemesFromSelection(tracker.selection.toList()) }
-        }
-    }
-
     private fun clearSelection(disableSelectionMode: Boolean = false) {
         if (disableSelectionMode) viewModel.disableSelectionMode()
         tracker.clearSelection()
@@ -281,6 +274,15 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
                     }
                 }
             })
+    }
+
+    private fun restoreInstanceState(savedInstanceState: Bundle?) {
+        savedInstanceState?.run {
+            tracker.onRestoreInstanceState(savedInstanceState)
+
+            val dialog = parentFragmentManager.findFragmentByTag(DELETE_DIALOG_TAG) as? ConfirmDeletionDialogFragment
+            dialog?.setSuccessCallback { viewModel.deleteLexemesFromSelection(tracker.selection.toList()) }
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
