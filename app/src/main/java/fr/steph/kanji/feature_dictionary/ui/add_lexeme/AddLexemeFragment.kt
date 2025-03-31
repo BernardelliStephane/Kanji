@@ -3,7 +3,6 @@ package fr.steph.kanji.feature_dictionary.ui.add_lexeme
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
-import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -21,6 +20,7 @@ import fr.steph.kanji.core.util.LEXEME_UPDATE_DIALOG_TAG
 import fr.steph.kanji.core.util.extension.hideSpinnerDropDown
 import fr.steph.kanji.core.util.extension.navigateUp
 import fr.steph.kanji.core.util.extension.setMaxVisibleItems
+import fr.steph.kanji.core.util.extension.showToast
 import fr.steph.kanji.databinding.FragmentAddLexemeBinding
 import fr.steph.kanji.databinding.StubAddLexemeBinding
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.adapter.SpinnerAdapter
@@ -155,8 +155,7 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
                         viewModel.onEvent(AddLexemeEvent.KanjiFetched(response.data!!))
                     }
 
-                    is Resource.Failure ->
-                        Toast.makeText(requireContext(), response.failureMessage, Toast.LENGTH_LONG).show()
+                    is Resource.Failure -> showToast(response.failureMessage)
                 }
             }
         }

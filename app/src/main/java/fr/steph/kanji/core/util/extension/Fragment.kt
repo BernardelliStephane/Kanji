@@ -1,5 +1,7 @@
 package fr.steph.kanji.core.util.extension
 
+import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
@@ -46,4 +48,22 @@ fun Fragment.getQuantityStringZero(resId: Int, zeroResId: Int, quantity: Int): S
         resources.getString(zeroResId)
     else
         resources.getQuantityString(resId, quantity, quantity)
+}
+
+/**
+ * Shows a toast message with the provided [message].
+ *
+ * @param message The message to be displayed in the toast.
+ */
+fun Fragment.showToast(message: String) {
+    Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+}
+
+/**
+ * Shows a toast message with the provided string resource [resId].
+ *
+ * @param resId The resource ID of the string message to be displayed in the toast.
+ */
+fun Fragment.showToast(@StringRes resId: Int) {
+    Toast.makeText(requireContext(), resId, Toast.LENGTH_LONG).show()
 }
