@@ -3,6 +3,7 @@ package fr.steph.kanji.core.util.extension
 import fr.steph.kanji.core.util.Moji.mojiConverter
 import fr.steph.kanji.core.util.Moji.mojiDetector
 import java.util.Locale
+import java.util.regex.Pattern
 
 /**
  * Returns `true` if this string contains only a single Kanji character.
@@ -59,4 +60,32 @@ fun String.capitalized(): String {
             it.titlecase(Locale.getDefault())
         else it.toString()
     }
+}
+
+/**
+ * Converts the string to the KanjiVG filename format.
+ * The string is intended to be a unicode value.
+ *
+ * This function converts the string to lowercase and pads it with leading zeros to ensure a length
+ * of 5 characters. The `.svg` extension is then appended to the result.
+ *
+ * @return The formatted string in KanjiVG filename format, with the `.svg` extension.
+ * @throws IllegalArgumentException If the string length exceeds 5 characters.
+ */
+fun String.toKanjiVGFileNameFormat(): String {
+    if (length > 5) throw IllegalArgumentException("String length cannot exceed 5 characters")
+    return lowercase().padStart(5, '0').plus(".svg")
+}
+
+/**
+ * Extracts all SVG path data (`d` attributes) from the string.
+ *
+ * This method scans the string for `<path>` elements and retrieves the values of their `d` attributes,
+ * which define the drawing instructions for an SVG path.
+ *
+ * @return A list of extracted path data strings from `d="..."` attributes.
+ */
+fun String.extractPaths(): List<String> {
+    val svgPathPattern = Pattern.compile("""<path .*(?<= )d="([^"]+)".*/>""")
+    return svgPathPattern.collect(this, 1)
 }

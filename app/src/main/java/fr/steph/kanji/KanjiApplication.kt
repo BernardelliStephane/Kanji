@@ -20,9 +20,9 @@ import fr.steph.kanji.feature_dictionary.domain.use_case.UpsertLexemeUseCase
 
 class KanjiApplication: Application() {
     private val database by lazy { LexemeDatabase.getDatabase(this) }
-    private val apiRepository by lazy { ApiKanjiRepository() }
     private val lexemeRepository by lazy { LexemeRepository(database.lexemeDao()) }
     val lessonRepository by lazy { LessonRepository(database.lessonDao()) }
+    val apiRepository by lazy { ApiKanjiRepository() }
 
     val addLexemeUseCases by lazy {
         AddLexemeUseCases(
