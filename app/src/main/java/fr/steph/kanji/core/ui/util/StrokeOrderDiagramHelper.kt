@@ -17,7 +17,7 @@ object StrokeOrderDiagramHelper {
     private val pathPaint = Paint().apply {
         style = Paint.Style.STROKE
         strokeCap = Paint.Cap.ROUND
-        strokeWidth = 10f
+        strokeWidth = 8f
     }
 
     private val startDotPaint = Paint().apply {
@@ -85,7 +85,7 @@ object StrokeOrderDiagramHelper {
                     val pos = FloatArray(2)
 
                     if (pathMeasure.getPosTan(0f, pos, null))
-                        canvas.drawCircle(pos[0], pos[1], 25f, startDotPaint)
+                        canvas.drawCircle(pos[0], pos[1], 16f, startDotPaint)
                 }
 
                 canvas.drawPath(path, pathPaint)

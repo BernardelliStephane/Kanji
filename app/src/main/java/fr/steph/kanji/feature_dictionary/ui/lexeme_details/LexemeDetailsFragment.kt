@@ -1,13 +1,20 @@
 package fr.steph.kanji.feature_dictionary.ui.lexeme_details
 
+import android.content.res.Resources
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import android.widget.ImageView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
+import com.google.android.flexbox.FlexWrap
+import com.google.android.flexbox.FlexboxLayout
 import fr.steph.kanji.KanjiApplication
 import fr.steph.kanji.R
 import fr.steph.kanji.core.data.model.ApiKanji
@@ -17,6 +24,7 @@ import fr.steph.kanji.core.ui.util.StrokeOrderDiagramHelper.NoPathFoundException
 import fr.steph.kanji.core.ui.util.StrokeOrderDiagramHelper.createStrokeOrderDiagram
 import fr.steph.kanji.core.ui.util.autoCleared
 import fr.steph.kanji.core.ui.util.viewModelFactory
+import fr.steph.kanji.core.util.extension.log
 import fr.steph.kanji.core.util.extension.showToast
 import fr.steph.kanji.core.util.extension.toKanjiVGFileNameFormat
 import fr.steph.kanji.databinding.FragmentLexemeDetailsBinding
@@ -66,30 +74,40 @@ class LexemeDetailsFragment : Fragment(R.layout.fragment_lexeme_details) {
 
     private fun showStrokeOrderDiagrams(kanji: ApiKanji) {
         val filename = kanji.unicode.toKanjiVGFileNameFormat()
-        val width = binding.strokeOrder.width
-        val height = binding.strokeOrder.height
 
-        val diagrams: List<Bitmap>
         val diagramSize = Resources.getSystem().displayMetrics.density.toInt() * 100
 
         try {
-            diagrams = createStrokeOrderDiagram(requireContext(), filename, diagramSize)
+            val diagram = createStrokeOrderDiagram(requireContext(), filename, diagramSize)
+            displayStrokeOrderDiagram(diagram)
+            displayStrokeOrderDiagram(diagram)
         }
         catch (e: Exception) {
-            binding.strokeOrder.isVisible = false
+            log(e.message.toString())
             val message = when (e) {
                 is IOException, is NoPathFoundException -> "No stroke order info for this kanji"
                 else -> "An error occurred when displaying the stroke order diagrams"
             }
             return showToast(message)
         }
+    }
 
-        binding.strokeOrder.setImageBitmap(diagrams[0])
-
-        var currentStep = 0
-        binding.strokeOrder.setOnClickListener {
-            currentStep = (currentStep + 1) % diagrams.size
-            binding.strokeOrder.setImageBitmap(diagrams[currentStep])
+    private fun displayStrokeOrderDiagram(diagram: List<Bitmap>) {
+        val flexboxLayout = FlexboxLayout(requireContext()).apply {
+            layoutParams = ViewGroup.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
+            flexWrap = FlexWrap.WRAP
         }
+
+        val inflater = LayoutInflater.from(requireContext())
+
+        for (bitmap in diagram) {
+            val itemView = inflater.inflate(R.layout.item_stroke, flexboxLayout, false)
+            val imageView = itemView.findViewById<ImageView>(R.id.stroke_image)
+            imageView.setImageBitmap(bitmap)
+            flexboxLayout.addView(itemView)
+        }
+
+        binding.strokeOrderLayout.addView(flexboxLayout)
+        binding.strokeOrderLayout.isVisible = true
     }
 }
