@@ -14,7 +14,7 @@ import fr.steph.kanji.core.data.model.ApiKanji
 import fr.steph.kanji.core.domain.model.Lexeme
 import fr.steph.kanji.core.ui.util.Resource
 import fr.steph.kanji.core.ui.util.StrokeOrderDiagramHelper.NoPathFoundException
-import fr.steph.kanji.core.ui.util.StrokeOrderDiagramHelper.createStrokeDiagrams
+import fr.steph.kanji.core.ui.util.StrokeOrderDiagramHelper.createStrokeOrderDiagram
 import fr.steph.kanji.core.ui.util.autoCleared
 import fr.steph.kanji.core.ui.util.viewModelFactory
 import fr.steph.kanji.core.util.extension.showToast
@@ -70,9 +70,10 @@ class LexemeDetailsFragment : Fragment(R.layout.fragment_lexeme_details) {
         val height = binding.strokeOrder.height
 
         val diagrams: List<Bitmap>
+        val diagramSize = Resources.getSystem().displayMetrics.density.toInt() * 100
 
         try {
-            diagrams = createStrokeDiagrams(requireContext(), filename, width, height)
+            diagrams = createStrokeOrderDiagram(requireContext(), filename, diagramSize)
         }
         catch (e: Exception) {
             binding.strokeOrder.isVisible = false
