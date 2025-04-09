@@ -17,7 +17,6 @@ import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayout
 import fr.steph.kanji.KanjiApplication
 import fr.steph.kanji.R
-import fr.steph.kanji.core.data.model.ApiKanji
 import fr.steph.kanji.core.domain.model.Lexeme
 import fr.steph.kanji.core.ui.util.Resource
 import fr.steph.kanji.core.ui.util.StrokeOrderDiagramHelper.createStrokeOrderDiagram
@@ -25,10 +24,10 @@ import fr.steph.kanji.core.ui.util.autoCleared
 import fr.steph.kanji.core.ui.util.viewModelFactory
 import fr.steph.kanji.core.util.extension.log
 import fr.steph.kanji.core.util.extension.showToast
-import fr.steph.kanji.core.util.extension.toKanjiVGFileNameFormat
 import fr.steph.kanji.databinding.FragmentLexemeDetailsBinding
 import fr.steph.kanji.feature_dictionary.domain.exception.MissingStrokeOrderDiagramException
 import fr.steph.kanji.feature_dictionary.domain.use_case.GetKanjiInfoUseCase
+import fr.steph.kanji.feature_dictionary.domain.use_case.GetStrokeFilenamesUseCase
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.io.IOException
@@ -40,7 +39,7 @@ class LexemeDetailsFragment : Fragment(R.layout.fragment_lexeme_details) {
     private val viewModel: LexemeDetailsViewModel by viewModels {
         val app = (activity?.application as KanjiApplication)
         viewModelFactory {
-            LexemeDetailsViewModel(GetKanjiInfoUseCase(app.apiRepository))
+            LexemeDetailsViewModel(GetKanjiInfoUseCase(app.apiRepository), GetStrokeFilenamesUseCase())
         }
     }
 
@@ -52,7 +51,9 @@ class LexemeDetailsFragment : Fragment(R.layout.fragment_lexeme_details) {
 
         lexeme = args.lexeme
 
-        viewModel.fetchKanji(lexeme.characters)
+        //viewModel.fetchKanji(lexeme.characters)
+        val filenames = viewModel.getCharactersStrokeFilenames(lexeme.characters)
+        filenames.forEach { showStrokeOrderDiagrams(it) }
 
         setupObservers()
     }
@@ -62,8 +63,8 @@ class LexemeDetailsFragment : Fragment(R.layout.fragment_lexeme_details) {
             viewModel.apiResponse.collectLatest { response ->
                 when (response) {
                     is Resource.Success -> {
-                        val kanji = response.data!!
-                        showStrokeOrderDiagrams(kanji)
+                        //val kanji = response.data!!
+                        //showStrokeOrderDiagrams(kanji)
                     }
 
                     is Resource.Failure -> showToast(response.failureMessage)
@@ -72,14 +73,12 @@ class LexemeDetailsFragment : Fragment(R.layout.fragment_lexeme_details) {
         }
     }
 
-    private fun showStrokeOrderDiagrams(kanji: ApiKanji) {
-        val filename = kanji.unicode.toKanjiVGFileNameFormat()
-
+    private fun showStrokeOrderDiagrams(filename: String?) {
         val diagramSize = Resources.getSystem().displayMetrics.density.toInt() * 100
 
         try {
+            if (filename == null) throw MissingStrokeOrderDiagramException()
             val diagram = createStrokeOrderDiagram(requireContext(), filename, diagramSize)
-            displayStrokeOrderDiagram(diagram)
             displayStrokeOrderDiagram(diagram)
         }
         catch (e: Exception) {

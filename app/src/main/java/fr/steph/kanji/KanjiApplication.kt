@@ -28,6 +28,9 @@ class KanjiApplication: Application() {
     override fun onCreate() {
         super.onCreate()
         ConnectivityChecker.setAppContext(applicationContext)
+        CoroutineScope(Dispatchers.IO).launch {
+            StrokeOrderRepository.load(this@KanjiApplication)
+        }
     }
 
     private val database by lazy { LexemeDatabase.getDatabase(this) }

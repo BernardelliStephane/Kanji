@@ -4,11 +4,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import fr.steph.kanji.core.ui.util.ApiResource
 import fr.steph.kanji.feature_dictionary.domain.use_case.GetKanjiInfoUseCase
+import fr.steph.kanji.feature_dictionary.domain.use_case.GetStrokeFilenamesUseCase
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
-class LexemeDetailsViewModel(private val getKanjiInfo: GetKanjiInfoUseCase) : ViewModel() {
+class LexemeDetailsViewModel(
+    private val getKanjiInfo: GetKanjiInfoUseCase,
+    private val getStrokeFilenames: GetStrokeFilenamesUseCase
+) : ViewModel() {
 
     private val apiResponseChannel = Channel<ApiResource>()
     val apiResponse = apiResponseChannel.receiveAsFlow()
@@ -17,4 +21,6 @@ class LexemeDetailsViewModel(private val getKanjiInfo: GetKanjiInfoUseCase) : Vi
         val result = getKanjiInfo(characters)
         apiResponseChannel.send(result)
     }
+
+    fun getCharactersStrokeFilenames(characters: String) = getStrokeFilenames(characters)
 }
