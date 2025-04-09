@@ -17,5 +17,4 @@ data class ApiKanji(
     val jlptLevel: Int?,
     @SerializedName("freq_mainichi_shinbun")
     val useFrequency: Int?,
-    val unicode: String,
 )
