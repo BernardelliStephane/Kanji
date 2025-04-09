@@ -10,6 +10,7 @@ import android.graphics.PathMeasure
 import android.graphics.RectF
 import androidx.core.graphics.PathParser
 import fr.steph.kanji.core.util.extension.extractPaths
+import fr.steph.kanji.feature_dictionary.domain.exception.MissingStrokeOrderDiagramException
 import java.io.BufferedReader
 
 object StrokeOrderDiagramHelper {
@@ -38,7 +39,7 @@ object StrokeOrderDiagramHelper {
         val fileContent = file.bufferedReader().use(BufferedReader::readText)
         val paths = fileContent.extractPaths()
 
-        if (paths.isEmpty()) throw NoPathFoundException()
+        if (paths.isEmpty()) throw MissingStrokeOrderDiagramException()
 
         return paths
     }
@@ -94,6 +95,4 @@ object StrokeOrderDiagramHelper {
             bitmap
         }
     }
-
-    class NoPathFoundException(message: String = "No valid paths found") : Exception(message)
 }

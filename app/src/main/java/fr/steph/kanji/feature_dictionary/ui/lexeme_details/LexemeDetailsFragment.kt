@@ -20,7 +20,6 @@ import fr.steph.kanji.R
 import fr.steph.kanji.core.data.model.ApiKanji
 import fr.steph.kanji.core.domain.model.Lexeme
 import fr.steph.kanji.core.ui.util.Resource
-import fr.steph.kanji.core.ui.util.StrokeOrderDiagramHelper.NoPathFoundException
 import fr.steph.kanji.core.ui.util.StrokeOrderDiagramHelper.createStrokeOrderDiagram
 import fr.steph.kanji.core.ui.util.autoCleared
 import fr.steph.kanji.core.ui.util.viewModelFactory
@@ -28,6 +27,7 @@ import fr.steph.kanji.core.util.extension.log
 import fr.steph.kanji.core.util.extension.showToast
 import fr.steph.kanji.core.util.extension.toKanjiVGFileNameFormat
 import fr.steph.kanji.databinding.FragmentLexemeDetailsBinding
+import fr.steph.kanji.feature_dictionary.domain.exception.MissingStrokeOrderDiagramException
 import fr.steph.kanji.feature_dictionary.domain.use_case.GetKanjiInfoUseCase
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -85,7 +85,7 @@ class LexemeDetailsFragment : Fragment(R.layout.fragment_lexeme_details) {
         catch (e: Exception) {
             log(e.message.toString())
             val message = when (e) {
-                is IOException, is NoPathFoundException -> "No stroke order info for this kanji"
+                is IOException, is MissingStrokeOrderDiagramException -> "No stroke order info for this kanji"
                 else -> "An error occurred when displaying the stroke order diagrams"
             }
             return showToast(message)
