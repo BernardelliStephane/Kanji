@@ -20,7 +20,7 @@ object StrokeOrderRepository {
     }
 
     fun getStrokeSvg(character: Char): String? {
-        if(!this::strokeMap.isInitialized) return null
+        if (!this::strokeMap.isInitialized) return null
         return strokeMap[character.toString()]
     }
 }

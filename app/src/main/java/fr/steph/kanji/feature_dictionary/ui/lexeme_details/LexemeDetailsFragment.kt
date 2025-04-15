@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import android.view.ViewGroup.MarginLayoutParams
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -52,7 +54,9 @@ class LexemeDetailsFragment : Fragment(R.layout.fragment_lexeme_details) {
 
         //viewModel.fetchKanji(lexeme.characters)
         val filenames = viewModel.getCharactersStrokeFilenames(lexeme.characters)
-        filenames.forEach { showStrokeOrderDiagrams(it) }
+        filenames.forEachIndexed { index, filename ->
+            showStrokeOrderDiagrams(filename, lexeme.characters[index])
+        }
 
         setupObservers()
     }
@@ -72,31 +76,41 @@ class LexemeDetailsFragment : Fragment(R.layout.fragment_lexeme_details) {
         }
     }
 
-    private fun showStrokeOrderDiagrams(filename: String?) {
+    private fun showStrokeOrderDiagrams(filename: String?, character: Char) {
         val diagramSize = resources.displayMetrics.density.toInt() * 100
         val screenSize = resources.displayMetrics.widthPixels
         val remainingSpace = screenSize % diagramSize
 
+        val params = binding.strokeOrderLayout.layoutParams as MarginLayoutParams
+        params.marginStart = remainingSpace / 2
+
         try {
             if (filename == null) throw MissingStrokeOrderDiagramException()
             val diagram = createStrokeOrderDiagram(requireContext(), filename, diagramSize)
-            displayStrokeOrderDiagram(diagram, remainingSpace)
+            displayStrokeOrderDiagram(diagram)
         }
         catch (e: Exception) {
             log(e.message.toString())
-            val message = when (e) {
-                is IOException, is MissingStrokeOrderDiagramException -> "No stroke order info for this kanji"
-                else -> "An error occurred when displaying the stroke order diagrams"
-            }
-            return showToast(message)
+            displayErrorMessage(e, character)
         }
     }
 
-    private fun displayStrokeOrderDiagram(diagram: List<Bitmap>, remainingSpace: Int) {
+    private fun displayErrorMessage(e: Exception, character: Char) {
+        val message = when (e) {
+            is IOException, is MissingStrokeOrderDiagramException -> "No stroke order info for $character"
+            else -> "An error occurred when displaying the stroke order diagrams for $character"
+        }
+        val textView = TextView(requireContext()).apply {
+            text = message
+        }
+
+        binding.strokeOrderLayout.addView(textView)
+        binding.strokeOrderLayout.isVisible = true
+    }
+
+    private fun displayStrokeOrderDiagram(diagram: List<Bitmap>) {
         val flexboxLayout = FlexboxLayout(requireContext()).apply {
-            layoutParams = ViewGroup.MarginLayoutParams(WRAP_CONTENT, WRAP_CONTENT).apply {
-                marginStart = remainingSpace / 2
-            }
+            layoutParams = ViewGroup.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
             flexWrap = FlexWrap.WRAP
         }
 
