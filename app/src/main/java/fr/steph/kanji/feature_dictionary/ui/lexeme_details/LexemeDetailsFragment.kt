@@ -1,6 +1,5 @@
 package fr.steph.kanji.feature_dictionary.ui.lexeme_details
 
-import android.content.res.Resources
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -74,12 +73,14 @@ class LexemeDetailsFragment : Fragment(R.layout.fragment_lexeme_details) {
     }
 
     private fun showStrokeOrderDiagrams(filename: String?) {
-        val diagramSize = Resources.getSystem().displayMetrics.density.toInt() * 100
+        val diagramSize = resources.displayMetrics.density.toInt() * 100
+        val screenSize = resources.displayMetrics.widthPixels
+        val remainingSpace = screenSize % diagramSize
 
         try {
             if (filename == null) throw MissingStrokeOrderDiagramException()
             val diagram = createStrokeOrderDiagram(requireContext(), filename, diagramSize)
-            displayStrokeOrderDiagram(diagram)
+            displayStrokeOrderDiagram(diagram, remainingSpace)
         }
         catch (e: Exception) {
             log(e.message.toString())
@@ -91,9 +92,11 @@ class LexemeDetailsFragment : Fragment(R.layout.fragment_lexeme_details) {
         }
     }
 
-    private fun displayStrokeOrderDiagram(diagram: List<Bitmap>) {
+    private fun displayStrokeOrderDiagram(diagram: List<Bitmap>, remainingSpace: Int) {
         val flexboxLayout = FlexboxLayout(requireContext()).apply {
-            layoutParams = ViewGroup.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
+            layoutParams = ViewGroup.MarginLayoutParams(WRAP_CONTENT, WRAP_CONTENT).apply {
+                marginStart = remainingSpace / 2
+            }
             flexWrap = FlexWrap.WRAP
         }
 

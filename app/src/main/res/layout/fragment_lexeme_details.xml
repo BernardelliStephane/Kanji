@@ -36,7 +36,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_20sdp"
             android:divider="@drawable/stroke_order_diagram_divider"
-            android:gravity="center_horizontal"
             android:orientation="vertical"
             android:showDividers="middle"
             android:visibility="gone"
