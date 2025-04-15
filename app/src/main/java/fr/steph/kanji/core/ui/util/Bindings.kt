@@ -14,12 +14,7 @@ fun setVisibility(view: View, isVisible: Boolean) {
 
 @BindingAdapter("android:layout_marginTop")
 fun setTopMargin(view: View, topMargin: Float) {
-    val layoutParams = view.layoutParams as MarginLayoutParams
-    layoutParams.setMargins(
-        layoutParams.marginStart, Math.round(topMargin),
-        layoutParams.marginEnd, layoutParams.bottomMargin
-    )
-    view.layoutParams = layoutParams
+    (view.layoutParams as MarginLayoutParams).topMargin = Math.round(topMargin)
 }
 
 @BindingAdapter("errorRes")
