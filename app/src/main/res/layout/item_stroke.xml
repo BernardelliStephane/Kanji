@@ -8,6 +8,9 @@
         android:id="@+id/stroke_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:background="@drawable/stroke_order_diagram_bg"
         android:importantForAccessibility="no"
         app:layout_constraintDimensionRatio="1:1" />
 
