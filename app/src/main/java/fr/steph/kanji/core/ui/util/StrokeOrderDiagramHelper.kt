@@ -18,7 +18,7 @@ object StrokeOrderDiagramHelper {
     private val pathPaint = Paint().apply {
         style = Paint.Style.STROKE
         strokeCap = Paint.Cap.ROUND
-        strokeWidth = 8f
+        strokeWidth = 7f
     }
 
     private val startDotPaint = Paint().apply {
@@ -48,7 +48,7 @@ object StrokeOrderDiagramHelper {
         val scaleX = size / bounds.width()
         val scaleY = size / bounds.height()
 
-        val scale = minOf(scaleX, scaleY) * 0.75f
+        val scale = minOf(scaleX, scaleY) * 0.65f
 
         return Matrix().apply {
             setScale(scale, scale)
@@ -79,14 +79,14 @@ object StrokeOrderDiagramHelper {
 
             for (j in 0..i) {
                 val path = PathParser.createPathFromPathData(paths[j]).apply { transform(matrix) }
-                pathPaint.color = if (j==i) Color.BLACK else Color.LTGRAY
+                pathPaint.color = if (j == i) Color.BLACK else Color.LTGRAY
 
-                if (j==i) {
+                if (j == i) {
                     val pathMeasure = PathMeasure(path, false)
                     val pos = FloatArray(2)
 
                     if (pathMeasure.getPosTan(0f, pos, null))
-                        canvas.drawCircle(pos[0], pos[1], 16f, startDotPaint)
+                        canvas.drawCircle(pos[0], pos[1], 10f, startDotPaint)
                 }
 
                 canvas.drawPath(path, pathPaint)
