@@ -8,9 +8,18 @@ import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.PathMeasure
 import android.graphics.RectF
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import android.view.ViewGroup.MarginLayoutParams
+import android.widget.ImageView
 import androidx.core.graphics.PathParser
+import com.google.android.flexbox.FlexWrap
+import com.google.android.flexbox.FlexboxLayout
+import fr.steph.kanji.R
 import fr.steph.kanji.core.util.extension.extractPaths
 import fr.steph.kanji.feature_dictionary.domain.exception.MissingStrokeOrderDiagramException
+import fr.steph.kanji.feature_dictionary.ui.util.StrokeOrderDiagramConfig
 import java.io.BufferedReader
 
 object StrokeOrderDiagramHelper {
@@ -26,15 +35,17 @@ object StrokeOrderDiagramHelper {
         style = Paint.Style.FILL
     }
 
-    fun createStrokeOrderDiagram(context: Context, filename: String, size: Int): List<Bitmap> {
+    fun createStrokeOrderDiagram(context: Context, filename: String?, config: StrokeOrderDiagramConfig): FlexboxLayout {
         val paths = extractPathsFromSVG(context, filename)
         val bounds = computeBounds(paths)
-        val matrix = calculateMatrixFromBounds(bounds, size)
+        val matrix = calculateMatrixFromBounds(bounds, config.diagramSize)
+        val bitmaps = generateStrokeBitmaps(paths, config.diagramSize, matrix)
 
-        return generateStrokeBitmaps(paths, size, matrix)
+        return generateStrokeOrderDiagram(context, bitmaps, config)
     }
 
-    private fun extractPathsFromSVG(context: Context, filename: String): List<String> {
+    private fun extractPathsFromSVG(context: Context, filename: String?): List<String> {
+        if (filename == null) throw MissingStrokeOrderDiagramException()
         val file = context.assets.open("kanji/$filename")
         val fileContent = file.bufferedReader().use(BufferedReader::readText)
         val paths = fileContent.extractPaths()
@@ -94,5 +105,32 @@ object StrokeOrderDiagramHelper {
 
             bitmap
         }
+    }
+
+    private fun generateStrokeOrderDiagram(context: Context, diagram: List<Bitmap>, config: StrokeOrderDiagramConfig): FlexboxLayout {
+        val flexboxLayout = FlexboxLayout(context).apply {
+            layoutParams = ViewGroup.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
+            flexWrap = FlexWrap.WRAP
+        }
+
+        val inflater = LayoutInflater.from(context)
+
+        diagram.forEachIndexed { index, bitmap ->
+            val itemView = inflater.inflate(R.layout.item_stroke, flexboxLayout, false)
+            val imageView = itemView.findViewById<ImageView>(R.id.stroke_image)
+            imageView.setImageBitmap(bitmap)
+
+            val layoutParams = itemView.layoutParams as MarginLayoutParams
+
+            val row = index / config.itemsPerRow
+            val column = index % config.itemsPerRow
+
+            if (row > 0) layoutParams.topMargin = -config.diagramBorderThickness
+            if (column > 0) layoutParams.marginStart = -config.diagramBorderThickness
+
+            flexboxLayout.addView(itemView)
+        }
+
+        return flexboxLayout
     }
 }
