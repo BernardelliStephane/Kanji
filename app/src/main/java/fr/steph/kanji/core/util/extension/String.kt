@@ -1,9 +1,19 @@
 package fr.steph.kanji.core.util.extension
 
-import fr.steph.kanji.core.util.Moji.mojiConverter
-import fr.steph.kanji.core.util.Moji.mojiDetector
+import com.moji4j.MojiConverter
 import java.util.Locale
 import java.util.regex.Pattern
+
+/**
+ * Returns `true` if this string contains one or several Kanji character(s).
+ *
+ * See [isKanji] for the definition of a Kanji character.
+ */
+fun String.hasKanji(): Boolean {
+    for (c in this)
+        if (c.isKanji()) return true
+    return false
+}
 
 /**
  * Returns `true` if this string contains only a single Kanji character.
@@ -11,7 +21,7 @@ import java.util.regex.Pattern
  * See [isKanji] for the definition of a Kanji character.
  */
 fun String.isLoneKanji(): Boolean {
-    return length == 1 && mojiDetector.hasKanji(this)
+    return length == 1 && hasKanji()
 }
 
 /**
@@ -48,7 +58,7 @@ fun String.isOnlyJapaneseCharacters(): Boolean {
  * Converts a string of Kana characters to Romaji.
  */
 fun String.kanaToRomaji(): String {
-    return mojiConverter.convertKanaToRomaji(this)
+    return MojiConverter().convertKanaToRomaji(this)
 }
 
 /**

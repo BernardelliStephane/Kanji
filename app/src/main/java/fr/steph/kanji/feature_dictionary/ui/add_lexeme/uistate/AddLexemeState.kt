@@ -2,8 +2,8 @@ package fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate
 
 import fr.steph.kanji.core.domain.model.Lexeme
 import fr.steph.kanji.core.domain.enumeration.LexemeType
-import fr.steph.kanji.core.util.Moji.mojiDetector
 import fr.steph.kanji.core.util.extension.capitalized
+import fr.steph.kanji.core.util.extension.hasKanji
 
 data class AddLexemeState(
     var lessonNumber: Long = 0,
@@ -33,8 +33,8 @@ data class AddLexemeState(
 ) {
     fun toLexeme(id: Long = 0, creationDate: Long = System.currentTimeMillis()): Lexeme {
         val lexemeType = when {
-            isCharactersFetched -> LexemeType.KANJI
-            mojiDetector.hasKanji(characters) -> LexemeType.COMPOUND
+            isCharactersLoneKanji -> LexemeType.KANJI
+            characters.hasKanji() -> LexemeType.COMPOUND
             else -> LexemeType.KANA
         }
 
