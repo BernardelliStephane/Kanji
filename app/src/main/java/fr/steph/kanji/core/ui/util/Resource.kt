@@ -6,7 +6,7 @@ import fr.steph.kanji.core.domain.model.Lexeme
 
 typealias LessonResource = Resource<Lesson>
 typealias LexemeResource = Resource<Lexeme>
-typealias ApiResource = Resource<ApiKanji>
+typealias ApiKanjiResource = Resource<ApiKanji>
 
 sealed class Resource<T> {
     data class Failure<T>(val failureMessage: Int) : Resource<T>()

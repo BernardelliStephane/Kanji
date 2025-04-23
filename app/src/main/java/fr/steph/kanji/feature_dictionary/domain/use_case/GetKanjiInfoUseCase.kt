@@ -4,7 +4,7 @@ import android.content.Context
 import fr.steph.kanji.R
 import fr.steph.kanji.core.data.model.ApiKanji
 import fr.steph.kanji.core.data.repository.ApiKanjiRepository
-import fr.steph.kanji.core.ui.util.ApiResource
+import fr.steph.kanji.core.ui.util.ApiKanjiResource
 import fr.steph.kanji.core.ui.util.Resource
 import fr.steph.kanji.core.data.util.ConnectivityChecker.isNetworkAvailable
 import retrofit2.Response
@@ -29,7 +29,7 @@ class GetKanjiInfoUseCase(private val repository: ApiKanjiRepository) {
         }
     }
 
-    private fun handleResponse(response: Response<ApiKanji>): ApiResource {
+    private fun handleResponse(response: Response<ApiKanji>): ApiKanjiResource {
         return if (response.isSuccessful && response.body() != null)
             Resource.Success(response.body()!!)
         else Resource.Failure(R.string.network_failure)

@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import fr.steph.kanji.R
 import fr.steph.kanji.core.domain.model.Lesson
 import fr.steph.kanji.core.domain.model.LexemeWithLesson
-import fr.steph.kanji.core.ui.util.ApiResource
+import fr.steph.kanji.core.ui.util.ApiKanjiResource
 import fr.steph.kanji.core.ui.util.LexemeResource
 import fr.steph.kanji.core.ui.util.Resource
 import fr.steph.kanji.core.util.extension.capitalized
@@ -32,8 +32,8 @@ class AddLexemeViewModel(private val addLexemeUseCases: AddLexemeUseCases) : Vie
     private val _uiState = MutableStateFlow(AddLexemeState())
     val uiState = _uiState.asStateFlow()
 
-    private val apiResponseChannel = Channel<ApiResource>()
-    val apiResponse = apiResponseChannel.receiveAsFlow()
+    private val kanjiResponseChannel = Channel<ApiKanjiResource>()
+    val kanjiResponse = kanjiResponseChannel.receiveAsFlow()
 
     private val validationEventChannel = Channel<LexemeResource>()
     val validationEvents = validationEventChannel.receiveAsFlow()
@@ -134,9 +134,9 @@ class AddLexemeViewModel(private val addLexemeUseCases: AddLexemeUseCases) : Vie
 
     private fun fetchKanji(context: Context, characters: String) = viewModelScope.launch {
         val result = addLexemeUseCases.getKanjiInfo(context, characters)
+        kanjiResponseChannel.send(result)
         _uiState.update { it.copy(isFetching = true) }
 
-        apiResponseChannel.send(result)
 
         _uiState.update { it.copy(isFetching = false) }
     }
