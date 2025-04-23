@@ -1,5 +1,6 @@
 package fr.steph.kanji.feature_dictionary.ui.add_lexeme.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
@@ -131,10 +132,10 @@ class AddLexemeViewModel(private val addLexemeUseCases: AddLexemeUseCases) : Vie
         }
     }
 
-    private fun fetchKanji(characters: String) = viewModelScope.launch {
+    private fun fetchKanji(context: Context, characters: String) = viewModelScope.launch {
+        val result = addLexemeUseCases.getKanjiInfo(context, characters)
         _uiState.update { it.copy(isFetching = true) }
 
-        val result = addLexemeUseCases.getKanjiInfo(characters)
         apiResponseChannel.send(result)
 
         _uiState.update { it.copy(isFetching = false) }
@@ -176,12 +177,12 @@ class AddLexemeViewModel(private val addLexemeUseCases: AddLexemeUseCases) : Vie
         _uiState.update { it.copy(isSubmitting = false) }
     }
 
-    fun updateUiFromLexeme(lexemeWithLesson: LexemeWithLesson): Lesson {
+    fun updateUiFromLexeme(context: Context, lexemeWithLesson: LexemeWithLesson): Lesson {
         val lexeme = lexemeWithLesson.lexeme
 
         _uiState.update { lexeme.toAddLexemeFormState().copy(isUpdating = true) }
         if (lexeme.characters.isLoneKanji())
-            fetchKanji(uiState.value.characters)
+            fetchKanji(context, uiState.value.characters)
 
         id = lexeme.id
         creationDate = lexeme.creationDate

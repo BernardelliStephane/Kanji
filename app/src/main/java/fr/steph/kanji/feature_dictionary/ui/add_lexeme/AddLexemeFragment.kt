@@ -89,7 +89,7 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
         }
 
         binding.searchKanji.setOnClickListener {
-            viewModel.onEvent(AddLexemeEvent.Fetch)
+            viewModel.onEvent(AddLexemeEvent.Fetch(requireContext()))
         }
 
         binding.romajiInput.doAfterTextChanged {
@@ -126,7 +126,7 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
             .setSuccessCallback {
                 activity?.currentFocus?.clearFocus()
 
-                val lesson = viewModel.updateUiFromLexeme(duplicateLexeme)
+                val lesson = viewModel.updateUiFromLexeme(requireContext(), duplicateLexeme)
                 val position = dropdownAdapter.getPosition(lesson)
                 binding.lessonSpinner.setSelection(position)
             }

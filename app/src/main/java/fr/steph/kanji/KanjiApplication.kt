@@ -6,7 +6,6 @@ import fr.steph.kanji.core.data.repository.ApiKanjiRepository
 import fr.steph.kanji.core.data.repository.LessonRepository
 import fr.steph.kanji.core.data.repository.LexemeRepository
 import fr.steph.kanji.core.data.repository.StrokeOrderRepository
-import fr.steph.kanji.core.data.util.ConnectivityChecker
 import fr.steph.kanji.feature_dictionary.domain.use_case.AddLexemeUseCases
 import fr.steph.kanji.feature_dictionary.domain.use_case.DeleteLexemesFromSelectionUseCase
 import fr.steph.kanji.feature_dictionary.domain.use_case.DictionaryUseCases
@@ -27,7 +26,6 @@ class KanjiApplication: Application() {
 
     override fun onCreate() {
         super.onCreate()
-        ConnectivityChecker.setAppContext(applicationContext)
         CoroutineScope(Dispatchers.IO).launch {
             StrokeOrderRepository.load(this@KanjiApplication)
         }

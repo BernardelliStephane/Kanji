@@ -63,7 +63,7 @@ class LexemeDetailsFragment : Fragment(R.layout.fragment_lexeme_details) {
             params.marginStart = diagramConfig.unusedScreenSpace / 2
 
             filenames.forEachIndexed { index, filename ->
-                showStrokeOrderDiagram(filename, lexeme.characters[index], diagramConfig)
+                displayStrokeOrderDiagram(filename, lexeme.characters[index], diagramConfig)
             }
         }
     }
@@ -83,7 +83,7 @@ class LexemeDetailsFragment : Fragment(R.layout.fragment_lexeme_details) {
         }
     }
 
-    private fun showStrokeOrderDiagram(filename: String?, character: Char, diagramConfig: StrokeOrderDiagramConfig) {
+    private fun displayStrokeOrderDiagram(filename: String?, character: Char, diagramConfig: StrokeOrderDiagramConfig) {
         try {
             val diagram = createStrokeOrderDiagram(requireContext(), filename, diagramConfig)
             binding.strokeOrderLayout.addView(diagram)
