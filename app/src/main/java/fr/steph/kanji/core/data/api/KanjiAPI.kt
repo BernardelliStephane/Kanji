@@ -1,6 +1,7 @@
 package fr.steph.kanji.core.data.api
 
 import fr.steph.kanji.core.data.model.ApiKanji
+import fr.steph.kanji.core.data.model.Word
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -13,6 +14,11 @@ interface KanjiAPI {
 
     @GET("kanji/{character}")
     suspend fun getKanjiInfo(
-        @Path("character") character: String,
+        @Path("character") character: String
     ): Response<ApiKanji>
+
+    @GET("words/{character}")
+    suspend fun getWords(
+        @Path("character") character: String
+    ): Response<List<Word>>
 }
