@@ -5,14 +5,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import fr.steph.kanji.R
+import fr.steph.kanji.core.data.model.ApiKanji
+import fr.steph.kanji.core.data.model.Word
 import fr.steph.kanji.core.domain.model.Lesson
 import fr.steph.kanji.core.domain.model.LexemeWithLesson
-import fr.steph.kanji.core.ui.util.ApiKanjiResource
 import fr.steph.kanji.core.ui.util.LexemeResource
 import fr.steph.kanji.core.ui.util.Resource
 import fr.steph.kanji.core.util.extension.capitalized
+import fr.steph.kanji.core.util.extension.hasKanji
 import fr.steph.kanji.core.util.extension.isLoneKanji
 import fr.steph.kanji.core.util.extension.kanaToRomaji
+import fr.steph.kanji.core.util.extension.log
 import fr.steph.kanji.feature_dictionary.domain.use_case.AddLexemeUseCases
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate.AddLexemeEvent
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate.AddLexemeState
@@ -34,7 +37,7 @@ class AddLexemeViewModel(private val addLexemeUseCases: AddLexemeUseCases) : Vie
     private val _uiState = MutableStateFlow(AddLexemeState())
     val uiState = _uiState.asStateFlow()
 
-    private val _apiResponse = MutableSharedFlow<Resource<ApiKanjiResource>>(extraBufferCapacity = 1)
+    private val _apiResponse = MutableSharedFlow<Resource<*>>(extraBufferCapacity = 1)
     val apiResponse = _apiResponse.asSharedFlow()
 
     private val validationEventChannel = Channel<LexemeResource>()
@@ -59,7 +62,7 @@ class AddLexemeViewModel(private val addLexemeUseCases: AddLexemeUseCases) : Vie
 
             is AddLexemeEvent.CharactersChanged -> {
                 _uiState.update { currentUiState ->
-                    val charactersFetched = event.characters == currentUiState.lastFetchedKanji
+                    val charactersFetched = event.characters == currentUiState.lastFetch
                     // Update meaning depending on if the characters were fetched
                     val meaning = if (charactersFetched) currentUiState.lastFetchedKanjiMeaning
                         else if (currentUiState.isCharactersFetched) ""
@@ -69,6 +72,7 @@ class AddLexemeViewModel(private val addLexemeUseCases: AddLexemeUseCases) : Vie
                         characters = event.characters,
                         charactersErrorRes = null,
                         meaning = meaning,
+                        isCharactersContainingKanji = event.characters.hasKanji(),
                         isCharactersLoneKanji = event.characters.isLoneKanji(),
                         isCharactersFetched = charactersFetched,
                     )
@@ -93,34 +97,15 @@ class AddLexemeViewModel(private val addLexemeUseCases: AddLexemeUseCases) : Vie
                 }
             }
 
-            is AddLexemeEvent.KanjiFetched -> {
-                _uiState.update { currentUiState ->
-                    event.kanji.run {
-                        currentUiState.copy(
-                            charactersErrorRes = null,
-                            romajiErrorRes = null,
-                            meaning = meanings.joinToString().capitalized(),
-                            meaningErrorRes = null,
-                            lastFetchedKanjiMeaning = meanings.joinToString().capitalized(),
-                            onyomi = onReadings.joinToString(),
-                            onyomiRomaji = onReadings.joinToString { it.kanaToRomaji() },
-                            kunyomi = kunReadings.joinToString(),
-                            kunyomiRomaji = kunReadings.joinToString { it.kanaToRomaji() },
-                            nameReadings = nameReadings.joinToString(),
-                            nameReadingsRomaji = nameReadings.joinToString { it.kanaToRomaji() },
-                            gradeTaught = gradeTaught?.toString() ?: "",
-                            jlptLevel = jlptLevel?.toString() ?: "",
-                            useFrequencyIndicator = useFrequency?.toString() ?: "",
-                            lastFetchedKanji = kanji,
-                            isCharactersFetched = kanji == currentUiState.characters
-                        )
-                    }
-                }
-            }
+            is AddLexemeEvent.DataFetched -> manageFetchedData(event.data)
 
             is AddLexemeEvent.Fetch -> viewModelScope.launch {
                 if (uiState.value.isFetching) return@launch
-                fetchKanji(uiState.value.characters)
+                uiState.value.characters.let { characters ->
+                    if (characters.length == 1)
+                        fetchKanji(event.context, characters)
+                    else fetchCompound(event.context, characters)
+                }
             }
 
             is AddLexemeEvent.Submit -> {
@@ -134,11 +119,52 @@ class AddLexemeViewModel(private val addLexemeUseCases: AddLexemeUseCases) : Vie
         }
     }
 
+    private fun manageFetchedData(data: Any) {
+        when (data) {
+            is ApiKanji -> {
+                _uiState.update { currentUiState ->
+                    currentUiState.copy(
+                        charactersErrorRes = null,
+                        romajiErrorRes = null,
+                        meaning = data.meanings.joinToString().capitalized(),
+                        meaningErrorRes = null,
+                        lastFetchedKanjiMeaning = data.meanings.joinToString().capitalized(),
+                        onyomi = data.onReadings.joinToString(),
+                        onyomiRomaji = data.onReadings.joinToString { it.kanaToRomaji() },
+                        kunyomi = data.kunReadings.joinToString(),
+                        kunyomiRomaji = data.kunReadings.joinToString { it.kanaToRomaji() },
+                        nameReadings = data.nameReadings.joinToString(),
+                        nameReadingsRomaji = data.nameReadings.joinToString { it.kanaToRomaji() },
+                        gradeTaught = data.gradeTaught?.toString() ?: "",
+                        jlptLevel = data.jlptLevel?.toString() ?: "",
+                        useFrequencyIndicator = data.useFrequency?.toString() ?: "",
+                        lastFetch = data.kanji,
+                        isCharactersFetched = data.kanji == currentUiState.characters
+                    )
+                }
+            }
+
+            is Word -> {
+                log("Fetched data: $data")
+                //TODO handle response
+            }
+        }
+    }
+
     private fun fetchKanji(context: Context, characters: String) = viewModelScope.launch {
-        val result = addLexemeUseCases.getKanjiInfo(context, characters)
-        _apiResponse.emit(result)
         _uiState.update { it.copy(isFetching = true) }
 
+        val result = addLexemeUseCases.getKanjiInfo(context, characters)
+        _apiResponse.emit(result)
+
+        _uiState.update { it.copy(isFetching = false) }
+    }
+
+    private fun fetchCompound(context: Context, characters: String) = viewModelScope.launch {
+        _uiState.update { it.copy(isFetching = true) }
+
+        val result = addLexemeUseCases.getCompoundInfo(context, characters)
+        _apiResponse.emit(result)
 
         _uiState.update { it.copy(isFetching = false) }
     }

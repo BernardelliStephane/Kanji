@@ -46,7 +46,7 @@
     <string name="cancel">Cancel</string>
     <string name="confirm">Confirm</string>
     <string name="done">Done</string>
-    <string name="search_kanji">Look for kanji</string>
+    <string name="search_kanji">Search meaning</string>
     <string name="retry">Retry</string>
     <string name="delete">Delete</string>
     <string name="update">Update</string>

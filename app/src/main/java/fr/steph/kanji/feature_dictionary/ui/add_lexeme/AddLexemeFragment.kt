@@ -152,7 +152,7 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
                 when (response) {
                     is Resource.Success -> {
                         binding.stubKanjiForm.viewStub?.inflate()
-                        viewModel.onEvent(AddLexemeEvent.KanjiFetched(response.data!!))
+                        viewModel.onEvent(AddLexemeEvent.DataFetched(response.data!!))
                     }
 
                     is Resource.Failure -> showToast(response.failureMessage)

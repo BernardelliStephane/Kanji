@@ -96,7 +96,7 @@
                     android:layout_marginTop="@dimen/add_lexeme_half_margin"
                     android:backgroundTint="?attr/colorPrimaryVariant"
                     android:text="@string/search_kanji"
-                    android:visibility="@{viewModel.uiState.charactersLoneKanji &amp;&amp; !viewModel.uiState.charactersFetched}" />
+                    android:visibility="@{viewModel.uiState.charactersContainingKanji &amp;&amp; !viewModel.uiState.charactersFetched}" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/romaji_input_layout"

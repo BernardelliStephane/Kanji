@@ -3,13 +3,13 @@ package fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate
 import fr.steph.kanji.core.domain.model.Lexeme
 import fr.steph.kanji.core.domain.enumeration.LexemeType
 import fr.steph.kanji.core.util.extension.capitalized
-import fr.steph.kanji.core.util.extension.hasKanji
 
 data class AddLexemeState(
     var lessonNumber: Long = 0,
     var lessonError: Boolean = false,
     var characters: String = "",
     var charactersErrorRes: Int? = null,
+    var isCharactersContainingKanji: Boolean = false,
     var isCharactersLoneKanji: Boolean = false,
     var romaji: String = "",
     var romajiErrorRes: Int? = null,
@@ -25,7 +25,7 @@ data class AddLexemeState(
     var gradeTaught: String = "",
     var jlptLevel: String = "",
     var useFrequencyIndicator: String = "",
-    var lastFetchedKanji: String? = null,
+    var lastFetch: String? = null,
     var isFetching: Boolean = false,
     var isCharactersFetched: Boolean = false,
     var isUpdating: Boolean = false,
@@ -34,7 +34,7 @@ data class AddLexemeState(
     fun toLexeme(id: Long = 0, creationDate: Long = System.currentTimeMillis()): Lexeme {
         val lexemeType = when {
             isCharactersLoneKanji -> LexemeType.KANJI
-            characters.hasKanji() -> LexemeType.COMPOUND
+            isCharactersContainingKanji -> LexemeType.COMPOUND
             else -> LexemeType.KANA
         }
 
