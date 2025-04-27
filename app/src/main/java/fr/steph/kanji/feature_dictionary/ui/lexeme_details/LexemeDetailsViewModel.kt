@@ -1,5 +1,6 @@
 package fr.steph.kanji.feature_dictionary.ui.lexeme_details
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import fr.steph.kanji.core.ui.util.ApiKanjiResource
@@ -17,8 +18,8 @@ class LexemeDetailsViewModel(
     private val apiResponseChannel = Channel<ApiKanjiResource>()
     val apiResponse = apiResponseChannel.receiveAsFlow()
 
-    fun fetchKanji(characters: String) = viewModelScope.launch {
-        val result = getKanjiInfo(characters)
+    fun fetchKanji(context: Context, characters: String) = viewModelScope.launch {
+        val result = getKanjiInfo(context, characters)
         apiResponseChannel.send(result)
     }
 
