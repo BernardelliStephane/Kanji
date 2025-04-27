@@ -148,7 +148,7 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.kanjiResponse.collectLatest { response ->
+            viewModel.apiResponse.collect { response ->
                 when (response) {
                     is Resource.Success -> {
                         binding.stubKanjiForm.viewStub?.inflate()

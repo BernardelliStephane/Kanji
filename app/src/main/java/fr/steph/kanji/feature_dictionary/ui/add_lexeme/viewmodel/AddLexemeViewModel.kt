@@ -19,7 +19,9 @@ import fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate.AddLexemeState
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
@@ -32,8 +34,8 @@ class AddLexemeViewModel(private val addLexemeUseCases: AddLexemeUseCases) : Vie
     private val _uiState = MutableStateFlow(AddLexemeState())
     val uiState = _uiState.asStateFlow()
 
-    private val kanjiResponseChannel = Channel<ApiKanjiResource>()
-    val kanjiResponse = kanjiResponseChannel.receiveAsFlow()
+    private val _apiResponse = MutableSharedFlow<Resource<ApiKanjiResource>>(extraBufferCapacity = 1)
+    val apiResponse = _apiResponse.asSharedFlow()
 
     private val validationEventChannel = Channel<LexemeResource>()
     val validationEvents = validationEventChannel.receiveAsFlow()
@@ -134,7 +136,7 @@ class AddLexemeViewModel(private val addLexemeUseCases: AddLexemeUseCases) : Vie
 
     private fun fetchKanji(context: Context, characters: String) = viewModelScope.launch {
         val result = addLexemeUseCases.getKanjiInfo(context, characters)
-        kanjiResponseChannel.send(result)
+        _apiResponse.emit(result)
         _uiState.update { it.copy(isFetching = true) }
 
 
