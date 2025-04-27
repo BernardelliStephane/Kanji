@@ -12,6 +12,8 @@
     <string name="connexion_timeout">Connexion timeout</string>
     <string name="network_failure">A network failure occurred.</string>
     <string name="conversion_error">Conversion error</string>
+    <string name="no_matching_word">No matching word was found.</string>
+    <string name="no_kanji_found">The provided characters don\'t contain any kanji.</string>
 
     <!-- Text -->
     <plurals name="translation_count">

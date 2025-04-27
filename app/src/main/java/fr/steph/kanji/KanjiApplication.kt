@@ -10,6 +10,7 @@ import fr.steph.kanji.feature_dictionary.domain.use_case.AddLexemeUseCases
 import fr.steph.kanji.feature_dictionary.domain.use_case.DeleteLexemesFromSelectionUseCase
 import fr.steph.kanji.feature_dictionary.domain.use_case.DictionaryUseCases
 import fr.steph.kanji.feature_dictionary.domain.use_case.FilterLexemesUseCase
+import fr.steph.kanji.feature_dictionary.domain.use_case.GetCompoundInfoUseCase
 import fr.steph.kanji.feature_dictionary.domain.use_case.GetKanjiInfoUseCase
 import fr.steph.kanji.feature_dictionary.domain.use_case.GetLessonsUseCase
 import fr.steph.kanji.feature_dictionary.domain.use_case.GetLexemeByCharactersUseCase
@@ -39,6 +40,7 @@ class KanjiApplication: Application() {
     val addLexemeUseCases by lazy {
         AddLexemeUseCases(
             GetKanjiInfoUseCase(apiRepository),
+            GetCompoundInfoUseCase(apiRepository),
             UpsertLexemeUseCase(lexemeRepository),
             GetLexemeByCharactersUseCase(lexemeRepository),
             GetLessonsUseCase(lessonRepository),
