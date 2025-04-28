@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
 import fr.steph.kanji.KanjiApplication
 import fr.steph.kanji.R
+import fr.steph.kanji.core.data.model.ApiKanji
 import fr.steph.kanji.core.domain.model.LexemeWithLesson
 import fr.steph.kanji.core.ui.util.Resource
 import fr.steph.kanji.core.ui.util.autoCleared
@@ -151,8 +152,9 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
             viewModel.apiResponse.collect { response ->
                 when (response) {
                     is Resource.Success -> {
-                        binding.stubKanjiForm.viewStub?.inflate()
                         viewModel.onEvent(AddLexemeEvent.DataFetched(response.data!!))
+                        if (response.data is ApiKanji)
+                            binding.stubKanjiForm.viewStub?.inflate()
                     }
 
                     is Resource.Failure -> showToast(response.failureMessage)

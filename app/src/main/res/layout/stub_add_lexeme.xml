@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="@{viewModel.uiState.charactersFetched}">
+        android:visibility="@{viewModel.uiState.charactersFetched &amp;&amp; viewModel.uiState.charactersLoneKanji}">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/onyomi_layout"
