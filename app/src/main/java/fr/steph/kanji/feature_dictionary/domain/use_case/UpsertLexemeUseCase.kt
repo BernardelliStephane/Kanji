@@ -47,16 +47,14 @@ class UpsertLexemeUseCase(private val repository: LexemeRepository) {
         val lessonResult = ValidateLexeme.validateLesson(uiState.lessonNumber)
 
         val charactersResult = ValidateLexeme.validateCharacters(
-            uiState.characters, uiState.isCharactersLoneKanji, uiState.isCharactersFetched
+            uiState.characters, uiState.isCharactersFetched
         )
 
         val romajiResult =
-            if (uiState.isCharactersLoneKanji) ValidationResult(successful = true)
+            if (uiState.isCharactersLoneKanji && uiState.isCharactersFetched) ValidationResult(successful = true)
             else ValidateLexeme.validateRomaji(uiState.romaji)
 
-        val meaningResult =
-            if (uiState.isCharactersLoneKanji) ValidationResult(successful = true)
-            else ValidateLexeme.validateMeaning(uiState.meaning)
+        val meaningResult = ValidateLexeme.validateMeaning(uiState.meaning)
 
         return listOf(lessonResult, charactersResult, romajiResult, meaningResult)
     }

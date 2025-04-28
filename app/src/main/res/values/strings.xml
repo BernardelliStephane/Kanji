@@ -81,12 +81,13 @@
     <!-- Form error -->
     <string name="lesson_selection_error">Please select a lesson</string>
     <string name="mandatory_field_error">Mandatory field</string>
-    <string name="kanji_not_fetched_error">Lone kanji must be fetched</string>
+    <string name="characters_not_fetched_error">Kanji(s) meaning(s) must be fetched</string>
     <string name="digits_only_filling_error">Must contain only digits</string>
     <string name="duplicate_lesson_error">A lesson with this number already exists</string>
     <string name="duplicate_characters_error">A translation with these characters already exists. Would you like to update it?</string>
     <string name="roman_letters_only_filling_error">Must contain only roman letters</string>
     <string name="japanese_characters_only_filling_error">Must contain only kanjis, hiraganas and katakanas</string>
+    <string name="no_spaces_allowed_error">Must not contain spaces</string>
 
     <!-- Content description -->
     <string name="filter_translations">Filter translations</string>

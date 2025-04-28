@@ -2,6 +2,7 @@ package fr.steph.kanji.feature_dictionary.domain.util
 
 import fr.steph.kanji.R
 import fr.steph.kanji.core.util.DEFAULT_LESSON_ID
+import fr.steph.kanji.core.util.extension.hasKanji
 import fr.steph.kanji.core.util.extension.isOnlyJapaneseCharacters
 import fr.steph.kanji.core.util.extension.isOnlyRomanCharacters
 import fr.steph.kanji.core.util.extension.isOnlyRomanLetters
@@ -12,14 +13,17 @@ object ValidateLexeme {
         return ValidationResult(successful = lessonNumber != DEFAULT_LESSON_ID)
     }
 
-    fun validateCharacters(characters: String, loneKanji: Boolean, characterFetched: Boolean): ValidationResult {
-        if (loneKanji)
-            return validateLoneKanjiCharacters(characterFetched)
-
+    fun validateCharacters(characters: String, characterFetched: Boolean): ValidationResult {
         if (characters.isBlank())
             return ValidationResult(
                 successful = false,
                 error = R.string.mandatory_field_error
+            )
+
+        if (characters.contains(' '))
+            return ValidationResult(
+                successful = false,
+                error = R.string.no_spaces_allowed_error
             )
 
         if (!characters.isOnlyJapaneseCharacters())
@@ -28,14 +32,10 @@ object ValidateLexeme {
                 error = R.string.japanese_characters_only_filling_error
             )
 
-        return ValidationResult(successful = true)
-    }
-
-    private fun validateLoneKanjiCharacters(characterFetched: Boolean): ValidationResult {
-        if (!characterFetched)
+        if (characters.hasKanji() && !characterFetched)
             return ValidationResult(
                 successful = false,
-                error = R.string.kanji_not_fetched_error
+                error = R.string.characters_not_fetched_error
             )
 
         return ValidationResult(successful = true)
