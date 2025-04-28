@@ -5,8 +5,6 @@
 
     <data>
 
-        <import type="android.text.InputType" />
-
         <import type="android.view.View" />
 
         <variable
@@ -81,9 +79,9 @@
                         android:id="@+id/characters_input"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:focusableInTouchMode="@{!viewModel.uiState.updating}"
                         android:focusable="@{!viewModel.uiState.updating}"
-                        android:inputType="@{viewModel.uiState.updating ? InputType.TYPE_NULL : InputType.TYPE_CLASS_TEXT}"
+                        android:focusableInTouchMode="@{!viewModel.uiState.updating}"
+                        android:inputType="text"
                         android:text="@={viewModel.uiState.characters}" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -113,7 +111,9 @@
                         android:id="@+id/romaji_input"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="text"
+                        android:focusable="@{!viewModel.uiState.charactersFetched}"
+                        android:focusableInTouchMode="@{!viewModel.uiState.charactersFetched}"
+                        android:inputType="textMultiLine"
                         android:text="@={viewModel.uiState.romaji}" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -145,7 +145,7 @@
                         android:layout_height="wrap_content"
                         android:focusable="@{!viewModel.uiState.charactersFetched}"
                         android:focusableInTouchMode="@{!viewModel.uiState.charactersFetched}"
-                        android:inputType="@{viewModel.uiState.charactersFetched ? InputType.TYPE_NULL : InputType.TYPE_CLASS_TEXT}"
+                        android:inputType="textMultiLine"
                         android:text="@={viewModel.uiState.meaning}" />
 
                 </com.google.android.material.textfield.TextInputLayout>
