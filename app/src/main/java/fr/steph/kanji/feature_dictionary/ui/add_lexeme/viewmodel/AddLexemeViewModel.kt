@@ -101,11 +101,7 @@ class AddLexemeViewModel(private val addLexemeUseCases: AddLexemeUseCases) : Vie
 
             is AddLexemeEvent.Fetch -> viewModelScope.launch {
                 if (uiState.value.isFetching) return@launch
-                uiState.value.characters.let { characters ->
-                    if (characters.length == 1)
-                        fetchKanji(event.context, characters)
-                    else fetchCompound(event.context, characters)
-                }
+                fetchCharacters(event.context, uiState.value.characters)
             }
 
             is AddLexemeEvent.Submit -> {
@@ -119,11 +115,23 @@ class AddLexemeViewModel(private val addLexemeUseCases: AddLexemeUseCases) : Vie
         }
     }
 
+    private fun fetchCharacters(context: Context, characters: String) = viewModelScope.launch {
+        _uiState.update { it.copy(isFetching = true) }
+
+        val result =
+            if (characters.length == 1) addLexemeUseCases.getKanjiInfo(context, characters)
+            else addLexemeUseCases.getCompoundInfo(context, characters)
+        _apiResponse.emit(result)
+
+        _uiState.update { it.copy(isFetching = false) }
+    }
+
     private fun manageFetchedData(data: Any) {
         when (data) {
             is ApiKanji -> {
                 _uiState.update { currentUiState ->
                     currentUiState.copy(
+                        characters = data.kanji,
                         charactersErrorRes = null,
                         romajiErrorRes = null,
                         meaning = data.meanings.joinToString().capitalized(),
@@ -144,29 +152,28 @@ class AddLexemeViewModel(private val addLexemeUseCases: AddLexemeUseCases) : Vie
                 }
             }
 
-            is Word -> {
+            is List<*> -> {
                 log("Fetched data: $data")
-                //TODO handle response
+                val allGlosses = (data as List<Word>).flatMap { it.meanings }.flatMap { it.glosses }
+                val allRomaji = data.flatMap { it.variants }.map { it.pronounced }
+                //TODO Get fetched characters
+                val fetchedCharacters = data.first().variants.first().written
+
+                _uiState.update { currentUiState ->
+                    currentUiState.copy(
+                        characters = fetchedCharacters,
+                        charactersErrorRes = null,
+                        romaji = allRomaji.joinToString(),
+                        romajiErrorRes = null,
+                        meaning = allGlosses.joinToString().capitalized(),
+                        meaningErrorRes = null,
+                        lastFetchedKanjiMeaning = allGlosses.joinToString().capitalized(),
+                        lastFetch = fetchedCharacters,
+                        isCharactersFetched = fetchedCharacters == currentUiState.characters
+                    )
+                }
             }
         }
-    }
-
-    private fun fetchKanji(context: Context, characters: String) = viewModelScope.launch {
-        _uiState.update { it.copy(isFetching = true) }
-
-        val result = addLexemeUseCases.getKanjiInfo(context, characters)
-        _apiResponse.emit(result)
-
-        _uiState.update { it.copy(isFetching = false) }
-    }
-
-    private fun fetchCompound(context: Context, characters: String) = viewModelScope.launch {
-        _uiState.update { it.copy(isFetching = true) }
-
-        val result = addLexemeUseCases.getCompoundInfo(context, characters)
-        _apiResponse.emit(result)
-
-        _uiState.update { it.copy(isFetching = false) }
     }
 
     private fun checkDuplicateCharacters(uiState: AddLexemeState, duplicateCallback: (LexemeWithLesson) -> Unit) {
@@ -209,8 +216,8 @@ class AddLexemeViewModel(private val addLexemeUseCases: AddLexemeUseCases) : Vie
         val lexeme = lexemeWithLesson.lexeme
 
         _uiState.update { lexeme.toAddLexemeFormState().copy(isUpdating = true) }
-        if (lexeme.characters.isLoneKanji())
-            fetchKanji(context, uiState.value.characters)
+        if (lexeme.characters.hasKanji())
+            fetchCharacters(context, lexeme.characters)
 
         id = lexeme.id
         creationDate = lexeme.creationDate
