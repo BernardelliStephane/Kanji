@@ -97,13 +97,33 @@
                     android:visibility="@{viewModel.uiState.charactersContainingKanji &amp;&amp; !viewModel.uiState.charactersFetched}" />
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/alternate_characters_input_layout"
+                    style="@style/TextInputLayout.FormField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/add_lexeme_default_margin"
+                    android:hint="@string/alternative_writings_hint"
+                    android:visibility="@{!viewModel.uiState.alternativeWritings.isBlank()}">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/alternate_characters_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:inputType="none"
+                        android:text="@={viewModel.uiState.alternativeWritings}" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/romaji_input_layout"
                     style="@style/TextInputLayout.FormField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/add_lexeme_default_margin"
                     android:hint="@string/romaji_hint"
-                    android:visibility="@{!viewModel.uiState.charactersFetched}"
+                    android:visibility="@{!viewModel.uiState.charactersFetched || !viewModel.uiState.charactersLoneKanji}"
                     app:errorEnabled="@{viewModel.uiState.romajiErrorRes != null}"
                     app:errorRes="@{viewModel.uiState.romajiErrorRes}">
 

@@ -11,6 +11,7 @@ data class AddLexemeState(
     var charactersErrorRes: Int? = null,
     var isCharactersContainingKanji: Boolean = false,
     var isCharactersLoneKanji: Boolean = false,
+    var alternativeWritings: String = "",
     var romaji: String = "",
     var romajiErrorRes: Int? = null,
     var meaning: String = "",

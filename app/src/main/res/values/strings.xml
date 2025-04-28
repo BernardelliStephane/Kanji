@@ -68,15 +68,16 @@
     <string name="romaji_hint">Romaji</string>
     <string name="characters_hint">Characters</string>
     <string name="characters_hint_updating">Characters - Not editable when updating translation</string>
-    <string name="onyomi">On\'yomi reading(s)</string>
-    <string name="onyomi_romaji">On\'yomi reading(s) romaji</string>
-    <string name="kunyomi">Kun\'yomi reading(s)</string>
-    <string name="kunyomi_romaji">Kun\'yomi reading(s) romaji</string>
-    <string name="name_readings">Name reading(s)</string>
-    <string name="name_readings_romaji">Name reading(s) romaji</string>
-    <string name="grade_taught">Grade taught</string>
-    <string name="jlpt_level">JLPT level</string>
-    <string name="use_frequency_indicator">Use frequency indicator</string>
+    <string name="alternative_writings_hint">Alternative writings</string>
+    <string name="onyomi_hint">On\'yomi reading(s)</string>
+    <string name="onyomi_romaji_hint">On\'yomi reading(s) romaji</string>
+    <string name="kunyomi_hint">Kun\'yomi reading(s)</string>
+    <string name="kunyomi_romaji_hint">Kun\'yomi reading(s) romaji</string>
+    <string name="name_readings_hint">Name reading(s)</string>
+    <string name="name_readings_romaji_hint">Name reading(s) romaji</string>
+    <string name="grade_taught_hint">Grade taught</string>
+    <string name="jlpt_level_hint">JLPT level</string>
+    <string name="use_frequency_indicator_hint">Use frequency indicator</string>
 
     <!-- Form error -->
     <string name="lesson_selection_error">Please select a lesson</string>

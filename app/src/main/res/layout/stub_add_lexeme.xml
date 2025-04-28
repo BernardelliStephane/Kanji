@@ -19,7 +19,7 @@
             style="@style/TextInputLayout.FormField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/onyomi"
+            android:hint="@string/onyomi_hint"
             android:visibility="@{!viewModel.uiState.onyomi.isBlank()}">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -39,7 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/add_lexeme_default_margin"
-            android:hint="@string/onyomi_romaji"
+            android:hint="@string/onyomi_romaji_hint"
             android:visibility="@{!viewModel.uiState.onyomiRomaji.isBlank()}">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -59,7 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/add_lexeme_default_margin"
-            android:hint="@string/kunyomi"
+            android:hint="@string/kunyomi_hint"
             android:visibility="@{!viewModel.uiState.kunyomi.isBlank()}">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -79,7 +79,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/add_lexeme_default_margin"
-            android:hint="@string/kunyomi_romaji"
+            android:hint="@string/kunyomi_romaji_hint"
             android:visibility="@{!viewModel.uiState.kunyomiRomaji.isBlank()}">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -99,7 +99,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/add_lexeme_default_margin"
-            android:hint="@string/name_readings"
+            android:hint="@string/name_readings_hint"
             android:visibility="@{!viewModel.uiState.nameReadings.isBlank()}">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -119,7 +119,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/add_lexeme_default_margin"
-            android:hint="@string/name_readings_romaji"
+            android:hint="@string/name_readings_romaji_hint"
             android:visibility="@{!viewModel.uiState.nameReadingsRomaji.isBlank()}">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -139,7 +139,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/add_lexeme_default_margin"
-            android:hint="@string/grade_taught"
+            android:hint="@string/grade_taught_hint"
             android:visibility="@{!viewModel.uiState.gradeTaught.isBlank()}">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -159,7 +159,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/add_lexeme_default_margin"
-            android:hint="@string/jlpt_level"
+            android:hint="@string/jlpt_level_hint"
             android:visibility="@{!viewModel.uiState.jlptLevel.isBlank()}">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -179,7 +179,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/add_lexeme_default_margin"
-            android:hint="@string/use_frequency_indicator"
+            android:hint="@string/use_frequency_indicator_hint"
             android:visibility="@{!viewModel.uiState.useFrequencyIndicator.isBlank()}">
 
             <com.google.android.material.textfield.TextInputEditText

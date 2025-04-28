@@ -155,14 +155,16 @@ class AddLexemeViewModel(private val addLexemeUseCases: AddLexemeUseCases) : Vie
             is List<*> -> {
                 log("Fetched data: $data")
                 val allGlosses = (data as List<Word>).flatMap { it.meanings }.flatMap { it.glosses }
-                val allRomaji = data.flatMap { it.variants }.map { it.pronounced }
+                val allRomaji = data.flatMap { it.variants }.map { it.pronounced }.distinct()
                 //TODO Get fetched characters
                 val fetchedCharacters = data.first().variants.first().written
+                val alternativeWritings = data.flatMap { it.variants }.map { it.written }.filterNot { it == fetchedCharacters }.distinct()
 
                 _uiState.update { currentUiState ->
                     currentUiState.copy(
                         characters = fetchedCharacters,
                         charactersErrorRes = null,
+                        alternativeWritings = alternativeWritings.joinToString(),
                         romaji = allRomaji.joinToString(),
                         romajiErrorRes = null,
                         meaning = allGlosses.joinToString().capitalized(),
