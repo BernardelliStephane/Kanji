@@ -97,16 +97,16 @@
                     android:visibility="@{viewModel.uiState.charactersContainingKanji &amp;&amp; !viewModel.uiState.charactersFetched}" />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/alternate_characters_input_layout"
+                    android:id="@+id/alternative_writings_input_layout"
                     style="@style/TextInputLayout.FormField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/add_lexeme_default_margin"
                     android:hint="@string/alternative_writings_hint"
-                    android:visibility="@{!viewModel.uiState.alternativeWritings.isBlank()}">
+                    android:visibility="@{viewModel.uiState.charactersFetched &amp;&amp; !viewModel.uiState.charactersLoneKanji &amp;&amp; !viewModel.uiState.alternativeWritings.isBlank()}">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/alternate_characters_input"
+                        android:id="@+id/alternative_writings_input"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:focusable="false"
