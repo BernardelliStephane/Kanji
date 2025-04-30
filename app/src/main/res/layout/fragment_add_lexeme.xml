@@ -96,12 +96,22 @@
                     android:text="@string/search_kanji"
                     android:visibility="@{viewModel.uiState.charactersContainingKanji &amp;&amp; !viewModel.uiState.charactersFetched}" />
 
+                <TextView
+                    android:id="@+id/compounds_prefill_warning"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/add_lexeme_half_margin"
+                    android:layout_marginTop="@dimen/add_lexeme_default_margin"
+                    android:text="@string/warning_prefilled_fields"
+                    android:textColor="@color/navy_blue"
+                    android:visibility="@{viewModel.uiState.charactersFetched &amp;&amp; !viewModel.uiState.charactersLoneKanji}" />
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/alternative_writings_input_layout"
                     style="@style/TextInputLayout.FormField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/add_lexeme_default_margin"
+                    android:layout_marginTop="@dimen/add_lexeme_half_margin"
                     android:hint="@string/alternative_writings_hint"
                     android:visibility="@{viewModel.uiState.charactersFetched &amp;&amp; !viewModel.uiState.charactersLoneKanji &amp;&amp; !viewModel.uiState.alternativeWritings.isBlank()}">
 
@@ -122,6 +132,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/add_lexeme_default_margin"
+                    android:layout_marginBottom="@dimen/add_lexeme_default_margin"
                     android:hint="@string/romaji_hint"
                     android:visibility="@{!viewModel.uiState.charactersFetched || !viewModel.uiState.charactersLoneKanji}"
                     app:errorEnabled="@{viewModel.uiState.romajiErrorRes != null}"
@@ -139,25 +150,24 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
-                    android:id="@+id/prefill_warning"
+                    android:id="@+id/lone_kanji_prefill_warning"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/add_lexeme_half_margin"
-                    android:layout_marginTop="@dimen/add_lexeme_default_margin"
+                    android:layout_marginBottom="@dimen/add_lexeme_half_margin"
                     android:text="@string/warning_prefilled_fields"
                     android:textColor="@color/navy_blue"
-                    android:visibility="@{viewModel.uiState.charactersFetched}" />
+                    android:visibility="@{viewModel.uiState.charactersFetched &amp;&amp; viewModel.uiState.charactersLoneKanji}"
+                    tools:visibility="gone" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/meaning_input_layout"
                     style="@style/TextInputLayout.FormField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@{viewModel.uiState.charactersFetched ? @dimen/add_lexeme_half_margin : @dimen/add_lexeme_default_margin}"
                     android:hint="@string/meaning_hint"
                     app:errorEnabled="@{viewModel.uiState.meaningErrorRes != null}"
-                    app:errorRes="@{viewModel.uiState.meaningErrorRes}"
-                    tools:layout_marginTop="@dimen/add_lexeme_half_margin">
+                    app:errorRes="@{viewModel.uiState.meaningErrorRes}">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/meaning_input"
