@@ -30,7 +30,7 @@ fun String.isLoneKanji(): Boolean {
  * Roman letters are defined as letters from the Latin alphabet (a-z), both uppercase and lowercase.
  */
 fun String.isOnlyRomanLetters(): Boolean {
-    val regex = Regex("[a-zA-Z\\s]*")
+    val regex = Regex("[a-zA-Z\\s,]*")
     return regex.matches(this)
 }
 
@@ -41,7 +41,7 @@ fun String.isOnlyRomanLetters(): Boolean {
  * numbers, spaces and punctuation marks.
  */
 fun String.isOnlyRomanCharacters(): Boolean {
-    val regex = Regex("[a-zA-ZÀ-ÿ0-9\\s,.!_\"'–-]*")
+    val regex = Regex("[a-zA-ZÀ-ÿ0-9\\s,.!_\"'()–-]*")
     return regex.matches(this)
 }
 
