@@ -4,6 +4,8 @@ import com.moji4j.MojiConverter
 import java.util.Locale
 import java.util.regex.Pattern
 
+val mojiConverter = MojiConverter()
+
 /**
  * Returns `true` if this string contains one or several Kanji character(s).
  *
@@ -58,7 +60,7 @@ fun String.isOnlyJapaneseCharacters(): Boolean {
  * Converts a string of Kana characters to Romaji.
  */
 fun String.kanaToRomaji(): String {
-    return MojiConverter().convertKanaToRomaji(this)
+    return mojiConverter.convertKanaToRomaji(this)
 }
 
 /**

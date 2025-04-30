@@ -78,7 +78,7 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:4.5.0"
 
     // Moji4j - Kana-Romaji converter
-    implementation "com.andree-surya:moji4j:1.0.0"
+    implementation "com.andree-surya:moji4j:1.2.0"
 
     // Screen size variation management
     implementation 'com.intuit.sdp:sdp-android:1.1.1'
