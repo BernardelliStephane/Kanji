@@ -39,8 +39,13 @@ data class AddLexemeState(
             else -> LexemeType.KANA
         }
 
-        val romaji = if (lexemeType == LexemeType.KANJI)
-            "$onyomiRomaji, $kunyomiRomaji".split(", ").distinct().joinToString(", ")
+        val alternativeWritings =
+            if (lexemeType == LexemeType.COMPOUND)
+                alternativeWritings else ""
+
+        val romaji =
+            if (lexemeType == LexemeType.KANJI)
+                "$onyomiRomaji, $kunyomiRomaji".split(", ").distinct().joinToString(", ")
             else romaji
 
         return Lexeme(
@@ -48,6 +53,7 @@ data class AddLexemeState(
             type = lexemeType,
             lessonNumber = lessonNumber,
             characters = characters,
+            alternativeWritings = alternativeWritings,
             romaji = romaji,
             meaning = meaning.capitalized(),
             creationDate = creationDate

@@ -25,6 +25,7 @@ data class Lexeme(
     val type: LexemeType,
     val lessonNumber: Long,
     val characters: String,
+    val alternativeWritings: String,
     val romaji: String,
     val meaning: String,
     val creationDate: Long,
@@ -34,6 +35,7 @@ data class Lexeme(
             lessonNumber = lessonNumber,
             characters = characters,
             isCharactersLoneKanji = characters.isLoneKanji(),
+            alternativeWritings = alternativeWritings,
             romaji = romaji,
             meaning = meaning
         )
