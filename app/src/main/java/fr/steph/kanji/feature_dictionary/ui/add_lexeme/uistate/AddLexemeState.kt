@@ -40,7 +40,8 @@ data class AddLexemeState(
         }
 
         val romaji = if (lexemeType == LexemeType.KANJI)
-            onyomiRomaji else romaji
+            "$onyomiRomaji, $kunyomiRomaji".split(", ").distinct().joinToString(", ")
+            else romaji
 
         return Lexeme(
             id = id,
