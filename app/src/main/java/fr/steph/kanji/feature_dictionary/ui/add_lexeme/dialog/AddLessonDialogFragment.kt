@@ -8,7 +8,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
-import fr.steph.kanji.KanjiApplication
+import fr.steph.kanji.core.ui.KanjiApplication
 import fr.steph.kanji.R
 import fr.steph.kanji.core.domain.model.Lesson
 import fr.steph.kanji.core.ui.util.LessonResource

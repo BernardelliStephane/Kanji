@@ -17,7 +17,7 @@ import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.selection.StorageStrategy
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
-import fr.steph.kanji.KanjiApplication
+import fr.steph.kanji.core.ui.KanjiApplication
 import fr.steph.kanji.R
 import fr.steph.kanji.core.ui.util.ItemKeyProvider
 import fr.steph.kanji.core.ui.util.Resource

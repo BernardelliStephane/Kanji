@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
-import fr.steph.kanji.KanjiApplication
+import fr.steph.kanji.core.ui.KanjiApplication
 import fr.steph.kanji.R
 import fr.steph.kanji.core.domain.model.Lexeme
 import fr.steph.kanji.core.ui.util.Resource

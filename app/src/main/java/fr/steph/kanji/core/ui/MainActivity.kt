@@ -1,4 +1,4 @@
-package fr.steph.kanji
+package fr.steph.kanji.core.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

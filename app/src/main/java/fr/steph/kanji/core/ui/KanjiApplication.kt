@@ -1,4 +1,4 @@
-package fr.steph.kanji
+package fr.steph.kanji.core.ui
 
 import android.app.Application
 import fr.steph.kanji.core.data.LexemeDatabase

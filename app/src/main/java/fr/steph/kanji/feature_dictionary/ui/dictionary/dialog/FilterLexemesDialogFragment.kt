@@ -7,7 +7,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.selection.SelectionPredicates
 import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.selection.StorageStrategy
-import fr.steph.kanji.KanjiApplication
+import fr.steph.kanji.core.ui.KanjiApplication
 import fr.steph.kanji.R
 import fr.steph.kanji.core.ui.util.ItemKeyProvider
 import fr.steph.kanji.core.ui.util.StretchEdgeEffectFactory
