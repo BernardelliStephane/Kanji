@@ -5,7 +5,7 @@
 
     <data>
 
-        <import type="android.view.View" />
+        <import type="android.text.InputType" />
 
         <variable
             name="viewModel"
@@ -61,7 +61,7 @@
                     android:layout_marginStart="@dimen/_35sdp"
                     android:text="@string/lesson_selection_error"
                     android:textColor="?attr/colorError"
-                    android:visibility="@{viewModel.uiState.lessonError ? View.VISIBLE : View.GONE}"
+                    android:visibility="@{viewModel.uiState.lessonError}"
                     tools:visibility="gone" />
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -145,6 +145,8 @@
                         android:focusable="@{!viewModel.uiState.charactersFetched}"
                         android:focusableInTouchMode="@{!viewModel.uiState.charactersFetched}"
                         android:inputType="textMultiLine"
+                        android:imeOptions="actionNext"
+                        android:rawInputType="@{InputType.TYPE_CLASS_TEXT}"
                         android:text="@={viewModel.uiState.romaji}" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -176,6 +178,8 @@
                         android:focusable="@{!viewModel.uiState.charactersFetched}"
                         android:focusableInTouchMode="@{!viewModel.uiState.charactersFetched}"
                         android:inputType="textMultiLine"
+                        android:imeOptions="actionDone"
+                        android:rawInputType="@{InputType.TYPE_CLASS_TEXT}"
                         android:text="@={viewModel.uiState.meaning}" />
 
                 </com.google.android.material.textfield.TextInputLayout>
