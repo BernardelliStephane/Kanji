@@ -10,7 +10,6 @@ sealed class AddLexemeEvent {
     data class CharactersChanged(val characters: String) : AddLexemeEvent()
     data class RomajiChanged(val romaji: String) : AddLexemeEvent()
     data class MeaningChanged(val meaning: String) : AddLexemeEvent()
-    data class DataFetched(val data: Any) : AddLexemeEvent()
     data class Submit(val duplicateTranslationCallback: (LexemeWithLesson) -> Unit) : AddLexemeEvent()
     data class Fetch(val context: Context) : AddLexemeEvent()
 }

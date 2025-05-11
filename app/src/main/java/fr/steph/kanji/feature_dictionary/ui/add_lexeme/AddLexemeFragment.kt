@@ -152,7 +152,6 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
             viewModel.apiResponse.collect { response ->
                 when (response) {
                     is Resource.Success -> {
-                        viewModel.onEvent(AddLexemeEvent.DataFetched(response.data!!))
                         if (response.data is ApiKanji)
                             binding.stubKanjiForm.viewStub?.inflate()
                     }

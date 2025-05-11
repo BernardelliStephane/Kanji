@@ -97,8 +97,6 @@ class AddLexemeViewModel(private val addLexemeUseCases: AddLexemeUseCases) : Vie
                 }
             }
 
-            is AddLexemeEvent.DataFetched -> manageFetchedData(event.data)
-
             is AddLexemeEvent.Fetch -> viewModelScope.launch {
                 if (uiState.value.isFetching) return@launch
                 fetchCharacters(event.context, uiState.value.characters)
@@ -121,12 +119,16 @@ class AddLexemeViewModel(private val addLexemeUseCases: AddLexemeUseCases) : Vie
         val result =
             if (characters.length == 1) addLexemeUseCases.getKanjiInfo(context, characters)
             else addLexemeUseCases.getCompoundInfo(context, characters)
+
+        if (result is Resource.Success)
+            manageFetchedData(result.data!!, characters)
+
         _apiResponse.emit(result)
 
         _uiState.update { it.copy(isFetching = false) }
     }
 
-    private fun manageFetchedData(data: Any) {
+    private fun manageFetchedData(data: Any, fetchedCharacters: String) {
         when (data) {
             is ApiKanji -> {
                 _uiState.update { currentUiState ->
@@ -156,8 +158,6 @@ class AddLexemeViewModel(private val addLexemeUseCases: AddLexemeUseCases) : Vie
                 log("Fetched data: $data")
                 val allGlosses = (data as List<Word>).flatMap { it.meanings }.flatMap { it.glosses }
                 val allRomaji = data.flatMap { it.variants }.map { it.pronounced.kanaToRomaji() }.distinct()
-                //TODO Get fetched characters
-                val fetchedCharacters = data.first().variants.first().written
                 val alternativeWritings = data.flatMap { it.variants }.map { it.written }.filterNot { it == fetchedCharacters }.distinct()
 
                 _uiState.update { currentUiState ->
