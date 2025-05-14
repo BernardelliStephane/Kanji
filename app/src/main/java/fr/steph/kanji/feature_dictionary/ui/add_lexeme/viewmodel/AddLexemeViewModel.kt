@@ -15,7 +15,6 @@ import fr.steph.kanji.core.util.extension.capitalized
 import fr.steph.kanji.core.util.extension.hasKanji
 import fr.steph.kanji.core.util.extension.isLoneKanji
 import fr.steph.kanji.core.util.extension.kanaToRomaji
-import fr.steph.kanji.core.util.extension.log
 import fr.steph.kanji.feature_dictionary.domain.use_case.AddLexemeUseCases
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate.AddLexemeEvent
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate.AddLexemeState
@@ -132,13 +131,14 @@ class AddLexemeViewModel(private val addLexemeUseCases: AddLexemeUseCases) : Vie
         when (data) {
             is ApiKanji -> {
                 _uiState.update { currentUiState ->
+                    val meanings = data.meanings.joinToString().capitalized()
                     currentUiState.copy(
                         characters = data.kanji,
                         charactersErrorRes = null,
                         romajiErrorRes = null,
-                        meaning = data.meanings.joinToString().capitalized(),
+                        meaning = meanings,
                         meaningErrorRes = null,
-                        lastFetchedKanjiMeaning = data.meanings.joinToString().capitalized(),
+                        lastFetchedKanjiMeaning = meanings,
                         onyomi = data.onReadings.joinToString(),
                         onyomiRomaji = data.onReadings.joinToString { it.kanaToRomaji() },
                         kunyomi = data.kunReadings.joinToString(),
@@ -155,21 +155,35 @@ class AddLexemeViewModel(private val addLexemeUseCases: AddLexemeUseCases) : Vie
             }
 
             is List<*> -> {
-                log("Fetched data: $data")
-                val allGlosses = (data as List<Word>).flatMap { it.meanings }.flatMap { it.glosses }
-                val allRomaji = data.flatMap { it.variants }.map { it.pronounced.kanaToRomaji() }.distinct()
-                val alternativeWritings = data.flatMap { it.variants }.map { it.written }.filterNot { it == fetchedCharacters }.distinct()
+                @Suppress("UNCHECKED_CAST")
+                val words = data as List<Word>
+                
+                val allGlosses = words
+                    .flatMap { it.meanings }
+                    .flatMap { it.glosses }
+                    .distinct().joinToString().capitalized()
+
+                val allRomaji = words.asSequence()
+                    .flatMap { it.variants }
+                    .map { it.pronounced.kanaToRomaji() }
+                    .distinct().joinToString()
+
+                val alternativeWritings = words.asSequence()
+                    .flatMap { it.variants }
+                    .map { it.written }
+                    .filterNot { it == fetchedCharacters }
+                    .distinct().joinToString()
 
                 _uiState.update { currentUiState ->
                     currentUiState.copy(
                         characters = fetchedCharacters,
                         charactersErrorRes = null,
-                        alternativeWritings = alternativeWritings.joinToString(),
-                        romaji = allRomaji.joinToString(),
+                        alternativeWritings = alternativeWritings,
+                        romaji = allRomaji,
                         romajiErrorRes = null,
-                        meaning = allGlosses.joinToString().capitalized(),
+                        meaning = allGlosses,
                         meaningErrorRes = null,
-                        lastFetchedKanjiMeaning = allGlosses.joinToString().capitalized(),
+                        lastFetchedKanjiMeaning = allGlosses,
                         lastFetch = fetchedCharacters,
                         isCharactersFetched = fetchedCharacters == currentUiState.characters
                     )
