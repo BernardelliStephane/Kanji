@@ -102,6 +102,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/add_lexeme_half_margin"
                     android:layout_marginTop="@dimen/add_lexeme_default_margin"
+                    android:layout_marginBottom="@dimen/_minus10sdp"
                     android:text="@string/warning_prefilled_fields"
                     android:textColor="@color/navy_blue"
                     android:visibility="@{viewModel.uiState.charactersFetched &amp;&amp; !viewModel.uiState.charactersLoneKanji}" />
@@ -111,7 +112,7 @@
                     style="@style/TextInputLayout.FormField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/add_lexeme_half_margin"
+                    android:layout_marginTop="@dimen/add_lexeme_default_margin"
                     android:hint="@string/alternative_writings_hint"
                     android:visibility="@{viewModel.uiState.charactersFetched &amp;&amp; !viewModel.uiState.charactersLoneKanji &amp;&amp; !viewModel.uiState.alternativeWritings.isBlank()}">
 
@@ -144,8 +145,8 @@
                         android:layout_height="wrap_content"
                         android:focusable="@{!viewModel.uiState.charactersFetched}"
                         android:focusableInTouchMode="@{!viewModel.uiState.charactersFetched}"
-                        android:inputType="textMultiLine"
                         android:imeOptions="actionNext"
+                        android:inputType="textMultiLine"
                         android:rawInputType="@{InputType.TYPE_CLASS_TEXT}"
                         android:text="@={viewModel.uiState.romaji}" />
 
@@ -156,6 +157,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/add_lexeme_half_margin"
+                    android:layout_marginTop="@dimen/add_lexeme_default_margin"
                     android:layout_marginBottom="@dimen/add_lexeme_half_margin"
                     android:text="@string/warning_prefilled_fields"
                     android:textColor="@color/navy_blue"
@@ -177,8 +179,8 @@
                         android:layout_height="wrap_content"
                         android:focusable="@{!viewModel.uiState.charactersFetched}"
                         android:focusableInTouchMode="@{!viewModel.uiState.charactersFetched}"
-                        android:inputType="textMultiLine"
                         android:imeOptions="actionDone"
+                        android:inputType="textMultiLine"
                         android:rawInputType="@{InputType.TYPE_CLASS_TEXT}"
                         android:text="@={viewModel.uiState.meaning}" />
 
