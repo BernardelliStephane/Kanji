@@ -147,14 +147,13 @@ class AddLexemeViewModel(private val addLexemeUseCases: AddLexemeUseCases) : Vie
                 gradeTaught = data.gradeTaught?.toString() ?: "",
                 jlptLevel = data.jlptLevel?.toString() ?: "",
                 useFrequencyIndicator = data.useFrequency?.toString() ?: "",
-                lastFetch = data.kanji,
                 isCharactersFetched = data.kanji == currentUiState.characters
             )
         }
     }
 
     fun manageFetchedCompound(word: Word) {
-        val fetchedCharacters = uiState.value.lastFetch ?: "Error retrieving characters"
+        val fetchedCharacters = uiState.value.lastFetch!!
         val glosses = word.meanings
             .flatMap { it.glosses }
             .distinct().joinToString().capitalized()
@@ -178,7 +177,6 @@ class AddLexemeViewModel(private val addLexemeUseCases: AddLexemeUseCases) : Vie
                 meaning = glosses,
                 meaningErrorRes = null,
                 lastFetchedKanjiMeaning = glosses,
-                lastFetch = fetchedCharacters,
                 isCharactersFetched = fetchedCharacters == currentUiState.characters
             )
         }
