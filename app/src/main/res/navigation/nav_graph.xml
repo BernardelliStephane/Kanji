@@ -36,7 +36,13 @@
         android:id="@+id/addLexemeFragment"
         android:name="fr.steph.kanji.feature_dictionary.ui.add_lexeme.AddLexemeFragment"
         android:label="AddLexemeFragment"
-        tools:layout="@layout/fragment_add_lexeme" />
+        tools:layout="@layout/fragment_add_lexeme">
+
+        <action
+            android:id="@+id/action_addLexemeFragment_to_wordSelectionFragment"
+            app:destination="@id/wordSelectionFragment" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/lexemeDetailsFragment"
@@ -47,6 +53,18 @@
         <argument
             android:name="lexeme"
             app:argType="fr.steph.kanji.core.domain.model.Lexeme" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/wordSelectionFragment"
+        android:name="fr.steph.kanji.feature_dictionary.ui.add_lexeme.WordSelectionFragment"
+        android:label="WordSelectionFragment"
+        tools:layout="@layout/fragment_word_selection">
+
+        <argument
+            android:name="words"
+            app:argType="string" />
 
     </fragment>
 
