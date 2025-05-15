@@ -27,6 +27,16 @@ fun String.isLoneKanji(): Boolean {
 }
 
 /**
+ * Returns `true` if this string contains one (or several) Kanji characters while
+ * containing multiple characters.
+ *
+ * See [isKanji] for the definition of a Kanji character.
+ */
+fun String.isCompound(): Boolean {
+    return length > 1 && hasKanji()
+}
+
+/**
  * Returns `true` if this string contains only roman letters and spaces.
  *
  * Roman letters are defined as letters from the Latin alphabet (a-z), both uppercase and lowercase.

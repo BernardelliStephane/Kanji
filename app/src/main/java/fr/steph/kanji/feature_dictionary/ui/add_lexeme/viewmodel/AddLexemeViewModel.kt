@@ -13,6 +13,7 @@ import fr.steph.kanji.core.ui.util.LexemeResource
 import fr.steph.kanji.core.ui.util.Resource
 import fr.steph.kanji.core.util.extension.capitalized
 import fr.steph.kanji.core.util.extension.hasKanji
+import fr.steph.kanji.core.util.extension.isCompound
 import fr.steph.kanji.core.util.extension.isLoneKanji
 import fr.steph.kanji.core.util.extension.kanaToRomaji
 import fr.steph.kanji.feature_dictionary.domain.use_case.AddLexemeUseCases
@@ -120,75 +121,66 @@ class AddLexemeViewModel(private val addLexemeUseCases: AddLexemeUseCases) : Vie
             else addLexemeUseCases.getCompoundInfo(context, characters)
 
         if (result is Resource.Success)
-            manageFetchedData(result.data!!, characters)
+            _uiState.update { it.copy(lastFetch = characters) }
 
         _apiResponse.emit(result)
 
         _uiState.update { it.copy(isFetching = false) }
     }
 
-    private fun manageFetchedData(data: Any, fetchedCharacters: String) {
-        when (data) {
-            is ApiKanji -> {
-                _uiState.update { currentUiState ->
-                    val meanings = data.meanings.joinToString().capitalized()
-                    currentUiState.copy(
-                        characters = data.kanji,
-                        charactersErrorRes = null,
-                        romajiErrorRes = null,
-                        meaning = meanings,
-                        meaningErrorRes = null,
-                        lastFetchedKanjiMeaning = meanings,
-                        onyomi = data.onReadings.joinToString(),
-                        onyomiRomaji = data.onReadings.joinToString { it.kanaToRomaji() },
-                        kunyomi = data.kunReadings.joinToString(),
-                        kunyomiRomaji = data.kunReadings.joinToString { it.kanaToRomaji() },
-                        nameReadings = data.nameReadings.joinToString(),
-                        nameReadingsRomaji = data.nameReadings.joinToString { it.kanaToRomaji() },
-                        gradeTaught = data.gradeTaught?.toString() ?: "",
-                        jlptLevel = data.jlptLevel?.toString() ?: "",
-                        useFrequencyIndicator = data.useFrequency?.toString() ?: "",
-                        lastFetch = data.kanji,
-                        isCharactersFetched = data.kanji == currentUiState.characters
-                    )
-                }
-            }
+    fun manageFetchedKanji(data: ApiKanji) {
+        _uiState.update { currentUiState ->
+            val meanings = data.meanings.joinToString().capitalized()
+            currentUiState.copy(
+                characters = data.kanji,
+                charactersErrorRes = null,
+                romajiErrorRes = null,
+                meaning = meanings,
+                meaningErrorRes = null,
+                lastFetchedKanjiMeaning = meanings,
+                onyomi = data.onReadings.joinToString(),
+                onyomiRomaji = data.onReadings.joinToString { it.kanaToRomaji() },
+                kunyomi = data.kunReadings.joinToString(),
+                kunyomiRomaji = data.kunReadings.joinToString { it.kanaToRomaji() },
+                nameReadings = data.nameReadings.joinToString(),
+                nameReadingsRomaji = data.nameReadings.joinToString { it.kanaToRomaji() },
+                gradeTaught = data.gradeTaught?.toString() ?: "",
+                jlptLevel = data.jlptLevel?.toString() ?: "",
+                useFrequencyIndicator = data.useFrequency?.toString() ?: "",
+                lastFetch = data.kanji,
+                isCharactersFetched = data.kanji == currentUiState.characters
+            )
+        }
+    }
 
-            is List<*> -> {
-                @Suppress("UNCHECKED_CAST")
-                val words = data as List<Word>
-                
-                val allGlosses = words
-                    .flatMap { it.meanings }
-                    .flatMap { it.glosses }
-                    .distinct().joinToString().capitalized()
+    fun manageFetchedCompound(word: Word) {
+        val fetchedCharacters = uiState.value.lastFetch ?: "Error retrieving characters"
+        val glosses = word.meanings
+            .flatMap { it.glosses }
+            .distinct().joinToString().capitalized()
 
-                val allRomaji = words.asSequence()
-                    .flatMap { it.variants }
-                    .map { it.pronounced.kanaToRomaji() }
-                    .distinct().joinToString()
+        val romaji = word.variants
+            .map { it.pronounced.kanaToRomaji() }
+            .distinct().joinToString()
 
-                val alternativeWritings = words.asSequence()
-                    .flatMap { it.variants }
-                    .map { it.written }
-                    .filterNot { it == fetchedCharacters }
-                    .distinct().joinToString()
+        val alternativeWritings = word.variants
+            .map { it.written }
+            .filterNot { it == fetchedCharacters }
+            .distinct().joinToString()
 
-                _uiState.update { currentUiState ->
-                    currentUiState.copy(
-                        characters = fetchedCharacters,
-                        charactersErrorRes = null,
-                        alternativeWritings = alternativeWritings,
-                        romaji = allRomaji,
-                        romajiErrorRes = null,
-                        meaning = allGlosses,
-                        meaningErrorRes = null,
-                        lastFetchedKanjiMeaning = allGlosses,
-                        lastFetch = fetchedCharacters,
-                        isCharactersFetched = fetchedCharacters == currentUiState.characters
-                    )
-                }
-            }
+        _uiState.update { currentUiState ->
+            currentUiState.copy(
+                characters = fetchedCharacters,
+                charactersErrorRes = null,
+                alternativeWritings = alternativeWritings,
+                romaji = romaji,
+                romajiErrorRes = null,
+                meaning = glosses,
+                meaningErrorRes = null,
+                lastFetchedKanjiMeaning = glosses,
+                lastFetch = fetchedCharacters,
+                isCharactersFetched = fetchedCharacters == currentUiState.characters
+            )
         }
     }
 
@@ -202,7 +194,10 @@ class AddLexemeViewModel(private val addLexemeUseCases: AddLexemeUseCases) : Vie
                 }
             }
             .doOnSuccess { // Matching lexeme found
-                duplicateCallback.invoke(it)
+                if (uiState.characters.isCompound() && it.lexeme.romaji != uiState.romaji)
+                    submitData()
+
+                else duplicateCallback.invoke(it)
             }
             .doOnComplete { // No matching lexeme found
                 submitData()
@@ -252,4 +247,6 @@ class AddLexemeViewModel(private val addLexemeUseCases: AddLexemeUseCases) : Vie
     fun resetAddedLesson() {
         addedLesson = null
     }
+
+    fun isUpdating() = uiState.value.isUpdating
 }

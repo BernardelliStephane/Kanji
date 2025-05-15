@@ -8,10 +8,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
+import com.google.gson.Gson
 import fr.steph.kanji.core.ui.KanjiApplication
 import fr.steph.kanji.R
 import fr.steph.kanji.core.data.model.ApiKanji
+import fr.steph.kanji.core.data.model.Word
 import fr.steph.kanji.core.domain.model.LexemeWithLesson
 import fr.steph.kanji.core.ui.util.Resource
 import fr.steph.kanji.core.ui.util.autoCleared
@@ -20,6 +23,7 @@ import fr.steph.kanji.core.util.ADD_LESSON_DIALOG_TAG
 import fr.steph.kanji.core.util.LEXEME_UPDATE_DIALOG_TAG
 import fr.steph.kanji.core.util.extension.hideSpinnerDropDown
 import fr.steph.kanji.core.util.extension.navigateUp
+import fr.steph.kanji.core.util.extension.safeNavigate
 import fr.steph.kanji.core.util.extension.setMaxVisibleItems
 import fr.steph.kanji.core.util.extension.showToast
 import fr.steph.kanji.databinding.FragmentAddLexemeBinding
@@ -78,7 +82,7 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
 
     private fun setupListeners() {
         binding.lessonSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 viewModel.onEvent(AddLexemeEvent.LessonChanged(id))
             }
 
@@ -120,6 +124,11 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
                 handleDuplicateCharacters(it)
             })
         }
+
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Word>("selectedWord")
+            ?.observe(viewLifecycleOwner) { selectedWord ->
+                viewModel.manageFetchedCompound(selectedWord)
+            }
     }
 
     private fun handleDuplicateCharacters(duplicateLexeme: LexemeWithLesson) {
@@ -152,8 +161,16 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
             viewModel.apiResponse.collect { response ->
                 when (response) {
                     is Resource.Success -> {
-                        if (response.data is ApiKanji)
+                        if (response.data is ApiKanji) {
+                            viewModel.manageFetchedKanji(response.data)
                             binding.stubKanjiForm.viewStub?.inflate()
+                        }
+
+                        else if (!viewModel.isUpdating()) {
+                            val wordsJson = Gson().toJson(response.data)
+                            val action = AddLexemeFragmentDirections.actionAddLexemeFragmentToWordSelectionFragment(wordsJson)
+                            safeNavigate(action)
+                        }
                     }
 
                     is Resource.Failure -> showToast(response.failureMessage)
