@@ -1,21 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    android:elevation="4dp"
-    android:padding="8dp">
+    android:layout_marginHorizontal="4dp"
+    android:layout_marginVertical="8dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:padding="8dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/_10sdp">
 
         <TextView
-            android:id="@+id/writtenText"
+            android:id="@+id/writingText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Written"
+            android:text="Writing"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -23,7 +30,7 @@
             android:id="@+id/pronouncedText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Pronounced"
+            android:text="Pronunciation"
             android:textSize="16sp" />
 
         <TextView
@@ -34,10 +41,11 @@
             android:textSize="14sp" />
 
         <TextView
-            android:id="@+id/glossesText"
+            android:id="@+id/meaningText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Glosses"
+            android:layout_marginTop="4dp"
+            android:text="Meaning"
             android:textSize="14sp" />
 
     </LinearLayout>

@@ -39,8 +39,8 @@
         tools:layout="@layout/fragment_add_lexeme">
 
         <action
-            android:id="@+id/action_addLexemeFragment_to_wordSelectionFragment"
-            app:destination="@id/wordSelectionFragment" />
+            android:id="@+id/action_addLexemeFragment_to_translationSelectionFragment"
+            app:destination="@id/translationSelectionFragment" />
 
     </fragment>
 
@@ -57,13 +57,13 @@
     </fragment>
 
     <fragment
-        android:id="@+id/wordSelectionFragment"
-        android:name="fr.steph.kanji.feature_dictionary.ui.add_lexeme.WordSelectionFragment"
-        android:label="WordSelectionFragment"
-        tools:layout="@layout/fragment_word_selection">
+        android:id="@+id/translationSelectionFragment"
+        android:name="fr.steph.kanji.feature_dictionary.ui.add_lexeme.TranslationSelectionFragment"
+        android:label="TranslationSelectionFragment"
+        tools:layout="@layout/fragment_translation_selection">
 
         <argument
-            android:name="words"
+            android:name="translations"
             app:argType="string" />
 
     </fragment>

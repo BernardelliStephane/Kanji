@@ -14,7 +14,7 @@ import com.google.gson.Gson
 import fr.steph.kanji.core.ui.KanjiApplication
 import fr.steph.kanji.R
 import fr.steph.kanji.core.data.model.ApiKanji
-import fr.steph.kanji.core.data.model.Word
+import fr.steph.kanji.core.data.model.jisho.Jisho
 import fr.steph.kanji.core.domain.model.LexemeWithLesson
 import fr.steph.kanji.core.ui.util.Resource
 import fr.steph.kanji.core.ui.util.autoCleared
@@ -125,9 +125,9 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
             })
         }
 
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Word>("selectedWord")
-            ?.observe(viewLifecycleOwner) { selectedWord ->
-                viewModel.manageFetchedCompound(selectedWord)
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Jisho>("selectedTranslation")
+            ?.observe(viewLifecycleOwner) { selectedTranslation ->
+                viewModel.manageFetchedCompound(selectedTranslation)
             }
     }
 
@@ -167,8 +167,8 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
                         }
 
                         else if (!viewModel.isUpdating()) {
-                            val wordsJson = Gson().toJson(response.data)
-                            val action = AddLexemeFragmentDirections.actionAddLexemeFragmentToWordSelectionFragment(wordsJson)
+                            val responseData = Gson().toJson(response.data)
+                            val action = AddLexemeFragmentDirections.actionAddLexemeFragmentToTranslationSelectionFragment(responseData)
                             safeNavigate(action)
                         }
                     }

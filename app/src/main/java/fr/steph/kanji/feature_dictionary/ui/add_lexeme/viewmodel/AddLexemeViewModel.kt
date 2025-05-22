@@ -6,7 +6,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import fr.steph.kanji.R
 import fr.steph.kanji.core.data.model.ApiKanji
-import fr.steph.kanji.core.data.model.Word
+import fr.steph.kanji.core.data.model.jisho.Jisho
 import fr.steph.kanji.core.domain.model.Lesson
 import fr.steph.kanji.core.domain.model.LexemeWithLesson
 import fr.steph.kanji.core.ui.util.LexemeResource
@@ -152,18 +152,19 @@ class AddLexemeViewModel(private val addLexemeUseCases: AddLexemeUseCases) : Vie
         }
     }
 
-    fun manageFetchedCompound(word: Word) {
+    fun manageFetchedCompound(translation: Jisho) {
         val fetchedCharacters = uiState.value.lastFetch!!
-        val glosses = word.meanings
-            .flatMap { it.glosses }
+
+        val meanings = translation.senses
+            .flatMap { it.meaning }
             .distinct().joinToString().capitalized()
 
-        val romaji = word.variants
-            .map { it.pronounced.kanaToRomaji() }
+        val romaji = translation.writings
+            .map { it.reading.kanaToRomaji() }
             .distinct().joinToString()
 
-        val alternativeWritings = word.variants
-            .map { it.written }
+        val alternativeWritings = translation.writings
+            .map { it.word }
             .filterNot { it == fetchedCharacters }
             .distinct().joinToString()
 
@@ -174,9 +175,9 @@ class AddLexemeViewModel(private val addLexemeUseCases: AddLexemeUseCases) : Vie
                 alternativeWritings = alternativeWritings,
                 romaji = romaji,
                 romajiErrorRes = null,
-                meaning = glosses,
+                meaning = meanings,
                 meaningErrorRes = null,
-                lastFetchedKanjiMeaning = glosses,
+                lastFetchedKanjiMeaning = meanings,
                 isCharactersFetched = fetchedCharacters == currentUiState.characters
             )
         }
