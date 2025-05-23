@@ -171,9 +171,10 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
                             binding.stubKanjiForm.viewStub?.inflate()
                         }
 
-                        else if (!viewModel.isUpdating()) {
-                            val responseData = Gson().toJson(response.data)
-                            val action = AddLexemeFragmentDirections.actionAddLexemeFragmentToTranslationSelectionFragment(responseData)
+                        else if (response.data is JishoResponse && !viewModel.isUpdating()) {
+                            val translations = response.data.translations.sortedBy { !it.isCommon }
+                            val translationsJson = Gson().toJson(translations)
+                            val action = AddLexemeFragmentDirections.actionAddLexemeFragmentToTranslationSelectionFragment(translationsJson)
                             safeNavigate(action)
                         }
                     }

@@ -10,7 +10,7 @@ import fr.steph.kanji.core.util.extension.kanaToRomaji
 import fr.steph.kanji.databinding.ItemTranslationBinding
 
 class TranslationAdapter(
-    private var translationList: List<Jisho> = emptyList(),
+    private val translationList: List<Jisho>,
     private val onTranslationSelected: (Jisho?) -> Unit
 ) : RecyclerView.Adapter<TranslationAdapter.TranslationViewHolder>() {
 
@@ -54,15 +54,8 @@ class TranslationAdapter(
             binding.romajiText.text = translation.writings.map { it.reading.kanaToRomaji() }.distinct().joinToString()
             binding.meaningText.text = translation.senses.flatMap { it.meaning }.distinct().joinToString()
 
-//            binding.writingText.text = word.variants.distinct().joinToString { it.written }
-//            binding.pronouncedText.text = word.variants.distinct().joinToString { it.pronounced }
-//            binding.romajiText.text = word.variants.distinct().joinToString { it.pronounced.kanaToRomaji() }
-//            binding.meaningText.text = word.meanings.flatMap { it.glosses }.distinct().joinToString()
-
-            if (isSelected)
-                binding.root.setCardBackgroundColor(ContextCompat.getColor(itemView.context, R.color.grey))
-            else
-                binding.root.setCardBackgroundColor(ContextCompat.getColor(itemView.context, R.color.white))
+            val cardBackgroundColor = if (isSelected) R.color.grey else R.color.white
+            binding.root.setCardBackgroundColor(ContextCompat.getColor(itemView.context, cardBackgroundColor))
         }
     }
 }

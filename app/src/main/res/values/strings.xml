@@ -37,6 +37,7 @@
     <string name="sort_by">Sort by</string>
     <string name="sort_order">Sort order</string>
     <string name="warning_prefilled_fields">Below fields have been pre-filled and can\'t be edited</string>
+    <string name="translation_selection">The below translation(s) match your search.\nPlease select the one you were looking for.</string>
 
     <!-- Button text-->
     <string name="dictionary">Dictionary</string>
