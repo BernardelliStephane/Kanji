@@ -82,7 +82,7 @@
                         android:focusable="@{!viewModel.uiState.updating}"
                         android:focusableInTouchMode="@{!viewModel.uiState.updating}"
                         android:inputType="text"
-                        android:text="@={viewModel.uiState.characters}" />
+                        android:text="@{viewModel.uiState.characters}" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -123,7 +123,7 @@
                         android:focusable="false"
                         android:focusableInTouchMode="false"
                         android:inputType="none"
-                        android:text="@={viewModel.uiState.alternativeWritings}" />
+                        android:text="@{viewModel.uiState.alternativeWritings}" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -148,7 +148,7 @@
                         android:imeOptions="actionNext"
                         android:inputType="textMultiLine"
                         android:rawInputType="@{InputType.TYPE_CLASS_TEXT}"
-                        android:text="@={viewModel.uiState.romaji}" />
+                        android:text="@{viewModel.uiState.romaji}" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -182,7 +182,7 @@
                         android:imeOptions="actionDone"
                         android:inputType="textMultiLine"
                         android:rawInputType="@{InputType.TYPE_CLASS_TEXT}"
-                        android:text="@={viewModel.uiState.meaning}" />
+                        android:text="@{viewModel.uiState.meaning}" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 

@@ -29,7 +29,7 @@
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:inputType="none"
-                android:text="@={viewModel.uiState.onyomi}" />
+                android:text="@{viewModel.uiState.onyomi}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -49,7 +49,7 @@
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:inputType="none"
-                android:text="@={viewModel.uiState.onyomiRomaji}" />
+                android:text="@{viewModel.uiState.onyomiRomaji}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -69,7 +69,7 @@
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:inputType="none"
-                android:text="@={viewModel.uiState.kunyomi}" />
+                android:text="@{viewModel.uiState.kunyomi}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -89,7 +89,7 @@
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:inputType="none"
-                android:text="@={viewModel.uiState.kunyomiRomaji}" />
+                android:text="@{viewModel.uiState.kunyomiRomaji}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -109,7 +109,7 @@
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:inputType="none"
-                android:text="@={viewModel.uiState.nameReadings}" />
+                android:text="@{viewModel.uiState.nameReadings}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -129,7 +129,7 @@
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:inputType="none"
-                android:text="@={viewModel.uiState.nameReadingsRomaji}" />
+                android:text="@{viewModel.uiState.nameReadingsRomaji}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -149,7 +149,7 @@
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:inputType="none"
-                android:text="@={viewModel.uiState.gradeTaught}" />
+                android:text="@{viewModel.uiState.gradeTaught}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -169,7 +169,7 @@
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:inputType="none"
-                android:text="@={viewModel.uiState.jlptLevel}" />
+                android:text="@{viewModel.uiState.jlptLevel}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -189,7 +189,7 @@
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:inputType="none"
-                android:text="@={viewModel.uiState.useFrequencyIndicator}" />
+                android:text="@{viewModel.uiState.useFrequencyIndicator}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

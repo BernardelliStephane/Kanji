@@ -3,35 +3,42 @@ package fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate
 import fr.steph.kanji.core.domain.model.Lexeme
 import fr.steph.kanji.core.domain.enumeration.LexemeType
 import fr.steph.kanji.core.util.extension.capitalized
+import fr.steph.kanji.core.util.extension.hasKanji
+import fr.steph.kanji.core.util.extension.isLoneKanji
 
 data class AddLexemeState(
-    var lessonNumber: Long = 0,
-    var lessonError: Boolean = false,
-    var characters: String = "",
-    var charactersErrorRes: Int? = null,
-    var isCharactersContainingKanji: Boolean = false,
-    var isCharactersLoneKanji: Boolean = false,
-    var alternativeWritings: String = "",
-    var romaji: String = "",
-    var romajiErrorRes: Int? = null,
-    var meaning: String = "",
-    var meaningErrorRes: Int? = null,
-    var lastFetchedKanjiMeaning: String = "",
-    var onyomi: String = "",
-    var onyomiRomaji: String = "",
-    var kunyomi: String = "",
-    var kunyomiRomaji: String = "",
-    var nameReadings: String = "",
-    var nameReadingsRomaji: String = "",
-    var gradeTaught: String = "",
-    var jlptLevel: String = "",
-    var useFrequencyIndicator: String = "",
-    var lastFetch: String? = null,
-    var isFetching: Boolean = false,
-    var isCharactersFetched: Boolean = false,
-    var isUpdating: Boolean = false,
-    var isSubmitting: Boolean = false,
+    val lessonNumber: Long = 0,
+    val lessonError: Boolean = false,
+    val characters: String = "",
+    val charactersErrorRes: Int? = null,
+    val alternativeWritings: String = "",
+    val romaji: String = "",
+    val romajiErrorRes: Int? = null,
+    val meaning: String = "",
+    val meaningErrorRes: Int? = null,
+    val onyomi: String = "",
+    val onyomiRomaji: String = "",
+    val kunyomi: String = "",
+    val kunyomiRomaji: String = "",
+    val nameReadings: String = "",
+    val nameReadingsRomaji: String = "",
+    val gradeTaught: String = "",
+    val jlptLevel: String = "",
+    val useFrequencyIndicator: String = "",
+    val lastFetch: String? = null,
+    val lastFetchMeaning: String = "",
+    val lastFetchRomaji: String = "",
+    val isFetching: Boolean = false,
+    val isUpdating: Boolean = false,
+    val isSubmitting: Boolean = false,
 ) {
+    val isCharactersContainingKanji: Boolean
+        get() = characters.hasKanji()
+    val isCharactersLoneKanji: Boolean
+        get() = characters.isLoneKanji()
+    val isCharactersFetched: Boolean
+        get() = characters == lastFetch
+
     fun toLexeme(id: Long = 0, creationDate: Long = System.currentTimeMillis()): Lexeme {
         val lexemeType = when {
             isCharactersLoneKanji -> LexemeType.KANJI

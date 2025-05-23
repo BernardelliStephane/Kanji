@@ -34,7 +34,6 @@ data class Lexeme(
         AddLexemeState(
             lessonNumber = lessonNumber,
             characters = characters,
-            isCharactersLoneKanji = characters.isLoneKanji(),
             alternativeWritings = alternativeWritings,
             romaji = romaji,
             meaning = meaning

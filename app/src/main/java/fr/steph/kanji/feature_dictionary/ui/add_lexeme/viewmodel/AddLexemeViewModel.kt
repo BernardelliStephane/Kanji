@@ -14,7 +14,6 @@ import fr.steph.kanji.core.ui.util.Resource
 import fr.steph.kanji.core.util.extension.capitalized
 import fr.steph.kanji.core.util.extension.hasKanji
 import fr.steph.kanji.core.util.extension.isCompound
-import fr.steph.kanji.core.util.extension.isLoneKanji
 import fr.steph.kanji.core.util.extension.kanaToRomaji
 import fr.steph.kanji.feature_dictionary.domain.use_case.AddLexemeUseCases
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate.AddLexemeEvent
@@ -64,17 +63,20 @@ class AddLexemeViewModel(private val addLexemeUseCases: AddLexemeUseCases) : Vie
                 _uiState.update { currentUiState ->
                     val charactersFetched = event.characters == currentUiState.lastFetch
                     // Update meaning depending on if the characters were fetched
-                    val meaning = if (charactersFetched) currentUiState.lastFetchedKanjiMeaning
+                    val meaning =
+                        if (charactersFetched) currentUiState.lastFetchMeaning
                         else if (currentUiState.isCharactersFetched) ""
                         else currentUiState.meaning
+
+                    val romaji =
+                        if (charactersFetched && event.characters.isCompound()) currentUiState.lastFetchRomaji
+                        else currentUiState.romaji
 
                     currentUiState.copy(
                         characters = event.characters,
                         charactersErrorRes = null,
                         meaning = meaning,
-                        isCharactersContainingKanji = event.characters.hasKanji(),
-                        isCharactersLoneKanji = event.characters.isLoneKanji(),
-                        isCharactersFetched = charactersFetched,
+                        romaji = romaji,
                     )
                 }
             }
@@ -137,7 +139,6 @@ class AddLexemeViewModel(private val addLexemeUseCases: AddLexemeUseCases) : Vie
                 romajiErrorRes = null,
                 meaning = meanings,
                 meaningErrorRes = null,
-                lastFetchedKanjiMeaning = meanings,
                 onyomi = data.onReadings.joinToString(),
                 onyomiRomaji = data.onReadings.joinToString { it.kanaToRomaji() },
                 kunyomi = data.kunReadings.joinToString(),
@@ -147,7 +148,8 @@ class AddLexemeViewModel(private val addLexemeUseCases: AddLexemeUseCases) : Vie
                 gradeTaught = data.gradeTaught?.toString() ?: "",
                 jlptLevel = data.jlptLevel?.toString() ?: "",
                 useFrequencyIndicator = data.useFrequency?.toString() ?: "",
-                isCharactersFetched = data.kanji == currentUiState.characters
+                lastFetch = data.kanji,
+                lastFetchMeaning = meanings
             )
         }
     }
@@ -174,11 +176,11 @@ class AddLexemeViewModel(private val addLexemeUseCases: AddLexemeUseCases) : Vie
                 charactersErrorRes = null,
                 alternativeWritings = alternativeWritings,
                 romaji = romaji,
+                lastFetchRomaji = romaji,
                 romajiErrorRes = null,
                 meaning = meanings,
                 meaningErrorRes = null,
-                lastFetchedKanjiMeaning = meanings,
-                isCharactersFetched = fetchedCharacters == currentUiState.characters
+                lastFetchMeaning = meanings
             )
         }
     }
