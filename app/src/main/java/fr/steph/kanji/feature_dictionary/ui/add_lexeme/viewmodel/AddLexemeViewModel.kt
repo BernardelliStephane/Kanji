@@ -184,7 +184,7 @@ class AddLexemeViewModel(private val addLexemeUseCases: AddLexemeUseCases) : Vie
     }
 
     private fun checkDuplicateCharacters(uiState: AddLexemeState, duplicateCallback: (LexemeWithLesson) -> Unit) {
-        addLexemeUseCases.getLexemeByCharacters(uiState.characters)
+        addLexemeUseCases.checkLexemeExistence(uiState.characters, uiState.meaning)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnError { // Database error
@@ -193,10 +193,7 @@ class AddLexemeViewModel(private val addLexemeUseCases: AddLexemeUseCases) : Vie
                 }
             }
             .doOnSuccess { // Matching lexeme found
-                if (uiState.characters.isCompound() && it.lexeme.romaji != uiState.romaji)
-                    submitData()
-
-                else duplicateCallback.invoke(it)
+                duplicateCallback.invoke(it)
             }
             .doOnComplete { // No matching lexeme found
                 submitData()

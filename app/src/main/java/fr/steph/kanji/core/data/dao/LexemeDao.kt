@@ -27,6 +27,10 @@ interface LexemeDao {
     @Query("SELECT * FROM lexeme WHERE characters = :characters")
     fun getLexemeByCharacters(characters: String): Maybe<LexemeWithLesson>
 
+    @Transaction
+    @Query("SELECT * FROM lexeme WHERE characters = :characters AND meaning = :meaning")
+    fun getLexemeByCharactersAndMeaning(characters: String, meaning: String): Maybe<LexemeWithLesson>
+
 
     /******************** All lexemes ********************/
 

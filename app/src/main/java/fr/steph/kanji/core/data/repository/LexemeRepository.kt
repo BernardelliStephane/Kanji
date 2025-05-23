@@ -18,6 +18,9 @@ class LexemeRepository(private val lexemeDao: LexemeDao) {
     fun getLexemeByCharacters(characters: String) =
         lexemeDao.getLexemeByCharacters(characters)
 
+    fun getLexemeByCharactersAndMeaning(characters: String, meaning: String) =
+        lexemeDao.getLexemeByCharactersAndMeaning(characters, meaning)
+
 
     /******************** All lexemes ********************/
 

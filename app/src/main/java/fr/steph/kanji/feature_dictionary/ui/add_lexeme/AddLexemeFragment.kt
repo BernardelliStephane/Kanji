@@ -15,6 +15,7 @@ import fr.steph.kanji.core.ui.KanjiApplication
 import fr.steph.kanji.R
 import fr.steph.kanji.core.data.model.ApiKanji
 import fr.steph.kanji.core.data.model.jisho.Jisho
+import fr.steph.kanji.core.data.model.jisho.JishoResponse
 import fr.steph.kanji.core.domain.model.LexemeWithLesson
 import fr.steph.kanji.core.ui.util.Resource
 import fr.steph.kanji.core.ui.util.autoCleared
@@ -22,6 +23,7 @@ import fr.steph.kanji.core.ui.util.viewModelFactory
 import fr.steph.kanji.core.util.ADD_LESSON_DIALOG_TAG
 import fr.steph.kanji.core.util.LEXEME_UPDATE_DIALOG_TAG
 import fr.steph.kanji.core.util.extension.hideSpinnerDropDown
+import fr.steph.kanji.core.util.extension.isCompound
 import fr.steph.kanji.core.util.extension.navigateUp
 import fr.steph.kanji.core.util.extension.safeNavigate
 import fr.steph.kanji.core.util.extension.setMaxVisibleItems
@@ -132,6 +134,9 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
     }
 
     private fun handleDuplicateCharacters(duplicateLexeme: LexemeWithLesson) {
+        if (duplicateLexeme.lexeme.characters.isCompound())
+            return showToast("This translation is already in the dictionary")
+
         ConfirmLexemeUpdateDialogFragment()
             .setSuccessCallback {
                 activity?.currentFocus?.clearFocus()
