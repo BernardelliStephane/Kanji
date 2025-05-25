@@ -1,5 +1,6 @@
 package fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate
 
+import fr.steph.kanji.core.data.model.jisho.JishoResponse
 import fr.steph.kanji.core.domain.model.Lexeme
 import fr.steph.kanji.core.domain.enumeration.LexemeType
 import fr.steph.kanji.core.util.extension.capitalized
@@ -11,11 +12,14 @@ data class AddLexemeState(
     val lessonError: Boolean = false,
     val characters: String = "",
     val charactersErrorRes: Int? = null,
-    val alternativeWritings: String = "",
     val romaji: String = "",
     val romajiErrorRes: Int? = null,
     val meaning: String = "",
     val meaningErrorRes: Int? = null,
+    val isUpdating: Boolean = false,
+    val isSubmitting: Boolean = false,
+
+    // Lone kanji info
     val onyomi: String = "",
     val onyomiRomaji: String = "",
     val kunyomi: String = "",
@@ -25,12 +29,17 @@ data class AddLexemeState(
     val gradeTaught: String = "",
     val jlptLevel: String = "",
     val useFrequencyIndicator: String = "",
+
+    // Compound info
+    val alternativeWritings: String = "",
+    val lastCompoundFetched: String? = null,
+    val lastCompoundFetchedResult: JishoResponse? = null,
+
+    // Fetching status
     val lastFetch: String? = null,
     val lastFetchMeaning: String = "",
     val lastFetchRomaji: String = "",
     val isFetching: Boolean = false,
-    val isUpdating: Boolean = false,
-    val isSubmitting: Boolean = false,
 ) {
     val isCharactersContainingKanji: Boolean
         get() = characters.hasKanji()

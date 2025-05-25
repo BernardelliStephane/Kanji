@@ -5,7 +5,6 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import fr.steph.kanji.core.domain.enumeration.LexemeType
-import fr.steph.kanji.core.util.extension.isLoneKanji
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.uistate.AddLexemeState
 import kotlinx.parcelize.Parcelize
 

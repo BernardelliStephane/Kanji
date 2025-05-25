@@ -95,6 +95,13 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
             viewModel.onEvent(AddLexemeEvent.CharactersChanged(it.toString()))
         }
 
+        binding.charactersInputLayout.setEndIconOnClickListener {
+            val translations = viewModel.uiState.value.lastCompoundFetchedResult?.translations?.sortedBy { !it.isCommon }
+            val translationsJson = Gson().toJson(translations)
+            val action = AddLexemeFragmentDirections.actionAddLexemeFragmentToTranslationSelectionFragment(translationsJson)
+            safeNavigate(action)
+        }
+
         binding.searchKanji.setOnClickListener {
             viewModel.onEvent(AddLexemeEvent.Fetch(requireContext()))
         }
@@ -172,6 +179,7 @@ class AddLexemeFragment : Fragment(R.layout.fragment_add_lexeme) {
                         }
 
                         else if (response.data is JishoResponse && !viewModel.isUpdating()) {
+                            viewModel.updateCompoundResult(response.data)
                             val translations = response.data.translations.sortedBy { !it.isCommon }
                             val translationsJson = Gson().toJson(translations)
                             val action = AddLexemeFragmentDirections.actionAddLexemeFragmentToTranslationSelectionFragment(translationsJson)

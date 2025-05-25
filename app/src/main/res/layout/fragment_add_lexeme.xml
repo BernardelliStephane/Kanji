@@ -71,6 +71,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/add_lexeme_default_margin"
                     android:hint="@{viewModel.uiState.updating ? @string/characters_hint_updating : @string/characters_hint}"
+                    app:endIconDrawable="@drawable/ic_refresh"
+                    app:endIconMode="custom"
+                    app:endIconVisible="@{viewModel.uiState.charactersFetched &amp;&amp; !viewModel.uiState.charactersLoneKanji}"
                     app:errorEnabled="@{viewModel.uiState.charactersErrorRes != null}"
                     app:errorRes="@{viewModel.uiState.charactersErrorRes}"
                     tools:hint="@string/characters_hint">

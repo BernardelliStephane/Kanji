@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import fr.steph.kanji.R
 import fr.steph.kanji.core.data.model.ApiKanji
 import fr.steph.kanji.core.data.model.jisho.Jisho
+import fr.steph.kanji.core.data.model.jisho.JishoResponse
 import fr.steph.kanji.core.domain.model.Lesson
 import fr.steph.kanji.core.domain.model.LexemeWithLesson
 import fr.steph.kanji.core.ui.util.LexemeResource
@@ -118,12 +119,12 @@ class AddLexemeViewModel(private val addLexemeUseCases: AddLexemeUseCases) : Vie
     private fun fetchCharacters(context: Context, characters: String) = viewModelScope.launch {
         _uiState.update { it.copy(isFetching = true) }
 
+        if (characters.isCompound())
+            _uiState.update { it.copy(lastCompoundFetched = characters) }
+
         val result =
             if (characters.length == 1) addLexemeUseCases.getKanjiInfo(context, characters)
             else addLexemeUseCases.getCompoundInfo(context, characters)
-
-        if (result is Resource.Success)
-            _uiState.update { it.copy(lastFetch = characters) }
 
         _apiResponse.emit(result)
 
@@ -154,8 +155,14 @@ class AddLexemeViewModel(private val addLexemeUseCases: AddLexemeUseCases) : Vie
         }
     }
 
+    fun updateCompoundResult(result: JishoResponse) {
+        _uiState.update {
+            it.copy(lastCompoundFetchedResult = result)
+        }
+    }
+
     fun manageFetchedCompound(translation: Jisho) {
-        val fetchedCharacters = uiState.value.lastFetch!!
+        val fetchedCharacters = uiState.value.lastCompoundFetched!!
 
         val meanings = translation.senses
             .flatMap { it.meaning }
@@ -180,6 +187,7 @@ class AddLexemeViewModel(private val addLexemeUseCases: AddLexemeUseCases) : Vie
                 romajiErrorRes = null,
                 meaning = meanings,
                 meaningErrorRes = null,
+                lastFetch = fetchedCharacters,
                 lastFetchMeaning = meanings
             )
         }

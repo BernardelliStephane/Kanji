@@ -21,3 +21,8 @@ fun setErrorMessage(view: TextInputLayout, resError: Int?) {
     view.error = if (resError == null) null
     else view.context.resources.getString(resError)
 }
+
+@BindingAdapter("endIconVisible")
+fun setEndIconVisibility(view: TextInputLayout, isVisible: Boolean) {
+    view.isEndIconVisible = isVisible
+}
