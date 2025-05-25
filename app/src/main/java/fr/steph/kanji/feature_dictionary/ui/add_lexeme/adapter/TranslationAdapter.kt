@@ -50,9 +50,10 @@ class TranslationAdapter(
 
         fun bind(translation: Jisho, isSelected: Boolean) {
             binding.writingText.text = translation.writings.map { it.word }.distinct().joinToString()
-            binding.pronouncedText.text = translation.writings.map { it.reading }.distinct().joinToString()
+            binding.readingText.text = translation.writings.map { it.reading }.distinct().joinToString()
             binding.romajiText.text = translation.writings.map { it.reading.kanaToRomaji() }.distinct().joinToString()
             binding.meaningText.text = translation.senses.flatMap { it.meaning }.distinct().joinToString()
+            binding.jlptText.text = translation.getJlptLevels()
 
             val cardBackgroundColor = if (isSelected) R.color.grey else R.color.white
             binding.root.setCardBackgroundColor(ContextCompat.getColor(itemView.context, cardBackgroundColor))

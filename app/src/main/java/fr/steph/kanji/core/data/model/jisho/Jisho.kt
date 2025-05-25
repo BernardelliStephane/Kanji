@@ -10,4 +10,12 @@ data class Jisho(
     val writings: List<Writing>,
     val jlpt: List<String>,
     val senses: List<Sense>,
-) : Serializable
+) : Serializable {
+    fun getJlptLevels(): String {
+        if (jlpt.isEmpty()) return "No JLPT level associated"
+        val jlptLevels = jlpt.map { it.substringAfter('-').uppercase() }
+
+        return if (jlptLevels.size == 1) "JLPT level ${jlptLevels[0]}"
+            else "JLPT levels ${jlptLevels.joinToString(", ")}"
+    }
+}
