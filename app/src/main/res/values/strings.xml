@@ -52,6 +52,9 @@
     <string name="delete">Delete</string>
     <string name="update">Update</string>
     <string name="select_all">All</string>
+    <string name="share">Share as PDF</string>
+    <string name="import_dictionary">Import dictionary</string>
+    <string name="export_dictionary">Export dictionary</string>
 
     <!-- Label -->
     <string name="translation">Translation</string>
@@ -93,7 +96,7 @@
 
     <!-- Content description -->
     <string name="filter_translations">Filter translations</string>
-    <string name="sort_translations">Filter translations</string>
+    <string name="sort_translations">Sort translations</string>
     <string name="add_translation">Add translation</string>
 
 </resources>

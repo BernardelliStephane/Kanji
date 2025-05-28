@@ -62,6 +62,8 @@ class DictionaryViewModel(private val dictionaryUseCases: DictionaryUseCases) : 
 
     fun isSelectionActive() = isSelectionMode.value
 
+    fun enableSelectionMode() = _isSelectionMode.update { true }
+
     fun disableSelectionMode() = _isSelectionMode.update { false }
 
     fun isFilteringOngoing() = _filterOptions.value.run {

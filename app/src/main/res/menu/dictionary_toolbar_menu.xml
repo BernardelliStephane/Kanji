@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/delete_translations"
+        android:title="@string/delete"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/share_dictionary_as_pdf"
+        android:title="@string/share"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/import_dictionary"
+        android:title="@string/import_dictionary"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/export_dictionary"
+        android:title="@string/export_dictionary"
+        app:showAsAction="never" />
+
+</menu>

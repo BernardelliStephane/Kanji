@@ -17,8 +17,8 @@ import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.selection.StorageStrategy
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
-import fr.steph.kanji.core.ui.KanjiApplication
 import fr.steph.kanji.R
+import fr.steph.kanji.core.ui.KanjiApplication
 import fr.steph.kanji.core.ui.util.ItemKeyProvider
 import fr.steph.kanji.core.ui.util.Resource
 import fr.steph.kanji.core.ui.util.StretchEdgeEffectFactory
@@ -80,6 +80,7 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
                 }
             }
         }
+
         binding.lexemeRecyclerView.apply {
             adapter = lexemeAdapter
             itemAnimator = null
@@ -157,6 +158,36 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
         addLexeme.setOnClickListener {
             val action = DictionaryFragmentDirections.actionDictionaryFragmentToAddLexemeFragment()
             safeNavigate(action)
+        }
+
+        binding.optionsMenu.setOnClickListener {
+            PopupMenu(requireContext(), it).apply {
+                menuInflater.inflate(R.menu.dictionary_toolbar_menu, menu)
+
+                setOnMenuItemClickListener { menuItem ->
+                    when (menuItem.itemId) {
+                        R.id.delete_translations -> {
+                            viewModel.enableSelectionMode()
+                            true
+                        }
+
+                        R.id.share_dictionary_as_pdf -> {
+                            true
+                        }
+
+                        R.id.import_dictionary -> {
+                            true
+                        }
+
+                        R.id.export_dictionary -> {
+                            true
+                        }
+
+                        else -> false
+                    }
+                }
+                show()
+            }
         }
 
         searchView.setOnQueryTextListener (object : SearchView.OnQueryTextListener {
