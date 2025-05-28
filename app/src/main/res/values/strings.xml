@@ -14,6 +14,7 @@
     <string name="conversion_error">Conversion error</string>
     <string name="no_matching_translation">No matching translation was found.</string>
     <string name="no_kanji_found">The provided characters don\'t contain any kanji.</string>
+    <string name="dictionary_saved">Dictionary saved to the downloads directory</string>
 
     <!-- Text -->
     <plurals name="translation_count">

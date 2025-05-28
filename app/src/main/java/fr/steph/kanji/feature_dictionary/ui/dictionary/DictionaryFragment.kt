@@ -1,8 +1,10 @@
 package fr.steph.kanji.feature_dictionary.ui.dictionary
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.View
 import android.widget.CheckBox
+import android.widget.PopupMenu
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.res.ResourcesCompat
@@ -36,6 +38,7 @@ import fr.steph.kanji.feature_dictionary.ui.dictionary.adapter.LexemeAdapter
 import fr.steph.kanji.feature_dictionary.ui.dictionary.dialog.ConfirmDeletionDialogFragment
 import fr.steph.kanji.feature_dictionary.ui.dictionary.dialog.FilterLexemesDialogFragment
 import fr.steph.kanji.feature_dictionary.ui.dictionary.dialog.SortLexemesDialogFragment
+import fr.steph.kanji.feature_dictionary.ui.dictionary.util.FileExportUtils
 import fr.steph.kanji.feature_dictionary.ui.dictionary.viewmodel.DictionaryViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -180,6 +183,15 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
                         }
 
                         R.id.export_dictionary -> {
+                            AlertDialog.Builder(requireContext())
+                                .setTitle("Export Dictionary")
+                                .setItems(arrayOf("Share", "Download")) { _, option ->
+                                    when (option) {
+                                        0 -> FileExportUtils.shareDatabase(requireContext())
+                                        1 -> FileExportUtils.downloadDatabase(requireContext())
+                                    }
+                                }
+                                .show()
                             true
                         }
 
