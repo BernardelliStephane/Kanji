@@ -11,18 +11,46 @@ import java.io.File
 
 object FileExportUtils {
 
-    fun downloadDatabase(context: Context) {
-        val dbFile = context.getDatabasePath("lexeme_db")
-        val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-        val destFile = File(downloadsDir, "dictionary.db")
-        dbFile.copyTo(destFile, overwrite = true)
+    fun downloadDatabase(context: Context): Boolean {
+        try {
+            val dbPath = context.getDatabasePath("lexeme_db").absolutePath
+            val cacheDir = context.cacheDir
 
-        MediaScannerConnection.scanFile(context, arrayOf(destFile.absolutePath), null, null)
+            val dbFile = File(dbPath)
+            val walFile = File("$dbPath-wal")
+            val shmFile = File("$dbPath-shm")
 
-        Toast.makeText(context, R.string.dictionary_saved, Toast.LENGTH_SHORT).show()
+            val tempDb = File(cacheDir, "temp_dictionary.db")
+            val tempWal = File(cacheDir, "temp_dictionary.db-wal")
+            val tempShm = File(cacheDir, "temp_dictionary.db-shm")
+
+            dbFile.copyTo(tempDb, overwrite = true)
+            if (walFile.exists()) walFile.copyTo(tempWal, overwrite = true)
+            if (shmFile.exists()) shmFile.copyTo(tempShm, overwrite = true)
+
+            SQLiteDatabase.openDatabase(tempDb.path, null, SQLiteDatabase.OPEN_READWRITE).use { tempDbHandle ->
+                tempDbHandle.rawQuery("PRAGMA wal_checkpoint(FULL);", null).close()
+            }
+
+            tempWal.delete()
+            tempShm.delete()
+
+            val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+            val destFile = File(downloadsDir, "dictionary.db")
+            tempDb.copyTo(destFile, overwrite = true)
+
+            tempDb.delete()
+
+            MediaScannerConnection.scanFile(context, arrayOf(destFile.absolutePath), null, null)
+            return true
+        }
+        catch (e: Exception) {
+            e.printStackTrace()
+            return false
+        }
     }
 
-    fun shareDatabase(context: Context) {
+    fun shareDatabaseFile(context: Context) {
         val dbFile = context.getDatabasePath("lexeme_db")
         val cachedDbFile = File(context.cacheDir, "dictionary.db")
         dbFile.copyTo(cachedDbFile, overwrite = true)

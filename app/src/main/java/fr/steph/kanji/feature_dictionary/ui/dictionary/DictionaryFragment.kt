@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.CheckBox
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.res.ResourcesCompat
@@ -40,8 +41,11 @@ import fr.steph.kanji.feature_dictionary.ui.dictionary.dialog.FilterLexemesDialo
 import fr.steph.kanji.feature_dictionary.ui.dictionary.dialog.SortLexemesDialogFragment
 import fr.steph.kanji.feature_dictionary.ui.dictionary.util.FileExportUtils
 import fr.steph.kanji.feature_dictionary.ui.dictionary.viewmodel.DictionaryViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
 
@@ -187,8 +191,17 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
                                 .setTitle("Export Dictionary")
                                 .setItems(arrayOf("Share", "Download")) { _, option ->
                                     when (option) {
-                                        0 -> FileExportUtils.shareDatabase(requireContext())
-                                        1 -> FileExportUtils.downloadDatabase(requireContext())
+                                        0 -> FileExportUtils.shareDatabaseFile(requireContext())
+                                        1 -> CoroutineScope(Dispatchers.IO).launch {
+                                            val downloadResult = FileExportUtils.downloadDatabase(requireContext())
+
+                                            val stringRes =
+                                                if (downloadResult) R.string.dictionary_save_successful
+                                                else R.string.dictionary_save_failure
+                                            withContext(Dispatchers.Main) {
+                                                Toast.makeText(context, stringRes, Toast.LENGTH_SHORT).show()
+                                            }
+                                        }
                                     }
                                 }
                                 .show()
