@@ -16,6 +16,7 @@ import fr.steph.kanji.feature_dictionary.domain.use_case.GetLessonsUseCase
 import fr.steph.kanji.feature_dictionary.domain.use_case.GetLexemeByCharactersUseCase
 import fr.steph.kanji.feature_dictionary.domain.use_case.GetLexemesUseCase
 import fr.steph.kanji.feature_dictionary.domain.use_case.InsertLessonUseCase
+import fr.steph.kanji.feature_dictionary.domain.use_case.PopulateDatabaseUseCase
 import fr.steph.kanji.feature_dictionary.domain.use_case.SearchInFilteredLexemesUseCase
 import fr.steph.kanji.feature_dictionary.domain.use_case.SearchLexemesUseCase
 import fr.steph.kanji.feature_dictionary.domain.use_case.UpsertLexemeUseCase
@@ -55,7 +56,8 @@ class KanjiApplication: Application() {
             FilterLexemesUseCase(lexemeRepository),
             SearchInFilteredLexemesUseCase(lexemeRepository),
             DeleteLexemesFromSelectionUseCase(lexemeRepository),
-            GetLessonsUseCase(lessonRepository)
+            GetLessonsUseCase(lessonRepository),
+            PopulateDatabaseUseCase(lessonRepository, lexemeRepository)
         )
     }
 }

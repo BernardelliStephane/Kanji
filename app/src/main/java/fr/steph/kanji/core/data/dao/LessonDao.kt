@@ -13,6 +13,9 @@ interface LessonDao {
     @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insertLesson(lesson: Lesson): Long
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertAll(lessons: List<Lesson>): List<Long>
+
     @Query("SELECT * FROM lesson ORDER BY number ASC ")
     fun allLessons(): Flow<List<Lesson>>
 

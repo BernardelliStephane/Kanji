@@ -1,12 +1,14 @@
 package fr.steph.kanji.feature_dictionary.ui.dictionary
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.CheckBox
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
@@ -33,6 +35,7 @@ import fr.steph.kanji.core.util.SORT_LEXEMES_DIALOG_TAG
 import fr.steph.kanji.core.util.extension.getQuantityStringZero
 import fr.steph.kanji.core.util.extension.navigateUp
 import fr.steph.kanji.core.util.extension.safeNavigate
+import fr.steph.kanji.core.util.extension.showToast
 import fr.steph.kanji.databinding.FragmentDictionaryBinding
 import fr.steph.kanji.feature_dictionary.ui.add_lexeme.util.LexemeDetailsLookup
 import fr.steph.kanji.feature_dictionary.ui.dictionary.adapter.LexemeAdapter
@@ -61,6 +64,16 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
     private lateinit var lexemeAdapter: LexemeAdapter
 
     private lateinit var tracker: SelectionTracker<Long>
+
+    private val importDatabaseLauncher = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+        if (uri == null) return@registerForActivityResult
+
+        requireContext().contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        CoroutineScope(Dispatchers.IO).launch {
+            val importedDb = FileExportUtils.importDatabaseFromFile(requireContext(), uri)
+            importedDb?.let { viewModel.updateDatabaseFromImport(it) }
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -183,6 +196,7 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
                         }
 
                         R.id.import_dictionary -> {
+                            importDatabaseLauncher.launch(arrayOf("application/octet-stream"))
                             true
                         }
 
@@ -277,6 +291,15 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
                 when (event) {
                     is Resource.Failure -> Snackbar.make(requireView(), event.failureMessage, Snackbar.LENGTH_SHORT).show()
                     is Resource.Success -> clearSelection(true)
+                }
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.populationEvents.collectLatest { event ->
+                when (event) {
+                    is Resource.Failure -> showToast(event.failureMessage)
+                    is Resource.Success -> showToast(R.string.dictionary_import_successful)
                 }
             }
         }

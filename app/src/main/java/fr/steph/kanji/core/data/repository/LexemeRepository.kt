@@ -9,6 +9,9 @@ class LexemeRepository(private val lexemeDao: LexemeDao) {
     suspend fun insertLexeme(lexeme: Lexeme) =
         lexemeDao.insertLexeme(lexeme)
 
+    suspend fun insertAll(lexemes: List<Lexeme>) =
+        lexemeDao.insertAll(lexemes)
+
     suspend fun updateLexeme(lexeme: Lexeme) =
         lexemeDao.updateLexeme(lexeme)
 

@@ -6,5 +6,6 @@ data class DictionaryUseCases(
     val filterLexemes: FilterLexemesUseCase,
     val searchInFilteredLexemes: SearchInFilteredLexemesUseCase,
     val deleteLexemesFromSelection: DeleteLexemesFromSelectionUseCase,
-    val getLessons: GetLessonsUseCase
+    val getLessons: GetLessonsUseCase,
+    val populateDatabase: PopulateDatabaseUseCase
 )

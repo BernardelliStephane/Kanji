@@ -17,6 +17,9 @@ interface LexemeDao {
     @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insertLexeme(lexeme: Lexeme): Long
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertAll(lexemes: List<Lexeme>): List<Long>
+
     @Update
     suspend fun updateLexeme(lexeme: Lexeme): Int
 

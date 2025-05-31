@@ -2,11 +2,15 @@ package fr.steph.kanji.feature_dictionary.ui.dictionary.util
 
 import android.content.Context
 import android.content.Intent
+import android.database.sqlite.SQLiteDatabase
 import android.media.MediaScannerConnection
+import android.net.Uri
 import android.os.Environment
-import android.widget.Toast
 import androidx.core.content.FileProvider
-import fr.steph.kanji.R
+import fr.steph.kanji.core.domain.enumeration.LexemeType
+import fr.steph.kanji.core.domain.model.DatabaseModel
+import fr.steph.kanji.core.domain.model.Lesson
+import fr.steph.kanji.core.domain.model.Lexeme
 import java.io.File
 
 object FileExportUtils {
@@ -68,5 +72,51 @@ object FileExportUtils {
         }
 
         context.startActivity(Intent.createChooser(intent, "Share database file"))
+    }
+
+    fun importDatabaseFromFile(context: Context, uri: Uri): DatabaseModel? {
+        try {
+            val dbFile = File.createTempFile("dictionary", ".db", context.cacheDir)
+            context.contentResolver.openInputStream(uri)?.use { input ->
+                dbFile.outputStream().use { output ->
+                    input.copyTo(output)
+                }
+            } ?: throw IllegalArgumentException("Cannot open input stream from URI")
+
+            val db = SQLiteDatabase.openDatabase(dbFile.path, null, SQLiteDatabase.OPEN_READONLY)
+
+            val lessons = mutableListOf<Lesson>()
+            db.rawQuery("SELECT * FROM Lesson", null).use { cursor ->
+                while (cursor.moveToNext()) {
+                    val number = cursor.getLong(cursor.getColumnIndexOrThrow("number"))
+                    val label = cursor.getString(cursor.getColumnIndexOrThrow("label"))
+                    lessons.add(Lesson(number, label))
+                }
+            }
+
+            val lexemes = mutableListOf<Lexeme>()
+            db.rawQuery("SELECT * FROM Lexeme", null).use { cursor ->
+                while (cursor.moveToNext()) {
+                    val id = cursor.getLong(cursor.getColumnIndexOrThrow("id"))
+                    val type = LexemeType.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("type")))
+                    val lessonNumber = cursor.getLong(cursor.getColumnIndexOrThrow("lessonNumber"))
+                    val characters = cursor.getString(cursor.getColumnIndexOrThrow("characters"))
+                    val alternativeWritings = cursor.getString(cursor.getColumnIndexOrThrow("alternativeWritings"))
+                    val romaji = cursor.getString(cursor.getColumnIndexOrThrow("romaji"))
+                    val meaning = cursor.getString(cursor.getColumnIndexOrThrow("meaning"))
+                    val creationDate = cursor.getLong(cursor.getColumnIndexOrThrow("creationDate"))
+                    lexemes.add(Lexeme(id, type, lessonNumber, characters, alternativeWritings, romaji, meaning, creationDate))
+                }
+            }
+
+            db.close()
+            dbFile.delete()
+
+            return DatabaseModel(lessons, lexemes)
+        }
+        catch (e: Exception) {
+            e.printStackTrace()
+            return null
+        }
     }
 }

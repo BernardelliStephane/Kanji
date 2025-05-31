@@ -5,6 +5,8 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import fr.steph.kanji.core.domain.enumeration.SortField
 import fr.steph.kanji.core.domain.enumeration.SortOrder
+import fr.steph.kanji.core.domain.model.DatabaseModel
+import fr.steph.kanji.core.ui.util.DatabaseResource
 import fr.steph.kanji.core.ui.util.LexemeResource
 import fr.steph.kanji.feature_dictionary.domain.use_case.DictionaryUseCases
 import fr.steph.kanji.feature_dictionary.ui.dictionary.util.FilterOptions
@@ -51,9 +53,18 @@ class DictionaryViewModel(private val dictionaryUseCases: DictionaryUseCases) : 
     private val validationEventChannel = Channel<LexemeResource>()
     val validationEvents = validationEventChannel.receiveAsFlow()
 
+    private val populationEventChannel = Channel<DatabaseResource>()
+    val populationEvents = populationEventChannel.receiveAsFlow()
+
     fun deleteLexemesFromSelection(selection: List<Long>) = viewModelScope.launch {
         val result = dictionaryUseCases.deleteLexemesFromSelection(selection)
         validationEventChannel.send(result)
+    }
+
+    fun updateDatabaseFromImport(database: DatabaseModel) = viewModelScope.launch {
+        dictionaryUseCases.populateDatabase(database).let {
+            populationEventChannel.send(it)
+        }
     }
 
     fun onSelectionChanged(selectionSize: Int) {
