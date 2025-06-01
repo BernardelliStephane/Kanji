@@ -42,7 +42,8 @@ import fr.steph.kanji.feature_dictionary.ui.dictionary.adapter.LexemeAdapter
 import fr.steph.kanji.feature_dictionary.ui.dictionary.dialog.ConfirmDeletionDialogFragment
 import fr.steph.kanji.feature_dictionary.ui.dictionary.dialog.FilterLexemesDialogFragment
 import fr.steph.kanji.feature_dictionary.ui.dictionary.dialog.SortLexemesDialogFragment
-import fr.steph.kanji.feature_dictionary.ui.dictionary.util.FileExportUtils
+import fr.steph.kanji.feature_dictionary.ui.dictionary.util.DatabaseExportUtils
+import fr.steph.kanji.feature_dictionary.ui.dictionary.util.DatabaseExportUtils.exportDictionaryToPdf
 import fr.steph.kanji.feature_dictionary.ui.dictionary.viewmodel.DictionaryViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -70,7 +71,7 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
 
         requireContext().contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
         CoroutineScope(Dispatchers.IO).launch {
-            val importedDb = FileExportUtils.importDatabaseFromFile(requireContext(), uri)
+            val importedDb = DatabaseExportUtils.importDatabaseFromFile(requireContext(), uri)
             importedDb?.let { viewModel.updateDatabaseFromImport(it) }
         }
     }
@@ -192,6 +193,7 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
                         }
 
                         R.id.share_dictionary_as_pdf -> {
+                            exportDictionaryToPdf(requireContext(), viewModel.lexemes.value ?: emptyList())
                             true
                         }
 
@@ -205,9 +207,9 @@ class DictionaryFragment : Fragment(R.layout.fragment_dictionary) {
                                 .setTitle("Export Dictionary")
                                 .setItems(arrayOf("Share", "Download")) { _, option ->
                                     when (option) {
-                                        0 -> FileExportUtils.shareDatabaseFile(requireContext())
+                                        0 -> DatabaseExportUtils.shareDatabaseFile(requireContext())
                                         1 -> CoroutineScope(Dispatchers.IO).launch {
-                                            val downloadResult = FileExportUtils.downloadDatabase(requireContext())
+                                            val downloadResult = DatabaseExportUtils.downloadDatabase(requireContext())
 
                                             val stringRes =
                                                 if (downloadResult) R.string.dictionary_save_successful
