@@ -1,6 +1,10 @@
 package fr.steph.kanji.feature_dictionary.ui.util
 
 import android.content.Context
+import android.view.ViewGroup
+import androidx.core.view.marginEnd
+import androidx.core.view.marginStart
+import fr.steph.kanji.feature_dictionary.ui.util.StrokeOrderDiagramConfig.Companion.fromContext
 
 /**
  * Configuration utility for stroke order diagrams.
@@ -11,18 +15,18 @@ import android.content.Context
  * Use [fromContext] to instantiate this class with runtime display metrics.
  */
 class StrokeOrderDiagramConfig private constructor(
-    /** The screen width in pixels. */
-    val screenWidth: Int,
+    /** The width available in the parent layout to draw the diagrams in pixels. */
+    val availableWidth: Int,
     /** The size of each diagram square in pixels. */
     val diagramSize: Int,
     /** The thickness of the border of each diagram cell, in pixels. */
     val diagramBorderThickness: Int,
     /** The size of each diagram in pixels, excluding the border. */
     val borderlessDiagramSize: Int,
-    /** Unused screen space in pixels after filling the maximum items per row. */
-    val unusedScreenSpace: Int,
     /** The number of diagram items that fit per row. */
-    val itemsPerRow: Int
+    val itemsPerRow: Int,
+    /** Unused screen space in pixels after filling the maximum items per row. */
+    val emptySpace: Int,
 ) {
     companion object {
         private const val STROKE_ORDER_DIAGRAM_SIZE_DP = 100
@@ -37,22 +41,24 @@ class StrokeOrderDiagramConfig private constructor(
          * @param context Android context for accessing display metrics.
          * @return A fully initialized [StrokeOrderDiagramConfig] instance.
          */
-        fun fromContext(context: Context): StrokeOrderDiagramConfig {
+        fun fromContext(context: Context, parent: ViewGroup): StrokeOrderDiagramConfig {
             val displayMetrics = context.resources.displayMetrics
+
             val diagramSize = displayMetrics.density.toInt() * STROKE_ORDER_DIAGRAM_SIZE_DP
-            val screenWidth = displayMetrics.widthPixels
             val diagramBorderThickness = (diagramSize * STROKE_ORDER_DIAGRAM_BORDER_RATIO).toInt()
             val borderlessDiagramSize = diagramSize - diagramBorderThickness
-            val itemsPerRow = screenWidth.minus(diagramSize) / borderlessDiagramSize + 1
-            val remainingScreenSpace = (screenWidth - diagramSize) % borderlessDiagramSize
+
+            val availableWidth = parent.run { width - paddingStart - paddingEnd - marginStart - marginEnd }
+            val itemsPerRow = availableWidth.minus(diagramSize) / borderlessDiagramSize + 1
+            val emptySpace = (availableWidth - diagramSize) % borderlessDiagramSize
 
             return StrokeOrderDiagramConfig(
                 diagramSize = diagramSize,
-                screenWidth = screenWidth,
+                availableWidth = availableWidth,
                 diagramBorderThickness = diagramBorderThickness,
                 borderlessDiagramSize = borderlessDiagramSize,
                 itemsPerRow = itemsPerRow,
-                unusedScreenSpace = remainingScreenSpace
+                emptySpace = emptySpace
             )
         }
     }

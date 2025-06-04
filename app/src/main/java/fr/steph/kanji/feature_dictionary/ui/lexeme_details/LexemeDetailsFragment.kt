@@ -2,21 +2,20 @@ package fr.steph.kanji.feature_dictionary.ui.lexeme_details
 
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup.MarginLayoutParams
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
-import fr.steph.kanji.core.ui.KanjiApplication
 import fr.steph.kanji.R
 import fr.steph.kanji.core.domain.model.Lexeme
+import fr.steph.kanji.core.ui.KanjiApplication
 import fr.steph.kanji.core.ui.util.Resource
 import fr.steph.kanji.core.ui.util.StrokeOrderDiagramHelper.createStrokeOrderDiagram
 import fr.steph.kanji.core.ui.util.autoCleared
 import fr.steph.kanji.core.ui.util.viewModelFactory
-import fr.steph.kanji.core.util.extension.log
+import fr.steph.kanji.core.util.extension.onLayoutReady
 import fr.steph.kanji.core.util.extension.showToast
 import fr.steph.kanji.databinding.FragmentLexemeDetailsBinding
 import fr.steph.kanji.feature_dictionary.domain.exception.MissingStrokeOrderDiagramException
@@ -56,14 +55,15 @@ class LexemeDetailsFragment : Fragment(R.layout.fragment_lexeme_details) {
         val filenames = viewModel.getCharactersStrokeFilenames(lexeme.characters)
 
         if (filenames.isNotEmpty()) {
-            binding.strokeOrderLayout.isVisible = true
-            val diagramConfig = StrokeOrderDiagramConfig.fromContext(requireContext())
+            with(binding.strokeOrderLayout) {
+                isVisible = true
+                onLayoutReady {
+                    val diagramConfig = StrokeOrderDiagramConfig.fromContext(requireContext(), this)
 
-            val params = binding.strokeOrderLayout.layoutParams as MarginLayoutParams
-            params.marginStart = diagramConfig.unusedScreenSpace / 2
-
-            filenames.forEachIndexed { index, filename ->
-                displayStrokeOrderDiagram(filename, lexeme.characters[index], diagramConfig)
+                    filenames.forEachIndexed { index, filename ->
+                        displayStrokeOrderDiagram(filename, lexeme.characters[index], diagramConfig)
+                    }
+                }
             }
         }
     }
@@ -89,7 +89,7 @@ class LexemeDetailsFragment : Fragment(R.layout.fragment_lexeme_details) {
             binding.strokeOrderLayout.addView(diagram)
         }
         catch (e: Exception) {
-            log(e.message.toString())
+            e.printStackTrace()
             displayErrorMessage(e, character)
         }
     }

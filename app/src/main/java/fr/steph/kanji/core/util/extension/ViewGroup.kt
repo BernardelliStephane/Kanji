@@ -3,6 +3,7 @@ package fr.steph.kanji.core.util.extension
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import androidx.annotation.LayoutRes
 import androidx.core.view.marginBottom
 import androidx.core.view.marginTop
@@ -26,4 +27,23 @@ fun ViewGroup.measureLayoutHeight(layoutInflater: LayoutInflater, @LayoutRes lay
         .plus(marginTop).plus(marginBottom)
 
     return itemHeight
+}
+
+/**
+ * Executes the given [function] after the [ViewGroup] has been laid out and measured.
+ *
+ * This is useful for retrieving view dimensions or performing operations that depend on the
+ * view's final size. The listener is automatically removed after the first invocation to
+ * avoid multiple triggers or infinite loops caused by layout changes.
+ *
+ * @param function The lambda to execute after the view has been laid out.
+ */
+fun ViewGroup.onLayoutReady(function: () -> Unit) {
+    val view = this
+    view.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+        override fun onGlobalLayout() {
+            view.viewTreeObserver.removeOnGlobalLayoutListener(this)
+            function.invoke()
+        }
+    })
 }
