@@ -3,6 +3,7 @@ package fr.steph.kanji.core.ui
 import android.app.Application
 import fr.steph.kanji.core.data.LexemeDatabase
 import fr.steph.kanji.core.data.repository.ApiKanjiRepository
+import fr.steph.kanji.core.data.repository.JishoRepository
 import fr.steph.kanji.core.data.repository.LessonRepository
 import fr.steph.kanji.core.data.repository.LexemeRepository
 import fr.steph.kanji.core.data.repository.StrokeOrderRepository
@@ -36,12 +37,13 @@ class KanjiApplication: Application() {
     private val database by lazy { LexemeDatabase.getDatabase(this) }
     private val lexemeRepository by lazy { LexemeRepository(database.lexemeDao()) }
     val lessonRepository by lazy { LessonRepository(database.lessonDao()) }
-    val apiRepository by lazy { ApiKanjiRepository() }
+    val kanjiApiRepository by lazy { ApiKanjiRepository() }
+    private val jishoRepository by lazy { JishoRepository() }
 
     val addLexemeUseCases by lazy {
         AddLexemeUseCases(
-            GetKanjiInfoUseCase(apiRepository),
-            GetCompoundInfoUseCase(apiRepository),
+            GetKanjiInfoUseCase(kanjiApiRepository),
+            GetCompoundInfoUseCase(jishoRepository),
             UpsertLexemeUseCase(lexemeRepository),
             GetLexemeByCharactersUseCase(lexemeRepository),
             GetLessonsUseCase(lessonRepository),
