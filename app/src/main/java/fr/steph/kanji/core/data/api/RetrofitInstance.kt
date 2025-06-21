@@ -2,6 +2,7 @@ package fr.steph.kanji.core.data.api
 
 import fr.steph.kanji.core.data.api.JishoAPI.Companion.JISHO_BASE_URL
 import fr.steph.kanji.core.data.api.KanjiAPI.Companion.KANJI_API_BASE_URL
+import fr.steph.kanji.core.data.api.OracleAPI.Companion.ORACLE_BASE_URL
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -41,12 +42,24 @@ class RetrofitInstance {
                 .build()
         }
 
+        private val oracleRetrofit by lazy {
+            Retrofit.Builder()
+                .baseUrl(ORACLE_BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
+                .build()
+        }
+
         val kanjiApi: KanjiAPI by lazy {
             kanjiApiRetrofit.create(KanjiAPI::class.java)
         }
 
         val jishoApi: JishoAPI by lazy {
             jishoRetrofit.create(JishoAPI::class.java)
+        }
+
+        val oracleApi: OracleAPI by lazy {
+            oracleRetrofit.create(OracleAPI::class.java)
         }
     }
 }

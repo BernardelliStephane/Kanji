@@ -6,6 +6,7 @@ import fr.steph.kanji.core.data.repository.ApiKanjiRepository
 import fr.steph.kanji.core.data.repository.JishoRepository
 import fr.steph.kanji.core.data.repository.LessonRepository
 import fr.steph.kanji.core.data.repository.LexemeRepository
+import fr.steph.kanji.core.data.repository.OracleRepository
 import fr.steph.kanji.core.data.repository.StrokeOrderRepository
 import fr.steph.kanji.feature_dictionary.domain.use_case.AddLexemeUseCases
 import fr.steph.kanji.feature_dictionary.domain.use_case.DeleteLexemesFromSelectionUseCase
@@ -39,6 +40,7 @@ class KanjiApplication: Application() {
     val lessonRepository by lazy { LessonRepository(database.lessonDao()) }
     val kanjiApiRepository by lazy { ApiKanjiRepository() }
     private val jishoRepository by lazy { JishoRepository() }
+    val oracleRepository by lazy { OracleRepository() }
 
     val addLexemeUseCases by lazy {
         AddLexemeUseCases(
