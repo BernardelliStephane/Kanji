@@ -2,5 +2,6 @@
     <style name="Theme.Kanji" parent="BaseTheme">
         <item name="android:navigationBarColor">@color/white</item>
         <item name="android:windowLightNavigationBar">true</item>
+        <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>
     </style>
 </resources>
